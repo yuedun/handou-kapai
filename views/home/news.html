@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <% include includes/headmeta.html %>
+    <title>韩豆官网-韩豆咖派|韩粉社区|高清图|韩娱资讯</title>
+    <!-- 生产环境使用 -->
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+      <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/swiper3.07.min.css">
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/animate.css/3.1.0/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/home.min.css">
+</head>
+
+<body>
+    <% include includes/header.html %>
+    <div class="news-show news-show-background-color">
+        <div class="news-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <%if(category_name){%>
+                        <ol class="breadcrumb">
+                            <li><a href="javascript:window.history.back()">资讯首页</a></li>
+                            <li><%=category_name%></li>
+                        </ol>
+                        <%}%>
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <%if(recommendNewsList){recommendNewsList.forEach(function(item,index){%>
+                                <div class="swiper-slide">
+                                    <a href="/portal/news/<%=item.news_id%>">
+                                    <img src="<%=download_website+item.picture_preview%>" alt="<%=item.title_zh%>" onerror="this.src='/images/dapian.png'">
+                                    <p class="swiper-slides-caption"></p>
+                                    <p class="swiper-slides-caption swiper-slides-caption-front">
+                                        <strong class="slides-order">
+                                            <img class="page-num" src="/images/portal/p<%=index+1%>.png">
+                                            <img class="page-sept" src="/images/portal/xiexian.png">
+                                            <img class="total-page" src="/images/portal/p<%=recommendNewsList.length%>.png">
+                                        </strong>
+                                        <strong class="slides-title"><%=item.title_zh || item.title_kor%></strong>
+                                        <strong class="slides-content"><%=item.summary_zh || item.summary_kor%></strong>
+                                    </p>
+                                    </a>
+                                </div>
+                                <%});}%>
+                            </div>
+                        </div>
+                        <div class="news-list-group" id="container">
+                            <input type="hidden" id="categoryId" value="<%=category_id%>">
+                            <%newsList.forEach(function(item,index){%>
+                            <div class="news-list-group-item">
+                                <img src="<%=download_website+item.picture_mini%>?imageView2/0/h/166" alt="<%=item.title_zh%>">
+                                <div>
+                                    <h4><a href="/portal/news/<%=item.news_id%>" class="news-list-title"><strong><%=item.title_zh || item.title_kor%></strong></a></h4>
+                                    <p class="news-list-summry"><%=item.summary_zh || item.summary_kor%></p>
+                                    <p class="news-item-basic">
+                                        <!-- <img src="/images/portal/time.png" /> -->
+                                        <span class="news-date"><%=item.release_date || item.create_date%></span>
+                                        <span class="news-look">阅读量:<%=item.read_count%></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <%})%>
+                        </div>
+                    </div>
+                    <aside class="col-md-3 hot-news">
+                        <div class="list-group">
+                            <h4 class="list-group-item news-top-list">
+                                大家关注的资讯
+                            </h4>
+                            <% if(hotNews){hotNews.forEach(function(item,index){%>
+                            <a href="/portal/news/<%=item.news_id%>" class="list-group-item">
+                                <h5 class="list-group-item-heading"><strong><%= item.title_zh%></strong></h5>
+                                <p class="list-group-item-text"><%= item.summary_zh%></p>
+                            </a>
+                            <%})}%>
+                        </div>
+                        <div class="news-list-down">
+                            <div id="erweidownandroid" style="display: none"><img src="/images/portal/erwei.png" alt="韩豆，扫码下载"/></div>
+                            <div id="erweidownios" style="display: none"><img src="/images/portal/erwei_ios.png" alt="韩豆，扫码下载"/></div>
+                            <p><a class="btn news-list-down-android"
+                                       onmouseover="document.getElementById('erweidownandroid').style.display='';"
+                                       onmouseout="document.getElementById('erweidownandroid').style.display='none';"></a></p>
+                            <p><a class="btn news-list-down-ios"
+                                  onmouseover="document.getElementById('erweidownios').style.display='';"
+                                  onmouseout="document.getElementById('erweidownios').style.display='none';"></a></p>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include includes/footer.html %>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/javascripts/home/swiper3.07.jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/home/swiper.animate1.0.2.min.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/waterfall.min.js"></script>
+    <script type="text/javascript" src="/javascripts/home/news.js"></script>
+</body>
+
+</html>

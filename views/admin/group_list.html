@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>明星列表</title>
+    <% include ./layout/headmeta.html %>
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ./layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>明星管理列表</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box col-md-12">
+                                <form class="form-inline" action="/admin/group" method="get">
+                                    <div class="form-group">
+                                        <label for="starName">明星：</label>
+                                        <input type="text" class="form-control" id="starName" name="starName" placeholder="明星名称">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="state">发布状态：</label>
+                                        <select class="form-control" id="state" name="state">
+                                            <option value="">选择状态</option>
+                                            <option value="1">已发布</option>
+                                            <option value="0">未发布</option>
+                                            <option value="-1">已删除</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="order">排序规则：</label>
+                                        <select class="form-control" id="order" name="order">
+                                            <option value="">选择排序</option>
+                                            <option value="fans-desc">粉丝数倒序</option>
+                                            <option value="fans-asc">粉丝数正序</option>
+                                            <option value="org-desc">组织数倒序</option>
+                                            <option value="org-asc">组织数正序</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-default">搜索</button>
+                                </form>
+                            </div>
+                            <div class="box col-md-12">
+                                <p>
+                                    <a class="btn btn-default btn-sm" href="/admin/group-add-ui"><i class="glyphicon glyphicon-plus"></i>新增</a>
+                                </p>
+                            </div>
+                            <div class="box-content">
+                                <table class="table table-striped table-bordered responsive" id="groupList">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>明星</th>
+                                            <th>粉丝团称号</th>
+                                            <th>粉丝数</th>
+                                            <th>组织数</th>
+                                            <th>发布状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% groupList.forEach(function(item, index){ %>
+                                        <tr>
+                                            <td><label><input value="<%= item.groupId%>" type="checkbox"/><%= index+1%></label></td>
+                                            <td><%= item.starName%></td>
+                                            <td class="center"><%= item.groupName%></td>
+                                            <td class="center"><%= item.fanCount%></td>
+                                            <td class="center"><%= item.orgCount%></td>
+                                            <td class="center">
+                                                <% if(item.groupState == 1){%>
+                                                <span class="label-success label">已发布</span>
+                                                <%} else if(item.groupState == -1){%>
+                                                <span class="label-danger label">已删除</span>
+                                                <%} else if(item.groupState == 0){%>
+                                                <span class="label-warning label">未发布</span>
+                                                <%}%>
+                                            </td>
+                                            <td class="center">
+                                                <% if(item.groupState == 0){%>
+                                                <a class="btn btn-success" href="/admin/groupUpdate/<%= item.groupId%>?action=1">
+                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
+                                                    发布
+                                                </a>
+                                                <%}%>
+                                                <% if(item.groupState == 0 || item.groupState == 1){%>
+                                                <a class="btn btn-danger" href="javascript:void(0);" name="delete" id="<%= item.groupId%>">
+                                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                                    删除
+                                                </a>
+                                                <%}%>
+                                                <% if(item.groupState != -1){%>
+                                                <a class="btn btn-info" href="/admin/group-update-ui/<%= item.groupId%>">
+                                                    <i class="glyphicon glyphicon-edit icon-white"></i>
+                                                    编辑
+                                                </a>
+                                                <%}%>
+                                                <% if(item.groupState == 1){%>
+                                                <a class="btn btn-warning" href="/admin/groupUpdate/<%= item.groupId%>?action=0">
+                                                    <i class="glyphicon glyphicon-minus-sign icon-white"></i>
+                                                    取消发布
+                                                </a>
+                                                <%}%>
+                                                <% if(item.groupState == -1){%>
+                                                <a class="btn btn-info" href="/admin/groupUpdate/<%= item.groupId%>?action=0">
+                                                    <i class="glyphicon glyphicon-step-backward icon-white"></i>
+                                                    恢复
+                                                </a>
+                                                <%}%>
+                                            </td>
+                                        </tr>
+                                        <% })%>
+                                    </tbody>
+                                </table>
+                                <nav>
+                                    <ul class="pager">
+                                        <li class="<%=(currentPage==1)?'disabled':''%>"><a href="/admin/group?pageIndex=<%=currentPage-1%>&pageSize=10&starName=<%=params.starName%>&order=<%=params.order%>&state=<%=params.groupState%>">上一页</a></li>
+                                        <li>第<%=currentPage%>页</li>
+                                        <li><a href="/admin/group?pageIndex=<%=(parseInt(currentPage)+1)%>&pageSize=10&starName=<%=params.starName%>&order=<%=params.order%>&state=<%=params.groupState%>">下一页</a></li>
+                                        <li>共<%= (Math.ceil(totalCount/10))%>页</li>
+                                        <li>共<%= (totalCount)%>条</li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ./layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+</body>
+</html>

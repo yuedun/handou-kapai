@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>组织管理</title>
+    <% include ./layout/headmeta.html %>
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ./layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>组织帖子管理</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box col-md-12">
+                                <form class="form-inline" onsubmit="return changeIDisNaN()">
+                                   <label for="exampleInputEmail2">选择时间: 从</label>
+										<div class="form-group">
+											<input type="text" class="form-control" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})" name="startDate" id="startDate" placeholder="">
+										</div>
+										<label for="exampleInputEmail2">到</label>
+										<div class="form-group">
+											<input type="text" class="form-control" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})" name="endDate" id="endDate" placeholder="">
+										</div>
+										<label for="exampleInputEmail2">按:</label>
+										<select class="form-control" name="postChoose">
+											<option value="1">帖子标题</option>
+											<option value="2">ID</option>
+										</select>
+										<div class="form-group">
+											<input type="text" class="form-control" name="keyWord" id="keyWord" placeholder="">
+										</div>
+	                                   <select class="form-control" name="stateFlag">
+												<option value="">发布状态</option>
+												<option value="1">已发布</option>
+												<option value="0">未发布</option>
+												<option value="2">定时发布</option>
+												<option value="-1">已删除</option>
+										</select>
+										<select class="form-control" name="order">
+											<option value="">选择排序</option>
+											<option value="1">点赞数倒序</option>
+											<option value="2">点赞数正序</option>
+											<option value="3">推送数倒序</option>
+											<option value="4">推送数正序</option>
+											<option value="5">添加时间倒序</option>
+											<option value="6">添加时间正序</option>
+											<option value="7">发布时间倒序</option>
+											<option value="8">发布时间正序</option>
+										</select>
+									<div class="form-group">
+                                          <div class="checkbox">
+                                            <label>
+                                              <input type="checkbox" name="isRecommend" id="" value="1">置顶
+                                            </label>
+                                          </div>
+                                        </div>
+                                    <button type="submit" class="btn btn-default">搜索</button>
+                                </form>
+                            </div>
+                            <div class="box col-md-12">
+                                <p>
+                                    <a class="btn btn-default btn-sm" href="/admin/org-topic-add-ui?orgId=<%=orgId%>"><i class="glyphicon glyphicon-plus"></i>新增</a>
+                                </p>
+                            </div>
+                            <div class="box-content">
+                                <table class="table table-striped table-bordered responsive" id="groupList">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>帖子标题</th>
+                                            <th>推荐状态</th>
+                                            <th>推送次数</th>
+                                            <th>点赞</th>
+                                            <th>评论</th>
+                                            <th>状态</th>
+                                            <th>添加时间</th>
+                                            <th>发布时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% objList.forEach(function(item, index){ %>
+                                        <tr>
+                                            <td><%= item.topicNumber%></td>
+                                            <td class="center">
+                                            	<a href="/admin/orgTopicUpdateUI?topicId=<%=item.topicId%>&orgId=<%=orgId%>&stateFlag=<%=item.topicState%>"><%= item.topicName%></a>
+                                            </td>
+                                            <td class="center">
+                                            	<%if(item.isRecommend== 1){%>
+                                            		<span class="label-success label label-default">置顶</span>
+                                            	<%}else{%>
+                                            		<span class="label-default label label-default">未置顶</span>
+                                            	<%}%>	
+                                            </td>
+                                            <td class="center"><%=item.pushCount%></td>
+                                            <td class="center"> <%= item.likeCount%></td>
+                                            <td class="center"><%=item.commentCount%></td>
+                                            <td class="center">
+                                                <% if(item.topicState == 1){%>
+                                                <span class="label-success label label-default">已发布</span>
+                                                <%} else if(item.topicState == 0){%>
+                                                <span class="label-danger label label-default">未发布</span>
+                                                <%} else if(item.topicState == -1){%>
+                                                <span class="label-danger label label-default">已删除</span>
+                                                <%} else if(item.topicState ==2){%>
+                                                <span class="label-default label label-default">定时发布</span>
+                                                <%}else{%>
+                                                <span class="label-danger label label-default">未知</span>
+                                                <%}%>	
+                                            </td>
+                                            <td class="center"><%= item.createDate%></td>
+                                            <td class="center">
+                                            <%if(item.timedReleaseDate != null){%>
+                                            	<%= item.timedReleaseDate%>
+                                            <%}else{%>
+                                            	<%= item.createDate%>
+                                            <%}%>	
+                                            </td>
+                                            <td class="center">
+                                                <% if(item.topicState != -1){%>
+                                                <a class="btn btn-danger btn-xs" href="javascript:void(0)" name="deleteTopic" id="<%=item.topicId%>" orgId="<%=orgId%>">
+                                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                                  		  删除
+                                                </a>
+                                                <%}%>
+                                                <% if(item.topicState != -1){%>
+                                                <% if(item.topicState == 1){%>
+                                                <a class="btn btn-warning btn-xs" href="/admin/orgTopicUpdateState?topicId=<%=item.topicId%>&topicState=0&orgId=<%=orgId%>">
+                                                    <i class="glyphicon glyphicon-minus-sign icon-white"></i>
+                                                    	取消发布
+                                                </a>
+                                                <a class="btn btn-info btn-xs" type="submit"  name="showToggle" id="<%=item.topicId%>"  orgId ="<%=orgId%>">
+													<i class="glyphicon glyphicon-envelope"></i>推送
+												</a>
+                                                <%}else{%>
+                                                <a class="btn btn-success btn-xs" href="/admin/orgTopicUpdateState?topicId=<%=item.topicId%>&topicState=1&stateFlag=<%=item.topicState%>&orgId=<%=orgId%>">
+                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
+                                                   		 立即发布
+                                                </a>
+                                                <%}%>
+                                                <%}%>
+                                                <% if(item.topicState == -1){%>
+                                                <a class="btn btn-danger btn-xs" href="javascript:void(0)" name="chediDeleteTopic" id="<%=item.topicId%>" orgId="<%=orgId%>">
+                                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                                  	彻底删除帖子
+                                                </a>
+                                                <a class="btn btn-success btn-xs" href="/admin/orgTopicUpdateState?topicId=<%=item.topicId%>&topicState=1&orgId=<%=orgId%>">
+                                                    <i class="glyphicon glyphicon-step-backward icon-white"></i>
+                                                    	恢复
+                                                </a>
+                                                <%}%>
+                                            </td>
+                                        </tr>
+                                        <% })%>
+                                    </tbody>
+                                </table>
+                                <nav>
+                                    <ul class="pager">
+                                    	<%if(currentPage==1){%>
+                                    	<li class="disabled"><a href="#">上一页</a></li>
+                                    	<%}else{%>
+                                    	<li class="<%=(currentPage==1)?'disabled':''%>"><a href="/admin/org/<%=orgId%>/topic?pageIndex=<%=currentPage-1%>&pageSize=10&startDate=<%=params.startDate%>&endDate=<%=params.endDate%>&postChoose=<%=params.postChoose%>&keyWord=<%=params.keyWord%>&stateFlag=<%=params.stateFlag%>&order=<%=params.order%>&isRecommend=<%=params.isRecommend%>">上一页</a></li>
+                                    	<%}%>	
+                                        <li>第<%=currentPage%>页</li>
+                                        <li><a href="/admin/org/<%=orgId%>/topic?pageIndex=<%=(parseInt(currentPage)+1)%>&pageSize=10&startDate=<%=params.startDate%>&endDate=<%=params.endDate%>&postChoose=<%=params.postChoose%>&keyWord=<%=params.keyWord%>&stateFlag=<%=params.stateFlag%>&order=<%=params.order%>&isRecommend=<%=params.isRecommend%>">下一页</a></li>
+                                        <li>共<%= (Math.ceil(totalCount/10))%>页</li>
+                                        <li>共<%= (totalCount)%>条</li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		
+		</div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ./layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+</body>
+</html>

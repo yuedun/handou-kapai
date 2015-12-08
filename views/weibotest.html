@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <title></title>
+</head>
+<body>
+<div class="container">
+    
+  <a href="/admin/weiboDataList">得到某个用户的微博数据</a><br/><br/><br/><br/>
+  <a href="javascript:void()" id="code">得到accessToken</a>
+ <img src="../images/dapian.png" id="img"/>
+ <img src="http://ww3.sinaimg.cn/thumbnail/006dIpE5gw1ex2x4iucflj30pu0sgtb7.jpg" id="img" />
+ <button onclick="getImg()">BUTTON</button>
+</div>
+
+<script src="http://apps.bdimg.com/libs/moment/2.8.3/moment.js"></script>
+
+<script type="text/javascript">
+	var code = $("#code");
+	code.on('click',function(){
+		location.href = 'https://api.weibo.com/oauth2/authorize?client_id=2851583478&response_type=code&redirect_uri=http://handouer.wicp.net/admin/getAccessToken';
+	});
+	
+	function getImg(){
+		var imgSize = [];
+		var length = document.getElementsByTagName('img').length;
+		for(var i =0;i<length;i++){
+			var img = document.getElementsByTagName('img')[i];
+			imgSize.push(img.naturalWidth+"*"+img.naturalHeight);
+			
+			alert(img.naturalWidth+"~~~"+img.naturalHeight)
+		}
+		alert(imgSize)
+	}
+</script>
+</body>
+</html>

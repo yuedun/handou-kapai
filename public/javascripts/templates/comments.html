@@ -1,0 +1,24 @@
+<article class="comment-info" ng-repeat="comment in comments">
+    <div class="user-head">
+        <input type="hidden" class="user_id" value="{{comment.user_id}}" />
+        <input type="hidden" class="user_identify" value="{{comment.user.user_identify}}" />
+        <a href="#">
+            <img width="45px" height="45px" ng-src="{{comment.user.user_info.head_portrait || 'http://7mj4n6.com2.z0.glb.qiniucdn.com/icon_nv.png?imageView2/2/h/200'}}" alt=""/>
+        </a>
+    </div>
+    <div class="comment-desc">
+        <article>
+            <span class="com-user-name" ng-bind="comment.user.user_info.nick_name == null ? '路人:' : comment.user.user_info.nick_name + ':'" ng-if="comment.is_reply==0"></span>
+            <span class="com-user-name" ng-if="comment.is_reply==1">{{comment.user.user_info.nick_name}}<span class="reply">回复</span>{{comment.reply_nick_name+":"}}</span>
+            <span class="comment" data-ng-bind-html="comment.comment_content"></span>
+        </article>
+        <footer>
+            <span class="font-color-huise" ng-bind="comment.create_date | date: 'yyyy-MM-dd hh:mm'"></span>
+            <span class="{{comment.isLike === 1 ? 'com-dianzan' : 'com-dianzan-no'}}" id="{{comment.comment_id}}" ng-click="comLike('{{comment.login_user_id}}');">
+                <input id="input{{comment.comment_id}}" type="hidden" value="{{comment.isLike}}">
+                <em id="count{{comment.comment_id}}" ng-bind="comment.like_count"></em>
+                </span>
+            <span class="com-com" ng-click="reply()"></span>
+        </footer>
+    </div>
+</article>

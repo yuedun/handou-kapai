@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>回答提问</title>
+    <% include ./layout/headmeta.html %>
+    <style>
+    	#answer{
+    		width: 600px;
+    	}
+    </style>
+    <script>
+    	//默认设置对话框的滚动条到最底部显示最后对话
+		function setScrollBar(){
+			var div = document.getElementById('scrolldIV');
+			div.scrollTop = div.scrollHeight;
+		}
+    </script>
+</head>
+
+<body onload="setScrollBar()">
+    <!-- topbar starts -->
+    <% include ./layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Tables</a></li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>回答提问</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="box-content">
+                            	<div class="control-group">
+									<span style="color:red"><em>昵称：</em></span> <%=userInfo.nickName%>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<span style="color:red"><em>手机：</em></span> <%=userInfo.userName%>
+								</div>
+								
+								<div class="control-group" style="overflow-x:auto; overflow-y:auto; width:600px; height:400px;" id="scrolldIV">
+									<table border="1" class="table table-striped table-bordered bootstrap-datatable " style="width:600px;height:380px">
+										<tr>
+											<td>
+												<%questionList.forEach(function(item, index){%>
+													<div>
+														<%if(item.type == 'q'){%>
+															<span style="color:blue"><em>提问 :</em></span> <%=item.content%>
+														<%}%>
+														<%if(item.type == 'a'){%>
+															<span style="color:green"><em>回答 :</em></span> <%=item.content%>
+														<%}%>
+														<br/>
+														<%=item.createDate%>
+														<br><br>
+													</div>
+												<%})%>	
+											</td>
+										</tr>
+									</table>
+								</div>
+								
+								<div class="control-group" style="width:570px">
+									<form class="form-horizontal" action="/admin/answerForQuestion" method="post">
+                                		<input type="hidden" name="userId" value="<%=userInfo.userId%>" title="用户ID"/>
+                                		<input type="hidden" name="answerFor" value="<%=SecretaryId%>" title="问题ID"/>
+	                                    
+	                                    <div class="form-group" style="margin-left:0;">
+	                                        <label for="starName" >回答: </label>
+	                                        <textarea class="form-control" rows="3" id="answer" name="content" placeholder="请回答用户的提问"></textarea>
+	                                    </div>
+	                                    
+	                                    <div class="form-group" style="margin-left:0;">
+	                                        <button type="submit" class="btn btn-primary ">提交</button>
+	                                        <button type="button" onclick="javascript:history.back(-1)" class="btn btn-default"> 返回 </button>
+	                                    </div>
+                                    
+                           		 	</form>
+								</div>
+								
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ./layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/message-main.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

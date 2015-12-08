@@ -1,0 +1,24 @@
+/* For tablets & smart phones */
+@media (max-width: 767px) {
+    .container {
+        width: auto
+    }
+}
+/* For smartphones */
+@media (max-width: 480px) {
+    .container {
+        width: auto
+    }
+}
+/* For smaller displays like laptops */
+@media (min-width: 768px) and (max-width: 979px) {
+    .container {
+        width: 724px
+    }
+}
+/* For larger displays */
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px
+    }
+}

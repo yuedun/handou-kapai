@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-cmn">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<title><%= post.nick_name%>的帖子</title>
+		<link rel="stylesheet" href="/stylesheets/sharestyle.css"/>
+	</head>
+	<body>
+		<div id="body">
+			<div id="content">
+				<article class="post-info">
+					<div class="user-head">
+						<img height="35px" width="35px" src="<%= post.head_portrait%>"/>
+					</div>
+					<div class="post-content">
+						<p>
+							<span class="user-name"><%= post.nick_name%>:</span>
+							<%= post.post_description%>
+						</p>
+						<p><%= post.create_date%></p>
+					</div>
+					<div>
+					<% post.pictureList.forEach(function(item){%>
+					<img src="<%= item%>" style="width: 100%"/><br>
+					<%})%>
+					<%if(post.audio_address){%>
+					<audio src="<%= post.audio_address%>" controls="controls">您的浏览器不支持语音播放。</audio>
+					<%}%>
+				</div>
+				</article>
+			</div>
+			<div id="morepost">
+				<a href="http://www.handouer.cn/apps/kapai_handou.apk" target="_blank">查看更多精彩内容</a>
+			</div>
+			<footer id="down">
+				<div class="logo">
+					<img src="http://7xl3sp.com2.z0.glb.qiniucdn.com/紫logo.png"/>
+				</div>
+				<div id="downexplain">
+					<p>韩豆咖派</p>
+					<p>掌上韩娱，聚逗韩趣</p>
+				</div>
+				<div id="downbtn">
+					<a href="http://www.handouer.cn/apps/kapai_handou.apk" target="_blank">立即下载</a>
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

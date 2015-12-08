@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-cmn">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<title><%= activity.activity_title%></title>
+		<style>
+			body{
+				background-color: #444348;
+				color: #FFF;
+				font-family: "Arial Normal","Arial";
+				font-size: 14px;
+				margin: 0;
+				padding: 0;
+			}
+			header{text-align: center}
+			#content{margin: 0 10px;}
+			#content figure img{max-width: 100%;height: auto;}
+			#footer{position: absolute;	bottom: 0; width: 100%;}
+			#footer div{height: 40px;background-color: #FE5F63;line-height: 40px; text-align: center;font-size: 16px;}
+			#footer div a{text-decoration: none;color: #FFF}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h3><%= activity.activity_title%></h3>
+		</header>
+		<article id="content">
+			<%if(activity.activity_pic){%>
+			<figure><img src="<%= download_website + activity.activity_pic%>"></figure>
+			<%}%>
+			<p>活动时间：<%= activity.activity_start_date==null?activity.create_date:activity.activity_start_date%></p>
+			<p>活动方式：<%= activity.activity_desc%></p>
+		</article>
+		<footer id="footer">
+			<div><a href="#" onclick="isInstalled();">下载"韩豆",参加活动</a></div>
+		</footer>
+		<script>
+			function isInstalled(){
+				window.paidian.callJavaFunction("openHandouer");
+			}
+		</script>
+	</body>
+</html>

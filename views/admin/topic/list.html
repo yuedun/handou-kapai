@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8">
+		<title>频道列表</title>
+		<% include ../layout/headmeta.html %>
+	</head>
+	<body>
+		<!-- topbar starts -->
+		<% include ../layout/topbar.html %>
+		<!-- topbar ends -->
+		<div class="ch-container">
+			<div class="row">
+				<!-- left menu starts -->
+				<% include ../layout/leftmenu.html %>
+				<!-- left menu ends -->
+				<div id="content" class="col-lg-10 col-sm-10">
+					<!-- content starts -->
+					<div>
+						<ul class="breadcrumb">
+							<li><a href="#">Home</a></li>
+							<li><a href="#">Dashboard</a></li>
+						</ul>
+					</div>
+					<div>
+						<input type="text" name="name" id="name" value="requirejs" />
+						<button id="btn">调用函数func1</button>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row"></div>
+			<hr />
+			<% include ../layout/footer.html %>
+		</div>
+		<!--/.fluid-container-->
+		<!-- jQuery -->
+		<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+	</body>
+</html>

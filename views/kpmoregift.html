@@ -1,0 +1,17 @@
+<% list.forEach(function(item){%>
+<div class="gift-msg bg-white">
+    <div class="left">
+        <figure>
+            <img src="<%= item.picture_path%>">
+        </figure>
+    </div>
+    <div class="center">
+        <p><strong class="base-color gift-name"><%= item.gift_name%></strong></p>
+        <p class="gift-score-p"><strong class="gift-score"><%= item.integral%></strong>豆币</p>
+    </div>
+    <div class="right">
+        <a class="btn btn-info" href="javascript:void(0);" onclick="exchange('<%= user.userId%>','<%= item.integral%>', '<%= item.id%>');">兑换</a>
+        <%if(item.integral > (user.bean - freezeIntegral)){%><p class="lack-score-color">还差<%=(item.integral - user.bean + freezeIntegral)%>豆币</p><%}%>
+    </div>
+</div>
+<% })%>

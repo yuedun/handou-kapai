@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>修改明星</title>
+    <% include ../layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+</head>
+
+<body>
+<!-- topbar starts -->
+<% include ../layout/topbar.html %>
+<!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+        <!-- left menu starts -->
+        <% include ../layout/leftmenu.html %>
+        <!-- left menu ends -->
+        <!--/span-->
+        <!-- left menu ends -->
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">Tables</a>
+                    </li>
+                </ul>
+            </div>
+            <!--/row-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box-inner">
+                        <div class="box-header well" data-original-title="">
+                            <h2><i class="glyphicon glyphicon-user"></i>组织审核</h2>
+                            <div class="box-icon">
+                                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                        class="glyphicon glyphicon-chevron-up"></i></a>
+                                <a href="#" class="btn btn-close btn-round btn-default"><i
+                                        class="glyphicon glyphicon-remove"></i></a>
+                            </div>
+                        </div>
+                        <div class="box-content">
+                            <p class="bg-warning"></p>
+                            <form class="form-horizontal" action="/admin/update/userVerify" method="post" id="fm" name="fm" onsubmit="return checkForm();">
+                            	<input type="hidden" id="userId" name="userId" value="<%=user[0].userId%>"/>
+                            	<input type="hidden" id="verifyState" value="<%=user[0].verifyState%>"/>
+                            	<input type="hidden" id="flag"/>
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-2 control-label">组织名称：</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" onblur="checkUserName()" id="userName" name="userName" value="<%=user[0].nickName%>" placeholder="组织名称">
+                                    </div>
+                                    <label for="userNameSpan" class="control-label"><font color="DB4854"><span id="userNameSpan"></span></font></label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-sm-2 control-label">登录密码：</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="password" name="password" value="<%=user[0].password%>" placeholder="登录密码">
+                                    </div>
+                                    <label for="passwordSpan" class="control-label"><font color="DB4854"><span id="passwordSpan"></span></font></label>
+                                </div>
+                               <div class="form-group">
+                                        <label for="" class="col-sm-2 control-label">组织logo：</label>
+                                        <div class="col-sm-6">
+                                            <div id="uploader" class="wu-example">
+                                                <!-- 用来存放文件信息 -->
+                                                <div id="thelist" class="uploader-list"></div>
+                                                 <%if(user[0].headPortrait != null && user[0].headPortrait != ''){%>
+                                                	<div class="item" id="headItem">
+                                                		<h5 class="info"><%=user[0].headPortrait%></h5>
+                                                		<%if(user[0].headPortrait.indexOf("http") > -1){%>
+                                                		<img class="imageStarLogo" src="<%=user[0].headPortrait%>"/>
+                                                		<%}else{%>
+                                                		<img class="imageStarLogo" src="http://7xl3sp.com2.z0.glb.qiniucdn.com/<%=user[0].headPortrait%>"/>
+                                                		<%}%>
+                                                		<input type="hidden" name="starLogo" class="qkey" value="<%=user[0].headPortrait%>"/>
+                                                		<a class="delpic" id="delImg" headvalue="<%=user[0].headPortrait%>"   href="#">删除</a>
+                                                	</div>
+                                                <%}%>
+                                                <input type="hidden" name="headPortrait" value="<%= qntoken%>" id="qntoken"/>
+                                                <br />
+                                                <div class="btns">
+                                                    <div id="picker">选择文件</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 <div class="form-group">
+                                        <label for="" class="col-sm-2 control-label">组织背景图：</label>
+                                        <div class="col-sm-6">
+                                            <div id="uploader2" class="wu-example">
+                                                <!-- 用来存放文件信息 -->
+                                                <div id="thelist2" class="uploader-list"></div>
+                                                <%if(user[0].centerBackground != null && user[0].centerBackground != ''){%>
+	                                            	<div class="item" id="backItem">
+	                                                		<h5 class="info"><%=user[0].centerBackground%></h5>
+	                                                		<img class="imageStarLogo" src="http://7xl3sp.com2.z0.glb.qiniucdn.com/<%=user[0].centerBackground%>"/>
+	                                                		<input type="hidden" name="starBG" class="qkey" value="<%=user[0].centerBackground%>"/>
+	                                                		<a class="delpic" id="delImg2" beakvalue="<%=user[0].centerBackground%>"   href="#">删除</a>
+	                                                	</div>
+                                                <%}%>
+                                                <input type="hidden" value="<%= qntoken%>" id="qntoken"/>
+                                                <div class="btns">
+                                                    <div id="picker2">选择文件</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                <div class="form-group">
+                                    <label for="groupName" class="col-sm-2 control-label">明星：</label>
+                                    <div class="col-sm-3">
+                                        	<select class="form-control" name="groupId" id="groupId">
+                                        			<option value="">--请选择明星--</option>
+                                        		 <% groupList.forEach(function(item, index){ %>
+                                        		 	<%if(user[0].groupId == item.groupId){%>
+                                        		 	   <option value="<%=item.groupId%>" selected="selected"><%=item.starName%></option>
+                                        		 	<%}else{%>
+                                        		 	   <option value="<%=item.groupId%>"><%=item.starName%></option>
+                                        		 	<%}%>	
+                                        		 <% })%>
+                                        	</select>
+                                        	<label for="passwordSpan" class="control-label"><font color="DB4854"><span id="starSpan"></span></font></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-2">
+                                          <div class="radio">
+                                            <label>
+                                              <input type="radio" name="verifyState" checked="checked" id="verifyTrue" value="1">通过审核
+                                            </label>
+                                          </div>
+                                        </div>
+                                    <div class="col-sm-2">
+                                          <div class="radio">
+                                            <label>
+                                              <input type="radio" name="verifyState" id="verifyFalse" value="0"/>未通过审核
+                                            </label>
+                                          </div>
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                        <label for="" class="col-sm-2 control-label">推送内容:</label>
+                                        <div class="col-sm-3">
+                                        	<textarea class="form-control" id="pushDesc" name="pushDesc" placeholder="审核未通过推送的内容" ></textarea>
+                                        </div>
+                                        <label for="pushDescSpan" class="control-label"><font color="DB4854"><span id="pushDescSpan"></span></font></label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-3">
+                                        <button type="submit" class="btn btn-success  btn-sm"  name="save" value="2">发送推送并保存</button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button type="submit" class="btn btn-success btn-sm" name="save" value="1">保存</button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a class="btn btn-default  btn-sm" href="/admin/list/userVerify">返回</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                   
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+            <!-- content ends -->
+        </div>
+        <!--/#content.col-md-0-->
+    </div>
+    <!-- 中间空白区 starts  -->
+    <div class="row">
+
+    </div>
+    <!-- 中间空白区 ends  -->
+    <hr />
+    <!-- 底部版权信息 starts  -->
+    <% include ../layout/footer.html %>
+    <!-- 底部版权信息 ends-->
+</div>
+<!-- requirejs导入需要的js插件以及自定义模块 -->
+<script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/user-verfiy.js"></script>
+<!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

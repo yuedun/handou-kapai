@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>用户粉丝团编号</title>
+    <% include ./layout/headmeta.html %>
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ./layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>用户粉丝团编号</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box col-md-12">
+                                <form class="form-inline" action="/admin/group_user" method="get">
+                                    <div class="form-group">
+                                        <label for="choose">按：</label>
+                                        <select class="form-control" id="choose" name="choose">
+                                            <option value="">选择</option>
+                                            <option value="cardNumber">粉丝团编号</option>
+                                            <option value="nickName">用户名</option>
+                                            <option value="userName">手机号</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="keyword"></label>
+                                        <input class="form-control" type="text" id="keyword" name="keyword"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="order">排序规则：</label>
+                                        <select class="form-control" id="order" name="order">
+                                            <option value="">选择排序</option>
+                                            <option value="number-desc">粉丝团编号倒序</option>
+                                            <option value="number-asc">粉丝团编号正序</option>
+                                            <option value="join-desc">加入时间倒序</option>
+                                            <option value="join-asc">加入时间在正序</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-default ">搜索</button>
+                                </form>
+                            </div>
+                            <div class="box-content">
+                                <table class="table table-striped table-bordered responsive" id="groupList">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>明星</th>
+                                            <th>粉丝团编号</th>
+                                            <th>用户名</th>
+                                            <th>手机号</th>
+                                            <th>加入时间</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% list.forEach(function(item, index){ %>
+                                        <tr>
+                                            <td><label><input value="<%= item.groupId%>" type="checkbox"/><%= index+1%></label></td>
+                                            <td><%= item.Group.starName%></td>
+                                            <td class="center"><%= item.cardNumber%></td>
+                                            <td class="center"><%= item.user.nickName%></td>
+                                            <td class="center"><%= item.user.userName%></td>
+                                            <td class="center"><%= item.createDate%></td>
+                                        </tr>
+                                        <% })%>
+                                    </tbody>
+                                </table>
+                                <nav>
+                                    <ul class="pager">
+                                        <li class="<%=(currentPage==1)?'disabled':''%>"><a href="/admin/group_user?pageIndex=<%=currentPage-1%>&pageSize=10&order=<%=params.order%>&choose=<%=choose%>&keyword=<%=keyword%>">上一页</a></li>
+                                        <li>第<%=currentPage%>页</li>
+                                        <li><a href="/admin/group_user?pageIndex=<%=(parseInt(currentPage)+1)%>&pageSize=10&order=<%=params.order%>&choose=<%=choose%>&keyword=<%=keyword%>">下一页</a></li>
+                                        <li>共<%= (Math.ceil(totalCount/10))%>页</li>
+                                        <li>共<%= (totalCount)%>条</li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ./layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+</body>
+</html>

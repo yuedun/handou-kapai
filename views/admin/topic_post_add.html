@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>添加频道下帖子</title>
+    <% include ./layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ./layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>添加频道下帖子</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <form class="form-horizontal" action="/admin/topic/post" method="post">
+                                    <input type="hidden" name="parentTopicId" value="<%=pTopic.topicId%>">
+                                    <input type="hidden" name="topicScope" value="<%=pTopic.topicScope%>">
+                                    <input type="hidden" name="groupId" value="<%= groupId%>">
+                                    <div class="form-group">
+                                        <label for="userId" class="col-sm-2 control-label">频道名称</label>
+                                        <div class="col-sm-3 col-offset-3">
+                                            <input type="text" class="form-control" id="" name="" placeholder="<%=pTopic.topicName%>" disabled="disabled">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userId" class="col-sm-2 control-label">频道内容</label>
+                                        <div class="col-sm-3 col-offset-3">
+                                            <textarea class="form-control" id="" name="" placeholder="<%=pTopic.topicDesc%>" disabled="disabled"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="topicScope" class="col-sm-2 control-label">频道类型</label>
+                                        <div class="col-sm-3 col-offset-3">
+                                            <%if(pTopic.topicScope==0){%>
+                                            <input type="text" class="form-control" placeholder="文字" disabled="disabled">
+                                            <%}else if(pTopic.topicScope==1){%>
+                                            <input type="text" class="form-control" placeholder="图片" disabled="disabled">
+                                            <%}else if(pTopic.topicScope==2){%>
+                                            <input type="text" class="form-control" placeholder="语音" disabled="disabled">
+                                            <%}else if(pTopic.topicScope==3){%>
+                                            <input type="text" class="form-control" placeholder="动图" disabled="disabled">
+                                            <%}%>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="topicDesc" class="col-sm-2 control-label">帖子内容</label>
+                                        <div class="col-sm-3 col-offset-3">
+                                            <textarea class="form-control" id="topicDesc" name="topicDesc" placeholder="帖子内容" required="required"></textarea>
+                                        </div>
+                                    </div>
+                                    <%if(pTopic.topicScope==1 || pTopic.topicScope==3){%>
+                                    <div class="form-group">
+                                        <label for="uploader" class="col-sm-2 control-label">图片：</label>
+                                        <div class="col-sm-6">
+                                            <div id="uploader" class="wu-example">
+                                                <!-- 用来存放文件信息 -->
+                                                <div id="thelist" class="uploader-list"></div>
+                                                <input type="hidden" name="topicPics" value="<%= qntoken%>" id="qntoken" />
+                                                <div class="btns">
+                                                    <div id="picker">选择文件</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%}%>
+                                    <div class="form-group">
+                                        <label for="userId" class="col-sm-2 control-label">发帖人</label>
+                                        <div class="col-sm-3 col-offset-3">
+                                            <select class="form-control" name="userId" id="userId" required="required">
+                                                <option value="">选择发帖人</option>
+                                                <% userList.forEach(function(item, index){%>
+                                                <option value="<%= item.userId%>"><%= item.nickName%></option>
+                                                <%})%>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <div class="checkbox">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="topicState" value="0" checked="checked">暂不发布
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="topicState" value="1">立即发布
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-primary">提交</button>
+                                            <button type="button" onclick="javascript:history.back(-1)" class="btn btn-default"> 返回 </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ./layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <!--<script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>-->
+    <script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+</body>
+</html>

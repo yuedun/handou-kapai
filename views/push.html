@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <title></title>
+</head>
+<body>
+<div class="container">
+    <form action="/push/sendMessage" method="post">
+        <div class="form-group">
+            <label for="InputUserId">UserId</label>
+            <input type="text" class="form-control" name="userId" id="InputUserId" placeholder="userId">
+        </div>
+        <div class="form-group">
+            <label for="inputChannels">Channels</label>
+            <input type="text" class="form-control" name="inputChannels" id="inputChannels" placeholder="Channels">
+        </div>
+        <div class="form-group">
+            <label for="selectPushTime">PushTime</label>
+            <input type="datetime-local" class="form-control" name="selectPushTime" id="selectPushTime" placeholder="PushTime">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+
+    <!--<button id="checktime" onclick="showtime()">Check</button>-->
+    <!--<p class="timetext"></p>-->
+
+</div>
+
+<script src="http://apps.bdimg.com/libs/moment/2.8.3/moment.js"></script>
+<script>
+
+    var DISPLAY_DATE_FORMAT = 'YYYY-MM-DDTHH:mm';
+    var UTC_DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSS';
+
+    var showtime = function(){
+        console.log($("input[id='selectPushTime']").val());
+        var time = $("input[id='selectPushTime']").val();
+
+        var momenttime = moment(time,DISPLAY_DATE_FORMAT).utc().format(UTC_DATE_FORMAT);
+        console.log(momenttime+"Z");
+//
+//        var utctime = moment.utc(time);
+//        console.log(utctime);
+    };
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>添加广告</title>
+     <% include ../layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/vendor/jquery-ui.min.css">
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ../layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ../layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>添加广告</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <p class="bg-warning"></p>
+                                <form class="form-horizontal" action="/admin/adver-add" method="post" onsubmit="return checkForm()" id="fm" name="fm">
+                                  <div class="form-group" id="div_1">
+                                        <label for="starName" class="col-sm-2 control-label">广告标题:</label>
+                                        <div class="col-sm-3" id="">
+                                            <input type="text" class="form-control" id="adverTitle"  name="adverTitle" placeholder="广告标题">
+                                        </div>
+                                    </div>
+                               <div class="form-group">
+                               	  <label for="starName" class="col-sm-2 control-label">广告范围:</label>
+	                                <div class="col-sm-10" id="div_4">
+	                                  <div class="radio">
+	                                     <label>
+	                                      <input type="radio" checked="checked" name="flag" id="scope1" value="1">全局
+	                                    </label>
+	                                    &nbsp;&nbsp;&nbsp;&nbsp;
+	                                    <label>
+	                                      <input type="radio" name="flag" id="scope2" value="2">明星
+	                                    </label>
+	                                      <select name="groupId" id="groupId">
+	                                      		<option value="">--请选择明星--</option>
+	                                      		<%groupList.forEach(function(item,index){%>
+	                                      		<option value="<%=item.groupId%>"><%=item.starName%></option>
+	                                      		<%})%>
+	                                      </select>
+	                                  </div>
+	                                </div>
+	                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2 control-label">图片：</label>
+                                    <div class="col-sm-6">
+                                        <div id="uploader" class="wu-example">
+                                            <!-- 用来存放文件信息 -->
+                                            <div id="thelist" class="uploader-list"></div>
+                                            <input type="hidden" name="" value="<%= qntoken%>" id="qntoken"/>
+                                            <br />
+                                            <div class="btns" id="div_2">
+                                                <div id="picker">选择文件</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               <div class="form-group">
+                               	  <label for="starName" class="col-sm-2 control-label">链接类型:</label>
+                                    <div class="col-sm-10">
+                                      <div class="radio">
+                                        <label>
+                                          <input type="radio" checked="checked" name="linkType" value="page">外部H5
+                                        </label>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                         <label>
+                                          <input type="radio"  name="linkType" id="" value="news">资讯
+                                        </label>
+	                                      &nbsp;&nbsp;&nbsp;&nbsp;
+	                                     <label>
+	                                      <input type="radio"  name="linkType" id="" value="topic">频道
+	                                    </label>
+	                                      &nbsp;&nbsp;&nbsp;&nbsp;
+	                                     <label>
+	                                      <input type="radio"  name="linkType" id="" value="post">帖子
+	                                    </label>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="div_3">
+                                        <label for="starName" class="col-sm-2 control-label">具体链接:</label>
+                                        <div class="col-sm-3" id="">
+                                            <input type="text" class="form-control" id="linkValue"  name="linkValue" placeholder="具体链接">
+                                        </div>
+                                    </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                      <div class="checkbox">
+                                         <label>
+                                          <input type="checkbox" checked="checked" name="state" id="atReleaseDate" value="1">立即发布
+                                        </label>
+                                      </div>
+                                    </div>
+                                </div>
+                               <div class="form-group">
+                                 <div class="form-group">
+                                        <label for="calendar" class="col-sm-2 control-label">是否定时</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min:laydate.now()})" id="timedReleaseDate" name="releaseDate">
+                                        </div>
+                                    </div>
+                            	</div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-info">保存</button>
+                                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <a class="btn btn-default" href="/admin/getAdverList">返回</a>
+                                    </div>
+                                </div>
+                           </form>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ../layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+      </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+     <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/adver-main.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

@@ -1,0 +1,35 @@
+<% list.forEach(function(item, index){%>
+<div class="topic-item">
+    <div class="row user-info">
+        <div class="col-md-12 col-sm-12"> 
+            <img class="user-head" src="<%= item.headPortrait%>"> 
+            <a href=""><span id="user-name"><%= item.nickName%></span></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1 topic-pics">
+            <%if (item.pics.length > 1) {%>
+            <div class="sigleimgdiv" style="display: inline-block;">
+                <a class="sigleimg" href="javascript:void(0);" hidefocus="true"><img src="<%= item.pics[0]%>"></a><span><%= item.pics.length%></span></div>
+            <ul class="moreimg" style="display:none;">
+                <%item.pics.forEach(function(item2, index){%>
+                <li>
+                    <a href="###"><img src="/images/alert-loading.gif" data-original="<%= item2%>" alt=""></a>
+                    <a href="###">查看原图</a>
+                </li>
+                <%})%>
+            </ul>
+            <%} else{%>
+            <img src="<%= item.pics[0]%>" />
+            <%}%>
+        </div>
+        <div class="col-md-4">
+            <%= item.topicDesc%>
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-md-5 col-md-offset-1"> <a href=""><span id="">演唱会</span></a> <a href=""><span id="">exo</span></a> </div>
+        <div class="col-md-6"> <a href=""><span id="">热度（12）</span></a> <a href=""><span id="">点赞（45）</span></a> </div>
+    </div> -->
+</div>
+<%})%>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>频道下帖子列表</title>
+    <% include ./layout/headmeta.html %>
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ./layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>频道下帖子列表</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box col-md-12">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <label for="topicDesc">帖子内容</label>
+                                        <input type="text" class="form-control" name="topicDesc" placeholder="输入内容">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="topicState"></label>
+                                        <select class="form-control" name="topicState" id="topicState">
+                                            <option value="">发布状态</option>
+                                            <option value="1">已发布</option>
+                                            <option value="0">未发布</option>
+                                            <option value="-1">已删除</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="order"></label>
+                                        <select class="form-control" name="order" id="order">
+                                            <option value="">排序规则</option>
+                                            <option value="createDesc">发布时间倒序排序</option>
+                                            <option value="createAsc">发布时间正序排序</option>
+                                            <option value="updateDesc">更新时间倒序排序</option>
+                                            <option value="updateAsc">更新时间正序排序</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-default ">搜索</button>
+                                </form>
+                            </div>
+                            <div class="box col-md-12">
+                                <p>
+                                    <a class="btn btn-default btn-sm" href="/admin/topic-post-add-ui?pTopicId=<%=pTopicId%>&groupId=<%=groupId%>"><i class="glyphicon glyphicon-plus"></i>新增</a>
+                                </p>
+                            </div>
+                            <div class="box-content">
+                                <table class="table table-striped table-bordered responsive" id="groupList">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>帖子内容</th>
+                                            <th>发帖人</th>
+                                            <th>发布状态</th>
+                                            <th>发布时间</th>
+                                            <th>更新时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% objList.forEach(function(item, index){ %>
+                                        <tr>
+                                            <td>
+                                                <label><input value="<%= item.topicId%>" type="checkbox"/><%= item.topicNumber%></label>
+                                            </td>
+                                            <td class="center"><%= item.topicDesc%></td>
+                                            <td class="center"><%= (item.user? item.user.nickName: "")%></td>
+                                            <td class="center"><%if(item.topicState==0){%>
+                                                <span class="label-warning label">未发布</span>
+                                                <%} else if(item.topicState==1){%>
+                                                <span class="label-success label">已发布</span>
+                                                <%} else if(item.topicState== -1){%>
+                                                <span class="label-danger label">已删除</span>
+                                                <%}%>
+                                            </td>
+                                            <td class="center"><%= item.createDate%></td>
+                                            <td class="center"><%= item.updateDate%></td>
+                                            <td class="center">
+                                                <% if(item.topicState == 1){%>
+                                                <a class="btn btn-warning" href="/admin/topicUpdate/<%= item.topicId%>?action=unpost">
+                                                    <i class="glyphicon glyphicon-remove icon-white"></i>
+                                                 		   取消发布
+                                                </a>
+                                                <%} else if(item.topicState == 0){%>
+                                                <a class="btn btn-success" href="/admin/topicUpdate/<%= item.topicId%>?action=post">
+                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
+                                                 		   立即发布
+                                                </a>
+                                                <%}%>
+                                                <%if(item.topicState == -1){%>
+                                                <a class="btn btn-danger" id="<%= item.topicId%>" name="chediDelTopicPD">
+                                                    <i class="glyphicon glyphicon-remove icon-white"></i>
+                                                  		 彻底删除频道
+                                                </a>
+                                                <a class="btn btn-success" href="/admin/topicUpdate/<%= item.topicId%>?action=recover">
+                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
+                                                  		  恢复
+                                                </a>
+                                                <%} else {%>
+                                                <a class="btn btn-danger" id="<%= item.topicId%>" name="delTopicPD">
+                                                    <i class="glyphicon glyphicon-remove icon-white"></i>
+                                                  		  删除
+                                                </a>
+                                                <%}%>
+                                            </td>
+                                        </tr>
+                                        <% })%>
+                                    </tbody>
+                                </table>
+                                <nav>
+                                    <ul class="pager">
+                                        <li class="<%=(currentPage==1)?'disabled':''%>"><a href="/admin/topic/<%=pTopicId%>/post?groupId=<%=groupId%>&pageIndex=<%=currentPage-1%>&pageSize=10&choose=<%=choose%>&keyword=<%=keyword%>&order=<%=order%>&topicState=<%=topicState%>&isRecommend=<%=isRecommend%>">上一页</a></li>
+                                        <li>第<%=currentPage%>页</li>
+                                        <li><a href="/admin/topic/<%=pTopicId%>/post?groupId=<%=groupId%>&pageIndex=<%=(parseInt(currentPage)+1)%>&pageSize=10&choose=<%=choose%>&keyword=<%=keyword%>&order=<%=order%>&topicState=<%=topicState%>&isRecommend=<%=isRecommend%>">下一页</a></li>
+                                        <li>共<%= (Math.ceil(totalCount/10))%>页</li>
+                                        <li>共<%= (totalCount)%>条</li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ./layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+</body>
+</html>

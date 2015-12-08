@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title>外部组织管理后台</title>
+		 <% include ../admin/layout/headmeta.html %>
+	</head>
+	<body>
+		<!-- topbar starts -->
+		 <% include ./topbar.html %>
+			<!-- topbar ends -->
+			<div class="ch-container">
+				<div class="row">
+					<!-- left menu starts -->
+					<% include ./org_leftmenu.html %>
+					<!-- left menu ends -->
+					<!-- 中间内容显示区 starts  -->
+					<div id="content" class="col-lg-10 col-sm-10">
+						<div>
+							<ul class="breadcrumb">
+								<li><a href="#">首页</a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- 中间内容显示区 ends  -->
+				</div>
+				<!-- 中间空白区 starts  -->
+				<div class="row">
+					<input type="hidden" value="<%=flag%>" id="flag"/>
+				</div>
+				<!-- 中间空白区 ends  -->
+				<hr />
+				<!-- 底部版权信息 starts  -->
+				 <% include ../admin/layout/footer.html %>
+				<!-- 底部版权信息 ends-->
+			</div>
+			<!-- requirejs导入需要的js插件以及自定义模块 -->
+			<script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+			<!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+	</body>
+	<script>
+		window.onload = function(){
+			var flag = document.getElementById("flag").value;
+			if(flag == 1){
+				alert("恭喜您,授权成功.");
+				window.location.href = '/outside-admin/org-success';
+			}
+		}
+	</script>
+</html>

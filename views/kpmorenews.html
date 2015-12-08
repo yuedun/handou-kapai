@@ -1,0 +1,24 @@
+<% newsList.forEach(function(item, index){%>
+<article class="kp-new kp-item">
+	<% if(item.translate_state == -1) { %>
+	<img src="/images/wuzhong.png">
+	<% } %>
+	<aside class="new-pic">
+		<img src="<%= item.picture_mini==''?'/images/ic_launcher.png':(download_website + item.picture_mini + '?imageView2/0/h/166')%>" alt="" width="50px" />
+	</aside>
+	<div class="new-content">
+		<a href="javascript:void(0)" onclick="eventCall('<%=item.news_id%>')" ondblclick="dbCall('<%=item.news_id%>')">
+			<div>
+				<h3 class="ellipsis kp-font-color"><%= item.title_zh || item.title_kor%></h3>
+				<p class="news-desc ellipsis kp-font-color">
+					<%= item.summary_zh || item.summary_kor%>
+				</p>
+				<p class="news-date font-color-huise">
+					<span><%= item.release_date || item.create_date %></span>
+					<span class="font-color-huise">阅读量：<%= item.read_count%></span>
+				</p>
+			</div>
+		</a>
+	</div>
+</article>
+<%})%>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>修改兑换礼品</title>
+    <% include ../layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ../layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ../layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>修改兑换礼品</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <form class="form-horizontal" action="/admin/update-exchange-gift" method="post">
+                                	<input type="hidden" name="addressId" value="<%=obj.addressId%>"/>
+                                	<input type="hidden" name="id" value="<%=obj.id%>"/>
+                                	<input type="hidden" name="userId" value="<%=obj.userId%>"/>
+                                	<input type="hidden" name="bean" value="<%=obj.bean%>"/>
+                                	<input type="hidden" id="defaultState" value="<%=obj.state%>"/>
+                                	<div class="form-group">
+                                        <label for="nickName" class="col-sm-2 control-label">用户名:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" readonly="readonly" id="" value="<%=obj.nickName%>" name="nickName" placeholder="礼品名称">
+                                        </div>
+                                    </div>
+                                	<div class="form-group">
+                                        <label for="giftName" class="col-sm-2 control-label">礼品名称:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="" readonly="readonly" value="<%=obj.giftName%>" name="giftName" placeholder="礼品名称">
+                                        </div>
+                                    </div>
+                                	<div class="form-group">
+                                        <label for="freezeBean" class="col-sm-2 control-label">冻结豆币:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="freezeBean" value="<%=obj.freezeBean%>" name="freezeBean" placeholder="所需积分">
+                                        </div>
+                                    </div>
+                                <h2><b>送货信息</b></h2>    
+                                <div class="form-group">
+                                        <label for="name" class="col-sm-2 control-label">姓名:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control"  id="name" value="<%=obj.name%>" name="name" placeholder="姓名">
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                        <label for="userName" class="col-sm-2 control-label">手机号:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control"  id="phone" value="<%=obj.phone%>" name="phone" placeholder="手机号">
+                                        </div>
+                                </div>
+                                 <div class="form-group">
+                                        <label for="address" class="col-sm-2 control-label">基本地址:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" readonly="readonly"  id="" value="<%=obj.province%>--<%=obj.city%>--<%=obj.area%>" name="" placeholder="基本地址">
+                                        </div>
+                                </div>
+                               <div class="form-group">
+                                        <label for="details" class="col-sm-2 control-label">详细地址:</label>
+                                        <div class="col-sm-3">
+                                        	<textarea id="details" name="details"><%=obj.details%></textarea>
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                	<label for="address" class="col-sm-2 control-label">订单状态:</label>
+                                	<div class="col-sm-3">
+                                	<select class="form-control" name="state" onchange="onText(this)">
+                                		<%if(obj.state != 2 && obj.state !=-1){%>
+											<%if(obj.state == 0){%>
+											<option value="0" selected="selected">待确定</option>
+											<%}else{%>
+											<option value="0">待确定</option>	
+											<%}%>	
+											<%if(obj.state == 1){%>
+											<option value="1" selected="selected">准备中</option>
+											<%}else{%>
+											<option value="1">准备中</option>
+											<%}%>	
+										<%}%>	
+											<%if(obj.state == 2){%>
+											<option value="2" selected="selected">已出送</option>
+											<%}else{%>
+											<option value="2">已出送</option>	
+											<%}%>
+											<%if(obj.state == -1){%>
+											<option value="-1" selected="selected">已取消</option>
+											<%}else{%>
+											<option value="-1">已取消</option>	
+											<%}%>	
+									</select>
+									</div>
+                                </div>
+                                <div class="form-group" id="remarksid">
+                                        <label for="remarks" class="col-sm-2 control-label">备注:</label>
+                                        <div class="col-sm-3">
+                                        	 <input type="text" class="form-control"  id="" name="remarks" value="<%=obj.remarks%>" placeholder="备注">
+                                        </div>
+                                </div>
+                                <div class="form-group" id="kdinfoid">
+                                <h2><b>快递信息</b></h2>    
+                                <div class="form-group">
+                                        <label for="expressName" class="col-sm-2 control-label">快递公司:</label>
+                                        <div class="col-sm-3">
+                                        	 <input type="text" class="form-control"  id="expressName" name="expressName" value="<%=obj.expressName%>" placeholder="快递公司">
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                        <label for="expressNumber" class="col-sm-2 control-label">快递单号:</label>
+                                        <div class="col-sm-3">
+                                        	 <input type="text" class="form-control"  id="expressNumber" name="expressNumber" value="<%=obj.expressNumber%>" placeholder="快递单号">
+                                        </div>
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-success">保存</button>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href="/admin/gift-exchange-list" class="btn btn-default">返回</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ../layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/gift-main.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

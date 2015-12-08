@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-cmn">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<title><%= post.nick_name%>的帖子</title>
+		<link rel="stylesheet" href="/stylesheets/sharestyle.css"/>
+		<link rel="stylesheet" href="/stylesheets/font-awesome.min.css">
+		<link rel="stylesheet" href="/stylesheets/slider.css"/>
+		<link rel="stylesheet" href="/stylesheets/slidermedia.css"/>
+	</head>
+	<body>
+		<div id="body">
+			<div id="content">
+				<%if(post.pictureList.length == 1){%>
+				<div id="piciture-single">
+					<% post.pictureList.forEach(function(item){%>
+					<img src="<%= download_website + item.picture_screenshot_path%>" alt="帖子图片"/>
+					<%})%>
+				</div>
+				<%} else{%>
+				<div id="slides">
+					<% post.pictureList.forEach(function(item){%>
+						<img src="<%= download_website + item.picture_screenshot_path%>" alt="帖子图片"/>
+					<%})%>
+				</div>
+				<%}%>
+				<article class="post-info">
+					<div class="user-head">
+						<img height="35px" width="35px" src="<%= download_website + post.head_portrait%>"/>
+					</div>
+					<div class="post-content">
+						<p>
+							<span class="user-name"><%= post.nick_name%>:</span>
+							<%= post.post_description%>
+						</p>
+						<p><%= post.create_date%></p>
+					</div>
+				</article>
+				<% post.commentList.forEach(function(item){%>
+				<article class="post-info">
+					<div class="user-head">
+						<img height="35px" width="35px" src="<%= download_website + item.head_portrait%>" alt="<%= item.nick_name%>"/>
+					</div>
+					<div class="post-content">
+						<p>
+							<span class="user-name"><%= item.nick_name%>:</span>
+							<%if(item.comment_voice != ''){%>
+							<span class="user-audio"><img height="20px" width="20px" src="/images/u78.png"></span>
+							<%}%>
+							<%= item.comment_content%>
+						</p>
+						<p class="user-date"><%= item.create_date%>
+							<span><a href="http://www.handouer.cn/apps/" target="_blank"><img height="20px" width="20px" src="/images/u67.png"></a></span>
+						</p>
+					</div>
+				</article>
+				<%})%>
+			</div>
+			<div id="morepost">
+				<a href="http://www.handouer.cn/apps/" target="_blank">查看更多内容</a>
+			</div>
+			<footer id="down">
+				<div class="logo">
+					<img src="/img/logo.png"/>
+				</div>
+				<div id="downexplain">
+					<p>韩豆</p>
+					<p>掌上韩娱，聚逗韩趣</p>
+				</div>
+				<div id="downbtn">
+					<a href="http://www.handouer.cn/apps/" target="_blank">立即下载</a>
+				</div>
+			</footer>
+		</div>
+		<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="http://apps.bdimg.com/libs/slidesjs/3.0/jquery.slides.min.js"></script>
+		<script>
+			$(function(){
+				$("#slides").slidesjs({
+					width: 320,
+					height: 320,
+					navigation: {
+						active: false,
+						effect: "slide"
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,71 @@
+body,h1,h2,h3,h4,h5,h6{	padding: 0;	margin: 0;	font-family: "微软雅黑";color: #FFF;background-color: #333;}
+#body{margin: 0 auto;padding: 0;}
+#content{padding: 10px}
+.user-head{	float: left;}
+.user-head img {border-radius: 5px;}
+.post-content{display:block;margin-left: 37px;padding-left: 3px;}
+.post-content p{margin: 0 3px 5px;}
+.post-content p:last-child {color:#a4a4a4;letter-spacing: 1px;}
+.user-name{	color: #8cc152;}
+.user-date span{display: inline-block;float: right;	margin-right: 10px;}
+.comment{float: right;}
+.comment span{margin-right: 10px;}
+.post-info{	border-bottom-width: 1px;border-bottom-style: dotted;padding-top: 2px;padding-bottom: 5px;}
+#morepost{margin-bottom: 80px;text-align: center;}
+#morepost a {text-decoration: none;	background-color:#ff5d5d;padding:3px;border-radius:5px;display:block;margin:3px 5px;line-height:30px;color: #fff;}
+#down{height: 50px;	width: 100%;background-color: black;position: fixed;bottom: 0;padding: 5px 3px 10px;}
+.logo {	float: left;margin-left: 5px;margin-top: 5px;}
+.logo img{height: 45px;width: 45px;	border-radius: 10%;}
+#downexplain{float: left;padding-left: 3px;margin-top: 10px;}
+#downexplain p{	margin: 0;padding: 0;margin-bottom: 3px;}
+#downbtn{float: right;margin-right: 10px;line-height: 50px;}
+#downbtn a{text-decoration: none;color: #FFFFFF;background-color: #ff5c5d;padding: 10px 15px;border-radius: 5px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

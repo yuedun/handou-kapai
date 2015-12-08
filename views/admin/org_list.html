@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>组织管理</title>
+    <% include ./layout/headmeta.html %>
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ./layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>组织管理</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box col-md-12">
+                                <form class="form-inline" action="/admin/org" method="get">
+                                    <label for="exampleInputEmail2">按:</label>
+										<select class="form-control" name="postChoose">
+											<option value="1">组织名称</option>
+											<option value="2">明星</option>
+											<option value="3">账号</option>
+										</select>
+										<div class="form-group">
+											<input type="text" class="form-control" name="keyWord" id="exampleInputName2" placeholder="请输入查询条件">
+										</div>
+                                   	<select class="form-control" name="state">
+											<option value="">发布状态</option>
+											<option value="1">已发布</option>
+											<option value="0">未发布</option>
+											<option value="-1">已删除</option>
+										</select>
+									<select class="form-control" name="order">
+											<option value="">选择排序</option>
+											<option value="1">粉丝数倒序</option>
+											<option value="2">粉丝数正序</option>
+											<option value="3">打卡数倒序</option>
+											<option value="4">打卡数正序</option>
+										</select>
+                                    <button type="submit" class="btn btn-default ">搜索</button>
+                                </form>
+                            </div>
+                            <div class="box col-md-12">
+                                <p>
+                                    <a class="btn btn-default btn-sm" href="/admin/org-add-ui"><i class="glyphicon glyphicon-plus"></i>新增</a>
+                                </p>
+                            </div>
+                            <div class="box-content">
+                                <table class="table table-striped table-bordered responsive" id="groupList">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>组织名称</th>
+                                            <th>明星</th>
+                                            <th>账号</th>
+                                            <th>密码</th>
+                                            <th>粉丝数</th>
+                                            <th>打卡记录</th>
+                                            <th>状态</th>
+                                            <th>添加时间</th>
+                                            <th>认证时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% objList.forEach(function(item, index){ %>
+                                        <tr>
+                                            <td><label><input value="<%= item.userId%>" type="checkbox"/><%= index+1%></label></td>
+                                            <td class="center"><a href="/admin/org/<%=item.userId%>/topic"><%= item.nickName%></a></td>
+                                            <td class="center"><%= item.starName%></td>
+                                            <td class="center"><%= item.userName%></td>
+                                            <td class="center"><%= item.password%></td>
+                                            <td class="center"><%= item.fansCount%></td>
+                                            <td class="center">
+                                            	<a href="/admin/user/query-org-rec?userId=<%=item.userId%>"><%= item.todayRecordCount%></a>
+                                            </td>
+                                            <td class="center">
+                                                <% if(item.state == 1){%>
+                                                <span class="label-success label">已发布</span>
+                                                <%} else if(item.state == 0){%>
+                                                <span class="label-danger label">未发布</span>
+                                                <%}%>
+                                            </td>
+                                            <td class="center"><%= item.createDate%></td>
+                                            <td class="center"><%= item.updateDate%></td>
+                                            <td class="center">
+                                                <%if(item.state != -1){%>
+                                                <a class="btn btn-info btn-xs" href="/admin/orgUpdate/<%= item.userId%>?action=edit">
+                                                    <i class="glyphicon glyphicon-edit icon-white"></i>
+                                                    	编辑
+                                                </a>
+                                                <a class="btn btn-danger btn-xs" href="javascript:void(0)" name="deleteOrg" id="<%=item.userId%>">
+                                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                                   		 删除
+                                                </a>
+                                                <%}%>
+                                                <% if(item.state == 1){%>
+                                                <a class="btn btn-warning btn-xs" href="/admin/orgUpdate/<%= item.userId%>?action=unpost">
+                                                    <i class="glyphicon glyphicon-remove icon-white"></i>
+                                                    	取消发布
+                                                </a>
+                                                <%} else if(item.state == 0){%>
+                                                <a class="btn btn-success btn-xs" href="/admin/orgUpdate/<%= item.userId%>?action=post">
+                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
+                                                    	立即发布
+                                                </a>
+                                                <%}%>
+                                                <%if(item.state == -1){%>
+                                                <a class="btn btn-danger btn-xs" href="javascript:void(0)" id="<%=item.userId%>" name="chediDeleteOrg">
+                                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                                  	  彻底删除组织
+                                                </a>
+                                                <a class="btn btn-success btn-xs" href="/admin/orgUpdate/<%= item.userId%>?action=recover">
+                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
+                                                  	  恢复
+                                                </a>
+                                                <%}%>
+                                            </td>
+                                        </tr>
+                                        <% })%>
+                                    </tbody>
+                                </table>
+                                 <nav>
+                                    <ul class="pager">
+                                    	<%if(currentPage==1){%>
+                                    		 <li class="disabled"><a href="#">上一页</a></li>
+                                    	<%}else{%>
+                                    		 <li class=""><a href="/admin/org?pageIndex=<%=currentPage-1%>&pageSize=10&keyWord=<%=params.keyWord%>&postChoose=<%=params.postChoose%>&state=<%=params.state%>&order=<%=params.order%>">上一页</a></li>
+                                    	<%}%>	
+                                        <li>第<%=currentPage%>页</li>
+                                        <li ><a href="/admin/org?pageIndex=<%=(parseInt(currentPage)+1)%>&pageSize=10&keyWord=<%=params.keyWord%>&postChoose=<%=params.postChoose%>&state=<%=params.state%>&order=<%=params.order%>">下一页</a></li>
+                                        <li>共<%=(totalCount%10==0?totalCount/10:Math.ceil(totalCount/10))%>页</li>
+                                        <li>共<%= (totalCount)%>条</li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ./layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <!--<script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>-->
+    <script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+</body>
+</html>

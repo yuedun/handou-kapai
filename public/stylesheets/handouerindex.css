@@ -1,0 +1,125 @@
+@charset "utf-8";
+/* CSS Document */
+*{margin:0; padding:0; list-style:none; }
+body{ background:#fefae1; font-family:Microsoft YaHei,Helvitica,Verdana,Tohoma,Arial,san-serif; margin:auto;}
+/*顶部css*/
+
+.logohandouer{ width:100%; height:20%; margin-top:5%; color:white;}
+
+.contentimg{ width:100%; height:45%; margin-top:5%;}
+.contentimg img {
+    
+}
+
+.indexbottom{ width:100%; height:20%; margin-top:5%;}
+.actionbtn{ width:100px; height:35px; background-color:white; color:black; font-size:18px;}
+
+.toolheader{
+    width:100%;
+    height:35px;
+    margin: 0px;
+    padding: auto;
+}
+
+.toolheader ul li{
+    float: left;
+    width: 25%;
+    height: 35px;
+    color: #080808;
+    text-align: center;
+    background-color:white;
+    text-decoration-line: none;
+    font-size:18px;
+    margin: auto;
+}
+
+a:link {
+    color: #080808;
+    text-decoration:none;
+}
+a:visited{
+    color: #2480b6;
+}
+
+.img-content img{
+    width: 100%;
+    max-height: 235px;
+    display: block;
+}
+
+.camera button{
+    width: 100%;
+    height: 40px;
+}
+
+.cropcontent{ width:100%; height:300px; background-color:black;}
+.cropcontent img
+{
+    margin-top:10px;
+    
+    height:250px;
+}
+.inputcontent{ width:100%; height:auto; margin-top:15px;}
+.inputcontent button
+{
+    background-color: transparent;
+    border: 0;
+    border-width:0px;
+    height:25px;
+    
+    color:#959595;
+    font-size:15px;
+}
+.inputtitle{width:80%; height:30px; margin-left:10%; text-align:left; color:black;}
+.inputcontent textarea
+{
+    width:80%;
+    margin-left:10%;
+    border-width:1px;
+    border-color:#58463d;
+    border-radius:0px;
+    font-size:16px;
+    padding:5px;
+}
+.linescontent{width:100%; height:35px; margin-top:20px;}
+.linescontent button
+{
+    width:200px;
+    height:35px;
+    background-color:#f9e49e;
+    border:0px;
+    color:#9a4820;
+    font-size:18px;
+}
+
+.bottomcontent{width:100%; height:35px; margin-top:30px;}
+.bottomcontent button
+{
+    width:100%;
+    height:100%;
+    background-color:green;
+    color:white;
+    font-size:20px;
+    border-width:0px;
+}
+
+.moretaici{
+    display: none;
+ }
+ .action button, .taici button{
+ 	padding:5px;
+ 	background-color:#fff;
+ 	border-width:0
+ }
+.more-pic{
+    width: 100%;
+    height: 35px;
+}
+.more-pic button{
+    width: 100%;
+    height: 100%;
+}
+.complate img{
+    width: 100%;
+    height: auto;
+}

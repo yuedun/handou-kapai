@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title>韩豆咖派3.0后台管理系统</title>
+		<% include layout/headmeta.html %>
+		<style type="text/css">
+			@media (max-width: 768px) {
+				#flash{
+					display: none;
+				}
+			}	
+		</style>		
+	</head>
+	<body>
+		<!-- topbar starts -->
+		<% include layout/topbar.html %>
+			<!-- topbar ends -->
+			<div class="ch-container">
+				<div class="row">
+					<!-- left menu starts -->
+					<% include layout/leftmenu.html %>
+					<!-- left menu ends -->
+					<!-- 中间内容显示区 starts  -->
+					<div id="content" class="col-lg-10 col-sm-10">
+						<div>
+							<ul class="breadcrumb">
+								<li><a href="#">首页</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-md-10 col-sm-10 col-xs-10" id="flash">
+						<iframe src="images/flash48.swf" id="flash" style="width: 90%;height: 550px;margin-left: 1%;padding: 0px;display: block;"></iframe>
+					</div>
+					<!-- 中间内容显示区 ends  -->
+				</div>
+				<!-- 中间空白区 starts  -->
+				<div class="row">
+					
+				</div>
+				<!-- 中间空白区 ends  -->
+				<hr />
+				<!-- 底部版权信息 starts  -->
+				<% include layout/footer.html %>
+				<!-- 底部版权信息 ends-->
+			</div>
+			<!-- requirejs导入需要的js插件以及自定义模块 -->
+			<script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+			<!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+	</body>
+
+</html>

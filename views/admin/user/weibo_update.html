@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>编辑微博帖子</title>
+    <% include ../layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/vendor/jquery-ui.min.css">
+</head>
+
+<body>
+    <!-- topbar starts -->
+   <% include ../layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ../layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>编辑微博帖子</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <p class="bg-warning"></p>
+                                <form class="form-horizontal" action="/admin/weiboUpdtae" method="post" id="weiboForm" onsubmit="return checkWeiboForm()">
+                                	<input type="hidden" name="topicId" value="<%=obj.topicId%>"/>
+                                	<input type="hidden" name="picsSize" id="picsSize">
+                                	<input type="hidden" name="userId" value="<%=obj.userId%>">
+                                	<input type="hidden" name="upstate" value="<%=state%>"/>
+                                	<input type="hidden" name="sinceId" value="<%=obj.sinceId%>"/>
+                                	<input type="hidden" name="groupId" value="<%=obj.groupId%>"/>
+                                    <div class="form-group">
+                                        <label for="topicName" class="col-sm-2 control-label">帖子标题:</label>
+                                       <div class="col-sm-5">
+                                        		<textarea class="form-control" id="topicName" name="topicName" required="required" rows="10" cols="100"  placeholder="帖子标题" style="height: 90px;width: 100%;" <%if(obj.topicState == 1){%>readonly="readonly"<%}%>><%=obj.topicName%></textarea>
+                                        </div>
+                                        <label for="starName" class="control-label"><font color="DB4854"><span id="topicNameSpan"></span></font></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-2 control-label">帖子内容:</label>
+                                        <div class="col-sm-5">
+                                        	<textarea class="form-control" id="topicDesc" name="topicDesc" required="required" rows="10" cols="100"  placeholder="帖子内容" style="height: 130px;width: 100%;"<%if(obj.topicState == 1){%>readonly="readonly"<%}%>><%=obj.topicDesc%></textarea>
+                                        </div>
+                                        <label for="starName" class="control-label"><font color="DB4854"><span id="topicDescSpan"></span></font></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-2 control-label">图片:</label>
+                                        <div class="col-sm-5">
+                                            <div id="uploader" class="wu-example">
+                                                <!-- 用来存放文件信息 -->
+                                                <div class="btns">
+                                                    <div id="picker">选择文件</div>
+                                                </div>
+                                                <div id="thelist" class="uploader-list"></div>
+                                                <%if(picsArr.length>0 && picsArr !=''){%>
+                                                <%for(var i=0;i<picsArr.length;i++){%>	
+                                                <div class="item" id="item<%=i%>">
+                                                		<h5 class="info"><%=picsArr[i]%></h5>
+                                                		<%if(picsArr[i].indexOf("http") > -1){%>
+                                                		<img class="imageStarLogo" src="<%=picsArr[i]%>" name="imgArr"/>
+                                                		<%}else{%>
+                                                		<img class="imageStarLogo" src="http://7xl3sp.com2.z0.glb.qiniucdn.com/<%=picsArr[i]%>" name="imgArr"/>
+                                                		<%}%>	
+                                                		<input type="hidden" name="starLogo" class="qkey" value="<%=picsArr[i]%>"/>
+                                                		<a class="delpic" id="delImg" pic="<%=picsArr[i]%>" i="<%=i%>"  href="#">删除</a>
+                                                	</div>
+                                                 <%}%><%}%>
+                                                <input type="hidden" name="topicPics"  value="<%= qntoken%>" id="qntoken"/>
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                        	<%if(obj.topicState == 1){%>
+										 	<a class="btn btn-default btn-lg " href="/admin/getWeiboList?state=1">返回</a>
+                                            <%}else if(obj.topicState == -2){%>
+                                              <button type="submit" class="btn btn-info btn-lg">恢复</button> 
+                                            <a class="btn btn-default btn-lg " href="/admin/getWeiboList?state=-2">返回</a>
+                                            <%}%>
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ../layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+     </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/topic-main.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

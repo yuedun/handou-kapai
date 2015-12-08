@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>背包管理列表</title>
+    <% include ../layout/headmeta.html %>
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ../layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ../layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>背包管理列表</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box col-md-12">
+                                <p>
+                                    <a class="btn btn-default btn-sm" href="/admin/bag_addui"><i class="glyphicon glyphicon-plus"></i>新增</a>
+                                </p>
+                            </div>	
+                            <div class="box-content">
+                                <table class="table table-striped table-bordered responsive" id="tb">
+                                    <thead>
+                                        <tr>
+                                        	<th>背包内容</th>
+                                            <th>图片</th>
+                                            <th>类型</th>
+                                            <th>券说明</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ty">
+                                      	<form class="form-inline" action="" method="get">
+                                      	<%list.forEach(function(item,index){%>
+                                        <tr>
+                                            <td class="center">
+                                            	<%if(item.ticketType != 3){%>
+                                            		<a href="/admin/bag-updateUI?ticketId=<%=item.ticketId%>"><%=item.ticketName%></a>
+                                            	<%}else{%>
+                                            		<a href="/admin/bag-updateUI?ticketId=<%=item.ticketId%>"><%=item.parValue+item.ticketName%></a>
+                                            	<%}%>	
+                                            </td>
+                                            <td class="center">
+                                            	<%if(item.ticketPictureUrl != null && item.ticketPictureUrl != ''){%>
+	                                               <img class="imageStarLogo" style="width: 90px;height: 40px;" src="http://7xl3sp.com2.z0.glb.qiniucdn.com/<%=item.ticketPictureUrl%>"/>
+	                                            <%}%>
+                                            </td>
+                                            <td class="center">
+                                            	<%if(item.isSubstance == 0){%>
+                                            		<span style="color: grey;">虚拟</span>
+                                            	<%}else if(item.isSubstance ==1){%>
+                                            		<span style="color: green;">实物</span>
+                                            	<%}else{%>
+                                            		<span style="color: yellow;">未知</span>
+                                            	<%}%>	
+                                            </td>
+                                            <td class="center">
+                                            	<%=item.ticketUsage%>
+                                            </td>
+                                            <td class="center">
+                                                <a class="btn btn-danger btn-xs" name="delete-ticket" id="<%=item.ticketId%>" href="javascript:void(0)">
+                                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                                  	  删除
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <%})%>
+                                       	</form>
+                                     </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ../layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/user-verfiy.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

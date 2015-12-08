@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" ng-app="handouApp">
+	<head>
+		<meta charset="utf-8">
+		<title><%=news.title_zh || news.title_kor%></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="/stylesheets/vendor/newsdetailwx.min.css"/>
+	</head>
+	<body class="backgroup-color" ng-controller="NewsDetailsCtrl">
+		<header id="header">
+			<div><a href="/lofti/api/newswx"><img src="/images/icon_buttom_zhuye_n.png" alt=""/></a></div>
+			<div><h3>资讯</h3></div>
+			<div><img src="<%=news.translate_state==0?'/images/han.png':''%>" id="langue"/></div>
+			<input type="hidden" id="fanyi" value="<%=news.translate_state==0?0:1%>"/>
+		</header>
+		<article id="content-notop">
+			<hgroup>
+				<h2 id="news_title"><%= (news.translate_state==0 ? news.title_zh : news.title_kor) %></h2>
+				<input id="newsId" value="<%= news.news_id%>" type="hidden"/>
+				<h4>发布：<%= news.release_date || news.create_date%>&nbsp;&nbsp;来源：<%= (news.translate_state==0 ? news.quote_zh:news.quote_kor)%></h4>
+			</hgroup>
+			<div class="content-desc">
+				<%- (news.translate_state==0 ? news.description_zh : news.description_kor)%>
+			</div>
+			<section id="comment-content">
+				<h3>用户评论</h3>
+				<comments></comments>
+			</section>
+		</article>
+		<footer id="user-comment">
+			<div class="logo">
+				<img src="/img/logo.png"/>
+			</div>
+			<div id="downexplain">
+				<p>韩豆</p>
+				<p>掌上韩娱，聚逗韩趣</p>
+			</div>
+			<div id="downbtn">
+				<a href="http://www.handouer.cn/apps/" target="_blank">立即下载</a>
+			</div>
+		</footer>
+		<script src="/javascripts/jquery-2.1.4.min.js"></script>
+		<script src="/javascripts/vendor/angular.min.js"></script>
+		<script src="/javascripts/vendor/angular-route.min.js"></script>
+		<script src="/javascripts/controllers/newsDetailsCtrl.js"></script>
+		<script src="/javascripts/directives/comments.js"></script>
+		<script type="text/javascript">
+			$(function(){
+//				$("embed").remove();//音乐
+				$("#langue").click(function(){
+					fanyi();
+				})
+			});
+			//切换语言
+			function fanyi() {
+				var langue = $("#fanyi").val(),
+				title_kor = '<%= news.title_kor%>',
+				title_zh = '<%= news.title_zh%>',
+				description_kor = '<%-news.description_kor%>',
+				description_zh = '<%-news.description_zh%>',
+				queto_kor = '<%= news.quote_kor%>',
+				queto_zh = '<%= news.quote_zh%>';
+				//切换韩文
+				if (langue == 0) {
+					$("#news_title").html(title_kor);
+					$(".content-desc").html(description_kor);
+					$("#fanyi").val(1);
+					$("#langue").attr("src","/images/zhong.png");
+				}else if(langue == 1){
+					$("#news_title").html(title_zh);
+					$(".content-desc").html(description_zh);
+					$("#fanyi").val(0);
+					$("#langue").attr("src","/images/han.png");
+				}
+			}
+			function ie(obj){
+				console.error("err");
+			}
+			function showDownLoad(){
+
+			}
+		</script>
+	</body>
+</html>
+	
+
+
+

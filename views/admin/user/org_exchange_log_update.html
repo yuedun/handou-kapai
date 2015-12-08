@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>修改组织兑换记录</title>
+    <% include ../layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ../layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ../layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>修改组织兑换记录</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <form class="form-horizontal" action="/admin/org_exchange_log_update" method="post">
+                                	<input type="hidden" name="id" value="<%=obj.id%>"/>
+                                	<div class="form-group">
+                                        <label for="orgName" class="col-sm-2 control-label">组织名称</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="" value="<%=obj.nickName%>" readonly="readonly" name="" placeholder="组织名称">
+                                        </div>
+                                    </div>
+                                	<div class="form-group">
+                                        <label for="money" class="col-sm-2 control-label">兑换内容</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="" value="<%=obj.money%>" name="money" placeholder="兑换内容">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bean" class="col-sm-2 control-label">所需豆币</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="" value="<%=obj.bean%>" name="bean" placeholder="所需豆币">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="alipay" class="col-sm-2 control-label">支付宝账号</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="" value="<%=obj.alipay%>" name="alipay" placeholder="支付宝账号">
+                                        </div>
+                                    </div>
+                                 <div class="form-group">
+									<label for="state" class="col-sm-2 control-label">兑换状态</label>
+									<div class="col-sm-3">
+										<select class="form-control" name="state">
+											<%if(obj.state == 0){%>
+											<option value="0" selected="selected">待确认</option>
+											<%}else{%>
+											<option value="0">待确认</option>
+											<%}%>	
+											<%if(obj.state == 1){%>
+											<option value="1" selected="selected">兑换中</option>
+											<%}else{%>
+											<option value="1">兑换中</option>
+											<%}%>	
+											<%if(obj.state == 2){%>	
+											<option value="2" selected="selected">已完成</option>
+											<%}else{%>
+											<option value="2">已完成</option>
+											<%}%>	
+										</select>
+									</div>
+								</div>
+                                    <!--<div class="form-group">
+                                        <label for="exchangeDate" class="col-sm-2 control-label">兑换时间</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="" value="<%=obj.updateDate%>" name="updateDate" placeholder="兑换时间">
+                                        </div>
+                                    </div>-->
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-success">保存</button>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href="/admin/org_exchange_log_list" class="btn btn-default">返回</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ../layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/gift-main.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

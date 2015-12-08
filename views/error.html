@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <title>访问出错</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            background-image: url('http://7xj01w.com2.z0.glb.qiniucdn.com/mohujianbianbeijing.jpg');
+        }
+        .error{
+            text-align: center;
+            height: 300px;
+            vertical-align: middle;
+        }
+        .err404{
+            font-size: 100px;
+            margin-bottom: 30px;
+        }
+    </style>
+    <script>
+        var second = 5;
+        setInterval("redirect()", 1000);
+        function redirect()
+        {
+            document.getElementById('totalSecond').textContent = second--;
+            if (second < 0) location.href = 'http://www.handouer.cn';
+        }
+        function cancle(){
+        	second = "a";
+        }
+    </script>
+</head>
+<body>
+    <div class="error">
+    	<div>
+            <p class="err404">404</p>
+            <p>Oh! The Page You Requested Was Not Found</p>
+            <p><%= message %></p>
+        </div>
+        <div>
+            <a href="http://www.handouer.cn">页面将自动跳转到首页：</a>
+            <span id="totalSecond">5</span>
+            <a href="#" onclick="cancle()">&nbsp;取消</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>积分兑换</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/zepto.alert.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/scrollbar.css">
+</head>
+<body class="integral">
+    <div id="wrapper" class="ibody linear-bg-color">
+    	<h1 style="text-align: center;">抱歉，停止运营</h1>
+        <!--
+        	
+        <div id="scroller">-->
+            <!-- 顶部加载提示效果 -->
+            <!--
+            <div id="pullDown">
+                <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+            </div>
+            <div class="title header">
+                <span><strong class="base-color">可兑换积分:</strong></span>
+                <span id="integral" class="score-color"><%= (user.user_info.user_integral - freezeIntegral)%></span>
+                <span><strong class="base-color">冻结积分:</strong></span>
+                <span id="freezeIntegral" class="score-color"><%= freezeIntegral%></span>
+                <span class="view-process"><a href="javascript:invoke('<%= user.user_id%>');">查看兑换进度</a></span>
+            </div>
+            <% list.forEach(function(item){%>
+            <div class="gift-msg bg-white" data-giftid="<%= item.id%>">
+                <div class="left">
+                    <figure>
+                        <img src="<% if(item.picture_path == null || item.picture_path == ''){ %>
+                                                                    <%= download_website + defaul_gift_img%>
+                                                                    <%}else{%><%= download_website+item.picture_path%><%}%>">
+                    </figure>
+                </div>
+                <div class="center">
+                    <p><strong class="gift-name-color gift-name"><%= item.gift_name%></strong></p>
+                    <p class="gift-score-p"><strong class="gift-score"><%= item.integral%></strong>积分</p>
+                </div>
+                <div class="right" data-gift-exechanged="<%=item.get('hasExechanged')%>">
+                    <a class="btn btn-info disabled <%=item.get('hasExechanged') ? 'disabled' : ''%>" href="javascript:void(0);" onclick="exchange('<%= user.user_id%>','<%= item.integral%>', '<%= item.id%>', this);">兑换</a>
+                    <%if(item.integral > (user.user_info.user_integral - freezeIntegral)){%>
+                    <p class="lack-score-color">还差<%=(item.integral - user.user_info.user_integral + freezeIntegral)%>分
+                    </p>
+                    <%}%>
+                </div>
+            </div>
+            <% })%>
+
+            <%
+                if(list.length === 0) {
+            %>
+                <p class="no-data">现在还没有礼物可以兑换呦~~~</p>
+            <%
+                }
+            %>
+
+            <!-- 底部加载提示效果
+                <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+            </div>
+            -->
+        </div>
+    </div>
+    <script type="text/javascript" src="/javascripts/zepto.min.js"></script>
+    <script type="text/javascript" src="/javascripts/zepto.alert.js"></script>
+    <script type="text/javascript" src="/javascripts/iscroll.js"></script>
+    <script type="text/javascript" src="/javascripts/common.js"></script>
+    <script>
+        Zepto(function($){
+            exchange('<%= user.user_id%>', 0);
+            if($('.gift-msg').length === 0) {
+                $('#pullUp').hide();
+                $('#pullDown').hide();
+            }
+            if($('.gift-msg').length < 10) {
+                $('#pullUp').hide();
+            }
+            $(document).on('ajaxError', function(e, xhr, options){
+               /* 需要全局ajaxError处理 */
+                /*$.dialog({
+                    content : '出错了~ 请下拉刷新一下啦~~',
+                    title : 'ok',
+                    ok : function() {
+
+                    },
+                    lock : true
+                });*/
+            });
+            if(screen) {
+                $('#scroller').css('min-height', screen.height);
+            }
+        });
+        var isAddressFulled = false;
+        var refresh = function() {
+            window.document.location.reload();
+        };
+        var offset = 1, pageSize = 10, isLoading = false;
+        var loadMore = function(scroll) {
+            if(!isLoading && isAddressFulled) {
+                isLoading = true;
+                offset++;
+                $.get("/lofti/api/gift/<%= user.user_id%>/" + offset + "/" + pageSize, function(data){
+                    if(data != null && data != '') {
+                        var integralVal = parseInt($("#integral").text());//可兑换积分值
+                        var giftMsg = $(".gift-msg");
+                        giftMsg.last().after(data);
+                        var start = (offset-1) * pageSize;
+                        var domLength = $('.gift-msg').length;
+                        for(var i = start; i < domLength; i++){
+                            var thisIntegral = $($('.gift-msg')[i]).find(".center").find("p strong").eq(1).text();
+                            if(integralVal < parseInt(thisIntegral)){
+                                $($('.gift-msg')[i]).find(".right").find("a").addClass("disabled");
+                            }
+                        }
+                    }
+                    isLoading = false;
+                    scroll.refresh();
+                });
+            } else {
+                scroll.refresh();
+                if(!isAddressFulled) {
+                    $.dialog({
+                        content : '请先完善收货信息（个人中心—>设置）',
+                        title : 'ok',
+                        ok : function() {
+
+                        },
+                        lock : true
+                    });
+                }
+            }
+        };
+        /**
+         * 调用移动端接口
+         * @param id:user_id
+         */
+        function invoke(id){
+            var r = JSON.stringify({'uid':id});
+            var u = navigator.userAgent;
+            var version = function(){
+                return{
+                    android: u.indexOf('Android') > -1|| u.indexOf('Linux') > -1,
+                    iphone:	u.indexOf('iPhone') > -1
+                }
+            }();
+            if(version.android){
+                window.handou.callJavaFunction(r);
+            }else if(version.iphone){
+                if(Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))){
+                    window.webkit.messageHandlers.kidol.postMessage(r);
+                }else{
+                    window.nativeApis.logMessage(r);
+                }
+            }
+        }
+        /**
+         * 点击兑换先判断收货信息是否完成
+         * @param integral
+         */
+        function exchange(uid, integral, giftId, el){
+            var giftMsgDiv = $(".gift-msg.bg-white");
+            var integralObj = $("#integral");//可兑换积分元素对象
+            var integralVal = parseInt(integralObj.text());//可兑换积分值
+            var freezeIntegralObj = $("#freezeIntegral");//冻结积分元素对象
+            var freezeIntegralVal = parseInt(freezeIntegralObj.text());//冻结积分值
+            if(integral == 0){
+                $.get('/lofti/api/gift/address/'+uid, function(data){
+                    if(data == null){
+                        isAddressFulled = false;
+                        $.dialog({
+                            content : '请先完善收货信息（个人中心—>设置）',
+                            title : 'ok',
+                            ok : function() {
+                            },
+                            lock : true
+                        });
+                    } else {
+                        /*地址完整能点击*/
+                        giftMsgDiv.each(function(index, item){
+                            var rightDiv = $(item).find(".right");
+                            rightDiv.find("a").removeClass("disabled");/*设置为可点击*/
+                        });
+                        isAddressFulled = true;
+                        disabledBtn();/*将积分不够的按钮灰掉*/
+                    }
+                });
+            }else {
+                $.dialog({
+                    content : '确定兑换吗？?',
+                    title : 'ok',
+                    ok : function() {
+                        disabledBtn();
+                        //数据库添加一条兑换记录
+                        $.post('/lofti/api/gift/userGift/' + uid + '/' + giftId, { freeze_integral: integral}, function(data){
+                            //成功后提示
+                            $.dialog({
+                                content: '兑换成功！',
+                                title: 'ok',
+                                ok: function(){
+                                }
+                            });
+                        });
+                    },
+                    cancel : function() {
+                    },
+                    lock : true
+                });
+                if(el != null) {
+                    var $giftName = $(el).closest('.gift-msg').find('.gift-name');
+                    var onceGiftName = '专辑（限第一次特惠）';
+                    if($.trim($giftName.text()) === onceGiftName) {
+                        $(el).addClass('disabled');
+                    }
+                }
+            }
+            function disabledBtn(){
+                integralObj.text(integralVal-integral);/*可兑换积分*/
+                freezeIntegralObj.text((parseInt(freezeIntegralVal) + parseInt(integral)));/*冻结积分*/
+                giftMsgDiv.each(function(index, item){
+                    var centerDiv = $(item).find(".center");
+                    var rightDiv = $(item).find(".right");
+                    var jifenStr = centerDiv.find("p strong").eq(1).text();/*当前行礼品积分*/
+                    var jifenInt = parseInt(jifenStr);
+                    if((integralVal - integral) < jifenInt){
+                        rightDiv.find("a").addClass("disabled");/*设置为不可点击*/
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+

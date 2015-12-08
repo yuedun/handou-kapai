@@ -1,0 +1,35 @@
+<div class="navbar navbar-default" role="navigation">
+	<div class="navbar-inner">
+		<button type="button" class="navbar-toggle pull-left animated flip">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="/outside-admin/org-success"> <img alt="Charisma Logo" src="/img/logo20.png" class="hidden-xs" />
+			<span>韩豆咖派</span></a>
+		<!-- user dropdown starts -->
+		<div class="btn-group pull-right" >
+			<a class="btn btn-default" data-toggle="" href="#">
+				<i class="icon-leaf"></i><span class="hidden-phone">
+					<%if(outsideSessionUser.tokenState == null){%>
+						未授权
+					<%}else if(outsideSessionUser.tokenState == 0){%>
+						已过期,请重新授权.
+					<%}else if(outsideSessionUser.tokenState ==1){%>
+						已授权
+					<%}%>	
+				</span>
+			</a>
+		</div>
+		<div class="btn-group pull-right">
+			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				<i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"><%=outsideSessionUser.nickName%></span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a href="/outside-admin/logout">退出</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

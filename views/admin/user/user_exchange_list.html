@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>专辑券兑换管理列表</title>
+    <% include ../layout/headmeta.html %>
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ../layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ../layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>专辑券兑换管理列表</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                          
+							 <div class="box col-md-12">
+									<form class="form-inline" action="/admin/user_exchange_list" method="get">
+										<label for="exampleInputEmail2">选择时间: 从</label>
+										<div class="form-group">
+											<input type="text" class="form-control" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})"  name="startDate" id="" placeholder="">
+										</div>
+										<label for="exampleInputEmail2">到</label>
+										<div class="form-group">
+											<input type="text" class="form-control" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})" name="endDate" id="" placeholder="">
+										</div>
+										<select class="form-control" name="postChoose">
+											<option value="1">用户名</option>
+											<option value="2">手机号</option>
+											<option value="3">专辑名称</option>
+										</select>
+										<div class="form-group">
+											<input type="text" class="form-control" name="keyWord" id="exampleInputName2" placeholder="">
+										</div>
+										<select class="form-control" name="state">
+											<option value="">处理状态</option>
+											<option value="0">待确认</option>
+											<option value="1">处理中</option>
+											<option value="2">已发送</option>
+										</select>
+										<select class="form-control" name="order">
+											<option value="">选择排序</option>
+											<option value="1">兑换时间倒序</option>
+											<option value="2">兑换时间正序</option>
+										</select>
+										<button type="submit" class="btn btn-default">搜索</button>
+									</form>
+								</div>
+                            <div class="box-content">
+                                <table class="table table-striped table-bordered responsive">
+                                    <thead>
+                                        <tr>
+                                        	<th>序号</th>
+                                            <th>用户名</th>
+                                            <th>手机号</th>
+                                            <th>明星</th>
+                                            <th>专辑名称</th>
+                                            <th>地址</th>
+                                            <th>兑换时间</th>
+                                            <th>处理状态</th>
+											<th>操作</th>                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%list.forEach(function(item,index){%>
+                                        <form class="form-inline" action="/admin/user_exchange_update" method="get">
+                                        <tr>
+                                        	<input type="hidden" name="exchangeNo" value="<%=item.exchangeNo%>"/>
+                                            <td class="center"><%=index+1%></td>
+                                            <td class="center">
+                                            	<%=item.nickName%>
+                                            </td>
+                                            <td class="center">
+                                            	<%=item.userName%>
+                                            </td>
+                                            <td class="center">
+                                            	<%=item.starName%>
+                                            </td>
+                                            <td class="center">
+                                            	<%=item.albumName%>
+                                            </td>
+                                            <td class="center">
+                                            	<%if(item.addressState == 1){%>
+                                            		<a href="/admin/getAddressforUser?userId=<%=item.userId%>&flag=3">有</a>
+                                            	<%}else{%>
+                                            		无
+                                            	<%}%>	
+                                            </td>
+                                            <td class="center">
+                                            	<%=item.createDate%>
+                                            </td>
+                                            <td class="center">
+                                            	<select class="form-control" name="isFinish">
+                                            		<%if(item.isFinish == 0){%>
+													<option value="0" selected="selected">待确认</option>
+													<%}else{%>
+													<option value="0">待确认</option>
+													<%}%>	
+													<%if(item.isFinish == 1){%>
+													<option value="1" selected="selected">已准备</option>
+													<%}else{%>
+													<option value="1">已准备</option>	
+													<%}%>	
+													<%if(item.isFinish == 2){%>
+													<option value="2" selected="selected">已发送</option>
+													<%}else{%>
+													<option value="2" >已发送</option>
+													<%}%>	
+												</select>
+                                            </td>
+                                            <td class="center">
+                                                <button class="btn btn-success btn-xs" type="submit">
+                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
+                                                                                                                                                             保存
+                                                </button>
+                                                 <a class="btn btn-danger btn-xs" name="delete-exchange" id="<%=item.exchangeNo%>" href="javascript:void(0)">
+                                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                                  	  删除
+                                                </a>
+                                            </td>
+                                        </tr>
+                                         </form>
+                                        <%})%>
+                                        
+                                    </tbody>
+                                </table>
+                                <nav>
+                                    <ul class="pager">
+                                        <li class="<%=(currentPage==1)?'disabled':''%>"><a href="/admin/user_exchange_list?pageIndex=<%=currentPage-1%>&pageSize=10%>&startDate=<%=params.startDate%>&endDate=<%=params.endDate%>&postChoose=<%=params.postChoose%>&keyWord=<%=params.keyWord%>&state=<%=params.state%>&order=<%=params.order%>">上一页</a></li>
+                                        <li>第<%=currentPage%>页</li>
+                                        <li ><a href="/admin/user_exchange_list?pageIndex=<%=(parseInt(currentPage)+1)%>&pageSize=10%>&startDate=<%=params.startDate%>&endDate=<%=params.endDate%>&postChoose=<%=params.postChoose%>&keyWord=<%=params.keyWord%>&state=<%=params.state%>&order=<%=params.order%>">下一页</a></li>
+                                        <li>共<%=(totalCount%10==0?totalCount/10:Math.ceil(totalCount/10))%>页</li>
+                                        <li>共<%= (totalCount)%>条</li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ../layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/user-main.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

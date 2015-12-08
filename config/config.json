@@ -1,0 +1,51 @@
+{
+	"db": {
+		"dbhost": "112.124.109.194",
+		"port": 3306,
+		"username": "root",
+		"password": "lofti2014@",
+		"database": "handouer_cms",
+		"charset": "utf-8",
+		"connectionLimit": 50,
+		"supportBigNumbers": true,
+		"bigNumberStrings": true
+	},  	
+  	"redisDB": {
+	  "dbhost": "127.0.0.1",
+	  "port": 6379,
+	  "password": "lofti2014@"
+  	},
+  	"qiniu":{
+	  "download_website": "http://7mj4n6.com2.z0.glb.qiniucdn.com/",
+	  "kp_site": "http://7xl3sp.com2.z0.glb.qiniucdn.com/",
+	  "defaul_gift_img": "C678345D-5210-0001-A3B3-ADF0129B1E25.png?imageView2/2/h/200",
+	  "defaul_user_head": "icon_nv.png?imageView2/2/h/200",
+	  "defaul_center_background": "toptubg.png"
+	},
+  	"HTTP_STATUS": {
+	  "OK": 200,
+	  "CREATE": 201,
+	  "NO_CONTENT": 204,
+	  "NOT_MODIFIED": 304,
+	  "BAD_REQUEST": 400,
+	  "UNAUTHORIZED": 401,
+	  "FORBIDDEN": 403,
+	  "NOT_FOUND": 404,
+	  "UNPROCESSABLE_ENTITY": 422,
+	  "SERVER_ERROR": 500
+	},
+  	"url_handouer":"http://www.handouer.cn/wx",
+    "portal_base_url":"http://www.handouer.cn/",
+    "share_url_text":"http://192.168.1.241:3000/lofti/api/share/",
+    "share_url_prod":"http://nodeapi.handouer.cn:9000/lofti/api/share/",
+	"redis_cache":{
+	  "news_list":{
+		"key":"news_list",
+		"expires":600
+	  },
+	  "portal_news_list":{
+		"key":"portal_news_list_",
+		"expires":600
+	  }
+	}
+}

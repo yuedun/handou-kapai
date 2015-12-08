@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <% include includes/headmeta.html %>
+    <title>韩豆韩粉社区|掌上韩流 聚逗韩趣|视频</title>
+    <!-- 生产环境使用 -->
+     <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css"> 
+    <!--<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+      <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/home.min.css">
+</head>
+
+<body>
+    <% include includes/header.html %>
+    <div class="container">
+        <div class="row">
+        	<ol class="breadcrumb">
+			  <li><a href="/portal/video">返回视频列表</a></li>
+			  <li>视频详情</li>
+			</ol>
+			<!-- 视频预览区 -->    	
+            <div class="col-md-8 video_play">
+            	<iframe height=498 width=780 src="<%=video.videoAddress%>" frameborder=0 allowfullscreen></iframe>
+            	<div class="duoshaoComment">
+            		<br />
+            		<section>
+	                    <div class="ds-share" data-thread-key="<%=video.videoId%>" data-title="<%=video.videoDesc%>" data-images="<%=video.picture%>" data-content="<%=video.videoDesc%>" data-url="http://www.handouer.cn/portal/videoDetails/?videoId=<%=video.videoId%>">
+	                        <div class="ds-share-inline">
+	                            <ul  class="ds-share-icons-16">
+	                                <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+	                                <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+	                                <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+	                                <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+	                                <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+	                            </ul>
+	                            <div class="ds-share-icons-more"></div>
+	                        </div>
+	                    </div>
+	                    <header>
+	                        <h3>评论</h3>
+	                    </header>
+	                    <hr/>
+	                    <!-- 多说评论框 start -->
+	                    <div class="ds-thread" data-thread-key="<%=video.videoId%>" data-title="<%=video.videoDesc%>" data-url="http://www.handouer.cn/portal/videoDetails/?videoId=<%=video.videoId%>"></div>
+	                    <!-- 多说评论框 end -->
+	                    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	                    <script type="text/javascript">
+	                        var duoshuoQuery = {short_name:"handou"};
+	                        (function() {
+	                            var ds = document.createElement('script');
+	                            ds.type = 'text/javascript';ds.async = true;
+	                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	                            ds.charset = 'UTF-8';
+	                            (document.getElementsByTagName('head')[0]
+	                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+	                        })();
+	                    </script>
+	                    <!-- 多说公共JS代码 end -->
+	                </section>
+            	</div>
+            </div>
+            <!-- 视频列表区 -->
+            <aside class="col-md-4">
+            	<input type="hidden" value="<%=flag%>" title="标识位"/>
+            	<div class="videoTag_list">
+            		<h4>相关视频</h4>
+            		<%videolist.forEach(function(item, index){%>
+            			<%if(item.videoId == flag){%>
+            				<div class="video_list_item" style="background-color:gainsboro;">
+		            			<div class="video_item_left">
+		            				<a href="/portal/videoDetails?videoId=<%=item.videoId%>">
+		            					<img src="<%=item.picture%>" />
+		            				</a>
+		            			</div>
+		            			<div class="video_item_right">
+		            				<div class="video_right_top">
+		            					<a href="/portal/videoDetails?videoId=<%=item.videoId%>">
+		            						<%=item.videoDesc%>
+		            					</a>
+		            				</div>
+		            				<div class="video_right_bottom">
+		            					<i class="glyphicon glyphicon-play-circle playCount"> <%=item.readCount%></i>
+		            					<i class="glyphicon glyphicon-thumbs-up likeCount"> <%=item.likeCount%></i>
+		            				</div>
+		            			</div>
+		            		</div>
+            			<%} else {%>
+            				<div class="video_list_item">
+		            			<div class="video_item_left">
+		            				<a href="/portal/videoDetails?videoId=<%=item.videoId%>">
+		            					<img src="<%=item.picture%>" />
+		            				</a>
+		            			</div>
+		            			<div class="video_item_right">
+		            				<div class="video_right_top">
+		            					<a href="/portal/videoDetails?videoId=<%=item.videoId%>">
+		            						<%=item.videoDesc%>
+		            					</a>
+		            				</div>
+		            				<div class="video_right_bottom">
+		            					<i class="glyphicon glyphicon-play-circle playCount"> <%=item.readCount%></i>
+		            					<i class="glyphicon glyphicon-thumbs-up likeCount"> <%=item.likeCount%></i>
+		            				</div>
+		            			</div>
+		            		</div>
+            			<%}%>
+					<%})%>
+	            </div>
+            </aside>
+        </div>
+    </div>
+    <% include includes/footer.html %>
+</body>
+</html>

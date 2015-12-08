@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>新增豆币加倍</title>
+    <% include ../layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ../layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ../layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>新增豆币加倍</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <form class="form-horizontal" action="/admin/bean-double-add" id="fm" method="post" onsubmit="return checkBeanDoubleForm()">
+	                                <div class="form-group" id="div_1">
+	                                        <label for="beanStarTime" class="col-sm-2 control-label">起始日期</label>
+	                                        <div class="col-sm-3">
+	                                            <input type="text" class="form-control" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})" id="beanStarTime" name="beanStarTime">
+	                                        </div>
+	                                    </div>
+                                   <div class="form-group" id="div_2">
+                                        <label for="beanEndTime" class="col-sm-2 control-label">结束日期</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})" id="beanEndTime" name="beanEndTime">
+                                        </div>
+                                    </div>   
+                                   <div class="form-group">
+	                               	  <label for="type" class="col-sm-2 control-label">加倍类型:</label>
+	                                    <div class="col-sm-10">
+	                                      <div class="radio">
+	                                        <label>
+	                                          <input type="radio" checked="checked" name="type" value="post">发帖
+	                                        </label>
+	                                        &nbsp;&nbsp;&nbsp;&nbsp;
+	                                         <label>
+	                                          <input type="radio"  name="type" id="" value="share">分享
+	                                        </label>
+		                                      &nbsp;&nbsp;&nbsp;&nbsp;
+		                                     <label>
+		                                      <input type="radio"  name="type" id="" value="sign">签到
+		                                    </label>
+	                                      </div>
+	                                    </div>
+	                                </div>
+	                                <div class="form-group" >
+	                               	  <label for="beanMultiple" class="col-sm-2 control-label">豆币倍数:</label>
+	                                    <div class="col-sm-10" >
+	                                      <div class="radio" >
+	                                        <label class="col-sm-1">
+	                                          <input type="radio" checked="checked" class="col-sm-1" name="beanMultiple" value="2">2倍
+	                                        </label>
+	                                         &nbsp;&nbsp;&nbsp;&nbsp;
+	                                         <label class="col-sm-1">
+	                                          <input type="radio"  class="col-sm-1" name="beanMultiple" id="" value="3">3倍
+	                                        </label>
+		                                      &nbsp;&nbsp;&nbsp;&nbsp;
+		                                     <label class="col-sm-1">
+		                                      <input type="radio" class="col-sm-1" name="beanMultiple" id="" value="4">4倍
+		                                    </label>
+		                                    &nbsp;&nbsp;&nbsp;&nbsp;
+		                                     <label class="col-sm-1">
+		                                      <input type="radio" class="col-sm-1" name="beanMultiple" id="" value="5">5倍
+		                                    </label>
+		                                    &nbsp;&nbsp;&nbsp;&nbsp;
+		                                     <label class="col-sm-3" id="div_3">
+		                                      <input type="radio" class="col-sm-1" name="beanMultiple" id="beanMultiple" value="0">其他
+		                                      	 <input type="text" style="width: 40px;" disabled="disabled"  name="beanMultipleValue" id="beanMultipleValue" >
+		                                    </label>
+	                                      </div>
+	                                    </div>
+	                                </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-success">保存</button>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href="/admin/bean-double-list" class="btn btn-default">返回</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ../layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/user-main.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

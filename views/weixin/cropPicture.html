@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control " content="no-cache,must-revalidate">
+    <meta name="viewport"
+          content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <title>狗血大片</title>
+    <link href="/stylesheets/handouerindex.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<canvas id="myCanvas"></canvas>
+<div class="inputcontent">
+     <div class="inputtitle">中文</div>
+     <textarea id="zh">这是一个神奇的地方</textarea>
+     <div class="inputtitle">韩文<span style="font-size:13px"><button onclick="fanyi()">中译韩</button> </span></div>
+     <textarea id="kor">이것은 하나의 신기한 곳</textarea>
+</div>
+<div class="taici" align="center">
+    <button onclick="shuaxintaici();">刷新台词</button>
+</div>
+<div class="bottomcontent">
+     <button class="btn" id="finish">完成</button>
+</div>
+<div class="moretaici">
+    <ul>
+        <%- include taici.html%>
+    </ul>
+</div>
+
+<img src="" id="test"/>
+
+<script type="text/javascript" src="/javascripts/zepto.min.js"></script>
+<script type="text/javascript" src="/javascripts/touch.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: 'wx87143a579a2c323b', // 必填，公众号的唯一标识
+        timestamp: '<%= sign.timestamp%>', // 必填，生成签名的时间戳
+        nonceStr: '<%= sign.nonceStr%>', // 必填，生成签名的随机串
+        signature: '<%= sign.signature%>',// 必填，签名，见附录1
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'hideMenuItems',
+            'showMenuItems',
+            'hideAllNonBaseMenuItem',
+            'showAllNonBaseMenuItem',
+            'translateVoice',
+            'startRecord',
+            'stopRecord',
+            'onRecordEnd',
+            'playVoice',
+            'pauseVoice',
+            'stopVoice',
+            'uploadVoice',
+            'downloadVoice',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'getNetworkType',
+            'openLocation',
+            'getLocation',
+            'hideOptionMenu',
+            'showOptionMenu',
+            'closeWindow',
+            'scanQRCode'
+        ] // 必填，需要使用的JS接口列表
+    });
+
+</script>
+<script src="/javascripts/weixinFunction.js"></script>
+<script>
+	  Zepto(function($){
+		   $('#finish').tap(function() {
+			   var r = window._canvas.canvas.toDataURL("image/png");
+			   $('#test').attr('src', r);
+		   });
+		   
+      });
+      //自动翻译
+      function fanyi(){
+          var zh = $("#zh");
+          $.post('/weixin/fanyi', {content: $(zh).val()}, function(data){
+              if($(zh).val() ===""){
+                  $("#kor").val("");
+                  return;
+              }
+              $("#kor").val(data.trans_result[0].dst);
+          },'json');
+      }
+      //刷新台词
+      var taiciIndex = 0;
+      function shuaxintaici(){
+          var moretaici = $(".moretaici>ul>li");
+          $("#zh").val(moretaici[taiciIndex].textContent);
+          changeChineseBox(moretaici[taiciIndex].textContent);
+          taiciIndex++;
+          $("#kor").val(moretaici[taiciIndex].textContent);
+          changeKoreanBox(moretaici[taiciIndex].textContent);
+          taiciIndex++;
+          if(taiciIndex >moretaici.length-1){
+              taiciIndex=0;
+          }
+      }
+      //替换文字
+      var changeChineseBox = function(value) {
+    	  if(value.length > 20) {
+    		  value = value.substring(0, 20) + '...';
+    	  }
+    	  window._canvas._canvasContext.fillStyle = '#fff';
+    	  window._canvas._canvasContext.fontFamily = '微软雅黑';
+    	  window._canvas._canvasContext.padding = 15;
+    	  window._canvas._canvasContext.fillText(value, 10, window._canvas.image.height - 50, 1000);
+      };
+      
+      var changeKoreanBox = function(value) {
+    	  if(value.length > 20) {
+    		  value = value.substring(0, 20) + '...';
+    	  }
+    	  window._canvas._canvasContext.fillStyle = '#fff';
+    	  window._canvas._canvasContext.fontFamily = '微软雅黑';
+    	  window._canvas._canvasContext.padding = 15;
+    	  window._canvas._canvasContext.fillText(value, 10, window._canvas.image.height - 30, 1000);
+      };
+	   
+      // 参数，最大高度
+  	var MAX_HEIGHT = 300;
+  	// 渲染
+  	function render(src) {
+  		window._canvas = {};
+  		var availWidth = window.screen.availWidth;
+  		// 创建一个 Image 对象
+  		var image = new Image();
+  		    // 绑定 load 事件处理器，加载完成后执行
+  			var canvas = document.getElementById("myCanvas");
+  		    image.onload = function() {
+  			// 获取 canvas DOM 对象
+  			// 如果高度超标
+  			if(image.width > availWidth) {
+  				
+  				var baseRatio = availWidth / image.width;
+  				
+  				// 宽度等比例缩放 *=
+  				image.width = availWidth;
+  				image.height = image.height * baseRatio;
+  			}
+  			// 获取 canvas的 2d 环境对象,
+  			// 可以理解Context是管理员，canvas是房子
+  			var ctx = canvas.getContext("2d");
+  			// canvas清屏
+  			ctx.clearRect(0, 0, canvas.width, canvas.height);
+  			// 重置canvas宽高
+  			canvas.width = image.width;
+  			canvas.height = image.height;
+  			// 将图像绘制到canvas上
+  			ctx.drawImage(image, 0, 0, image.width, image.height);
+  			
+  			// !!! 注意，image 没有加入到 dom之中
+  			window._canvas._canvasContext = ctx;
+  			};
+  			image.crossOrigin = 'anonymous';
+  		// 设置src属性，浏览器会自动加载。
+  		// 记住必须先绑定事件，才能设置src属性，否则会出同步问题。
+  		image.src = src;
+  		window._canvas.image = image;
+  		window._canvas.canvas = canvas;
+  	};
+  	
+  	render("<%=img%>");
+      
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+.webuploader-container {
+	position: relative;
+}
+.webuploader-element-invisible {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px,1px,1px,1px);
+}
+.webuploader-pick {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	background: #00b7ee;
+	padding: 10px 15px;
+	color: #fff;
+	text-align: center;
+	border-radius: 3px;
+	overflow: hidden;
+}
+.webuploader-pick-hover {
+	background: #00a2d4;
+}
+
+.webuploader-pick-disable {
+	opacity: 0.6;
+	pointer-events:none;
+}
+
+/** ************自定义样式************ */
+
+/** 设置包裹图片信息的div容器样式 */
+.uploader-list{
+	width: 640px;
+}
+
+.item{
+	background-color: gainsboro;
+	margin: 5px;
+	padding: 0;
+	width: 155px;
+	height: 160px;
+	/* 将图片设置成横排 */
+	display: inline-block;    
+}
+
+/** 设置标题样式 */
+.item h5{
+	background-color: #00B7EE;
+	word-break:keep-all;/* 不换行 */
+	white-space:nowrap; /* 不换行 */
+	overflow:hidden;	/* 内容超出宽度时隐藏超出部分的内容 */
+	text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ; 需与overflow:hidden;一起使用。 */
+	margin: 0;
+	padding: 0;
+	width: 155px;
+	height: 20px;
+	color: white;
+}
+
+/** 设置静态图片样式 */
+.imageStarLogo{
+	width: 155px;
+	height: 120px;
+	-webkit-transition: .5s;
+	-moz-transition: .5s;
+	transition: .5s;
+	z-index: 1;
+}
+
+/** 设置鼠标悬停样式 */
+.imageStarLogo:hover{
+	-webkit-transform: scale(1.5);
+	-moz-transform: scale(1.5);
+	transform: scale(1.5);
+	box-shadow: 10px 10px 15px #CCCCCC;
+	z-index: 2;
+}
+
+/** 设置删除按钮样式 */
+.item .delpic{
+	background-color: grey;
+	/* 将内联元素转换成块级元素 */
+	display: block;
+	width: 155px;
+	height: 20px;
+	color: black;
+	text-align: center;
+	line-height: 20px;
+}
+
+/** 设置超链接样式 */
+a:link,a:visited{
+	text-decoration: none;
+	outline: none;
+}
+
+/* 语音样式*/
+.voice-item{
+	margin: 5px;
+	padding: 0;
+	width: 100%;
+	display: inline-block;
+}

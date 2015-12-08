@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>邀请码列表</title>
+    <% include ./layout/headmeta.html %>
+</head>
+
+<body>
+<!-- topbar starts -->
+<% include ./layout/topbar.html %>
+<!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+        <!-- left menu starts -->
+        <% include ./layout/leftmenu.html %>
+        <!-- left menu ends -->
+        <!--/span-->
+        <!-- left menu ends -->
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+                <ul class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Tables</a></li>
+                </ul>
+            </div>
+            <!--/row-->
+            <div class="row">
+                <div class="box col-md-12">
+                    <div class="box-inner">
+                        <div class="box-header well" data-original-title="">
+                            <h2><i class="glyphicon glyphicon-user"></i>邀请码列表</h2>
+                            <div class="box-icon">
+                                <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="box col-md-12">
+                            <form class="form-inline" action="/admin/invitationCodeList" method="get">
+
+                                <div class="form-group">
+                                    <label for="choose">按:</label>
+                                    <select class="form-control" id="choose" name="choose" >
+                                        <option>选择条件</option>
+                                        <option value="nickName" >用户名</option>
+                                        <option value="phone" >手机号</option>
+                                        <option value="code" >邀请码</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="sr-only" for="keyword" ></label>
+                                    <input class="form-control" id="keyword" name="keyword"  type="text" placeholder="请输入条件内容">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="order">选择排序:</label>
+                                    <select class="form-control" id="order" name="order" >
+                                        <option>选择排序</option>
+                                        <option value="timeasc" >时间正顺</option>
+                                        <option value="timedesc" >时间倒顺</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-default">搜索</button>
+                            </form>
+                        </div>
+
+                        <div class="box col-md-12">
+                            <p>
+                                <a class="btn btn-default btn-sm" href="">
+                                    <i class="glyphicon glyphicon-check"></i>全选
+                                </a>
+                                <a class="btn btn-default btn-sm" href="">
+                                    <i class="glyphicon glyphicon-trash"></i>批量删除
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="box-content">
+                            <table class="table table-striped table-bordered responsive" id="groupList">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>用户名</th>
+                                    <th>手机号</th>
+                                    <th>邀请码</th>
+                                    <th>使用次数</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <%invitationCodeList.forEach(function(item, index){ %>
+                                        <tr>
+                                            <td>
+                                                <label><input value="<%= item.invitationCodeId%>" type="checkbox"/>  <%= index+1%></label>
+                                            </td>
+                                            <td class="center"><%=item.nickName%></td>
+                                            <td class="center"><%=item.phone%></td>
+                                            <td class="center">
+                                                <!-- data-id 自定义属性 -->
+                                                <a class="" name="icEdit" data-id="<%=item.invitationCodeId%>" href="javascript:void(0)">
+                                                    <%=item.code%>
+                                                </a>
+                                            </td>
+                                            <td class="center"><%=item.useCount%></td>
+                                            <td class="center">
+                                                <%if(item.state == 0){%>
+                                                    <span class="label-default label label-danger">冻结</span>
+                                                <%} else {%>
+                                                    <span class="label-success label label-success">激活</span>
+                                                <%}%>
+                                            </td>
+                                            <td class="center">
+                                                <a class="btn btn-danger" name="icDel" id="<%=item.invitationCodeId%>" href="javascript:void(0)">
+                                                    <i class="glyphicon glyphicon-trash icon-white"></i> 删除
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <%})%>
+                                    <form class="form-inline" action="/admin/invitationCodeAdd" method="post">
+                                        <tr>
+                                            <td class="center"></td>
+                                            <td class="center">
+                                                <input class="form-control" name="NickName" type="text">
+                                            </td>
+                                            <td class="center">
+                                                <input class="form-control" name="Phone" type="text">
+                                            </td>
+                                            <td class="center">
+                                                <input class="form-control" name="Code" type="text">
+                                            </td>
+                                            <td class="center">0</td>
+                                            <td class="center"></td>
+                                            <td class="center">
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="glyphicon glyphicon-floppy-disk icon-white"></i> 保存
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </form>
+                                </tbody>
+                            </table>
+                            <nav>
+                                <ul class="pager">
+                                    <li class="<%=(currentPage==1)?'disabled':''%>"><a href="/admin/invitationCodeList?pageIndex=<%=currentPage-1%>&pageSize=10&choose=<%=params.choose%>&keyword=<%=params.keyword%>&order=<%=params.order%>">上一页</a></li>
+                                    <li>第<%=currentPage%>页</li>
+                                    <li><a href="/admin/invitationCodeList?pageIndex=<%=(parseInt(currentPage)+1)%>&pageSize=10&choose=<%=params.choose%>&keyword=<%=params.keyword%>&order=<%=params.order%>">下一页</a></li>
+                                    <li>共<%= (Math.ceil(totalCount/10))%>页</li>
+                                    <li>共<%= (totalCount)%>条</li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+            <!-- content ends -->
+        </div>
+        <!--/#content.col-md-0-->
+    </div>
+    <!-- 中间空白区 starts  -->
+    <div class="row">
+
+    </div>
+    <!-- 中间空白区 ends  -->
+    <hr />
+    <!-- 底部版权信息 starts  -->
+    <% include ./layout/footer.html %>
+    <!-- 底部版权信息 ends-->
+</div>
+<!-- requirejs导入需要的js插件以及自定义模块 -->
+<script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/message-main.js"></script>
+<!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

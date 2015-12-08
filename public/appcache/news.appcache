@@ -1,0 +1,11 @@
+CACHE MANIFEST
+# v1 - 2015-06-29 11:00
+# 资讯列表缓存列表，修改日期或此文件内容可以更新浏览器缓存.
+CACHE:
+/stylesheets/news.css
+/stylesheets/swiper3.07.min.css
+/javascripts/home/swiper3.07.jquery.min.js
+
+#必须从网络请求的内容
+NETWORK:
+/lofti/api/news

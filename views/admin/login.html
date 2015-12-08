@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<% include ./layout/headmeta.html %>
+		<title>韩豆咖派后台管理系统</title>
+	</head>
+	<body>
+		<div class="ch-container">
+		    <div class="row">
+			    <div class="row">
+			        <div class="col-md-12 center login-header">
+			            <h2>韩豆咖派后台管理系统</h2>
+			        </div>
+			        <div class="col-sm-offset-7 col-md-10">
+			            <a href="/outside-admin/orglogin">组织外部后台入口</a>
+			        </div>
+			        <!--/span-->
+			    </div><!--/row-->
+			    <div class="row">
+			        <div class="well col-md-5 center login-box">
+			            <div class="alert alert-info" id="warn">请用您的用户名和密码登录</div>
+			            <form class="form-horizontal" id="loginform" method="post" onsubmit="return false;">
+			                <fieldset>
+			                    <div class="input-group input-group-lg">
+			                        <span class="input-group-addon"><i class="glyphicon glyphicon-user red"></i></span>
+			                        <input type="text" id="username" name="userName" class="form-control" placeholder="用户名" value="">
+			                    </div>
+			                    <div class="clearfix"></div><br>
+			
+			                    <div class="input-group input-group-lg">
+			                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock red"></i></span>
+			                        <input type="password" id="password" name="passWord" class="form-control" placeholder="密码" value="">
+			                    </div>
+			                    <div class="clearfix"></div><br>
+			                    <div class="input-group input-group-lg col-md-6 col-xs-6" style="float: left;">
+			                        <span class="input-group-addon"><i class="glyphicon glyphicon-flag red"></i></span>
+			                        <input type="text" id="identifyingCodeWord" name="identifyingCode" class="form-control" placeholder="验证码" value="">
+			                    </div>
+			                     <div class="input-group input-group-lg col-xs-4">
+			                   		 <a href="javascript:void(0)" id="identifyingCode"><canvas id="mycanvas" style="height: 50px;"></canvas></a>
+			                   	</div>	 
+			                    <div class="clearfix"></div>
+			                    <div class="clearfix"></div>
+			
+			                    <p class="center col-md-5">
+			                        <input type="submit" id="login" class="btn btn-primary" value="登陆">
+			                    </p>
+			                </fieldset>
+			            </form>
+			        </div>
+			    </div>
+			</div>
+		</div>
+		<!-- requirejs导入需要的js插件以及自定义模块 -->
+		<script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/user-main.js"></script>
+	</body>
+</html>

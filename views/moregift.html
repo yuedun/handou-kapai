@@ -1,0 +1,19 @@
+<% list.forEach(function(item){%>
+<div class="gift-msg bg-white">
+    <div class="left">
+        <figure>
+            <img src="<% if(item.picture_path == null || item.picture_path == ''){ %>
+                                                            <%= download_website + defaul_gift_img%>
+                                                            <%}else{%><%= download_website+item.picture_path%><%}%>">
+        </figure>
+    </div>
+    <div class="center">
+        <p><strong class="base-color gift-name"><%= item.gift_name%></strong></p>
+        <p class="gift-score-p"><strong class="gift-score"><%= item.integral%></strong>积分</p>
+    </div>
+    <div class="right">
+        <a class="btn btn-info" href="javascript:void(0);" onclick="exchange('<%= user.user_id%>','<%= item.integral%>', '<%= item.id%>');">兑换</a>
+        <%if(item.integral > (user.user_info.user_integral - freezeIntegral)){%><p class="lack-score-color">还差<%=(item.integral - user.user_info.user_integral + freezeIntegral)%>分</p><%}%>
+    </div>
+</div>
+<% })%>

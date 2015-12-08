@@ -1,0 +1,218 @@
+body,ul,li,h1,h2,h3,h4,h5,h6 {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+body {
+    font-size: 12px;
+    -webkit-user-select: none;
+    -webkit-text-size-adjust: none;
+    font-family: "Helvetica Neue",Helvetica,Tahoma,Arial,sans-serif;
+    background-color: #343434;
+}
+.backgroup-color{background-color: #B4ABAB}
+#container{position: relative;padding-bottom: 20px;}
+.font-color-white {
+    color: #FFF;
+}
+#selectNew {
+    float: right;
+    margin-top: 5px;
+}
+.backgroup-color-dark {
+    background-color: #444;
+}
+.backgroup-color-white {
+    background-color: #F7F7F7;
+}
+.item-back-color {
+    background-color: #343434;
+}
+.new {
+    margin: 5px 5px;
+    padding: 0 5px;
+    height: 80px;
+    position: relative;
+    border-radius: 3px;
+}
+.kp-new {
+    margin: 5px 0;
+    padding: 0 5px;
+    height: 80px;
+    position: relative;
+    border-radius: 3px;
+}
+.new a {
+    text-decoration: none;
+    display: block;
+    color: inherit;
+}
+.kp-new a {
+    text-decoration: none;
+    display: block;
+    color: inherit;
+}
+.new-pic {
+    width: 16%;
+    height: 90%;
+    margin-top:5px;
+    display: inline-block;
+}
+.new-pic img{
+    border-radius: 5px;
+}
+.new-content {
+    width: 80%;
+    height: 90%;
+    position: absolute;
+    left: 60px;
+    top: 5px;
+}
+.ellipsis {
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.new-content > * {
+    margin-bottom: 4px;
+}
+.new-content > h3 {
+    margin-top: 0;
+}
+.news-desc {
+    margin-top: 3px;
+    padding-right: 5px;
+}
+.new-date {
+    position: absolute;
+    margin-top: 0;
+}
+.font-color-huise {
+    color: #D3D3D3;
+}
+.news-date > .font-color-huise:last-child {
+    float: right;
+    padding-right: 20px;
+}
+.filter-title {
+    margin: 10px;
+}
+.filter-title ul {
+    list-style: none;
+    display: block;
+    line-height: 20px;
+}
+.filter-title ul li {
+    display: inline-block;
+    width: 25%;
+}
+#submit button {
+    height: 30px;
+    width: 100%;
+}
+.new > img {
+    width:20px;
+    margin-top: 5px;
+    margin-left: 3px;
+    position: absolute;
+}
+.kp-new > img {
+    width:20px;
+    margin-top: 5px;
+    margin-left: 3px;
+    position: absolute;
+}
+#morenews{
+    display: block;
+    width: 90%;
+    height: 35px;
+    margin: 5px auto;
+    background-color: #FF5D5D;
+    border: 1px solid #CF2020;
+    border-radius: 5px;
+    text-shadow: 1px 1px 1px #666;
+    color: #FFF !important;
+    font-size: 14px;
+}
+.swiper-slide {
+    text-align: center;
+    min-height: 160px;
+}
+.swiper-slide > img{
+    min-height: 160px;
+    max-height: 180px;
+}
+.swiper-container img {
+    width: 100%;
+}
+.swiper-slides-caption {
+    text-align: left;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size: 16px;
+    height: 70px;
+    width: 100%;
+    margin-bottom: 0;
+    opacity: 0.5;
+    background-image: -moz-linear-gradient(center top , rgba(18, 14, 14, 0.17), #0E0D0D);
+    /* Firefox */
+
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #2E2E2E), color-stop(1, #0E0D0D));
+    /* Saf4+, Chrome */
+
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#2E2E2E', endColorstr='#0E0D0D', GradientType=0);
+    /* IE*/
+}
+.swiper-slides-caption .slides-order,
+.swiper-slides-caption .slides-title,
+.swiper-slides-caption .slides-content {
+    position: absolute;
+    height: 70px;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: normal;
+}
+.swiper-slides-caption .slides-order {
+    width: 15%;
+}
+.page-num,
+.page-sept,
+.total-page {
+    position: absolute;
+}
+.slides-order .page-sept {
+    height: 70%;
+    margin-top: 15px;
+    margin-left: 8px;
+}
+.slides-order .page-num,
+.slides-order .total-page,
+.slides-order .page-sept{
+    height: 30%;
+    width: 60%;
+}
+.total-page {
+    top: 38px;
+    left: 5px;
+}
+.swiper-slides-caption .slides-title {
+    left: 55px;
+    width: 80%;
+    font-size: 20px;
+    text-decoration: none;
+    top: 5px;
+}
+.swiper-slides-caption .slides-content {
+    left: 55px;
+    top: 38px;
+    width: 80%;
+    font-size: 16px;
+}
+/* 咖派样式*/
+.i-body{background-color: #E7E7E7}
+.kp-item{background-color: white}
+.kp-font-color{color: #494949}

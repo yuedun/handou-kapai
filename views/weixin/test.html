@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <title>图片合成</title>
+    <style type="text/css">
+    body {
+    	background-color:#000;
+    	padding:20px 0;
+    }
+    .show {
+	  max-height: 400px;
+	  position: relative;
+	}
+    	.show img {
+    		  max-height: 400px;
+			  margin: 0 auto;
+			  display: block;
+    	}
+    	.chinese, .korean {
+    		text-align:center;
+    		width: 300px;
+    		position:relative;
+    		left: 50%;
+    		margin-left: -150px;
+    		font-size: 20px;
+    		z-index: 100;
+    		color:#fff
+    	}
+    	.chinese {
+    		top: -80px;
+    	}
+    	.korean {
+    		top: -60px;
+    	}
+    </style>
+</head>
+<body>
+    <div class="show">
+        <img src="http://handou.qiniudn.com/FoxKmw0gcLTEMjyEpDTj1GlbhcyV"/>
+        <div class="chinese"></div>
+        <div class="korean"></div>
+    </div>
+    
+    <button id="finish">Change</button>
+    <div class="show"><img src="http://handou.qiniudn.com/FoxKmw0gcLTEMjyEpDTj1GlbhcyV?watermark/3/text/6L-Z5piv5LiA5Liq56We5aWH55qE5Zyw5pa5/fontsize/800/gravity/South/dy/120/fill/I2ZmZg==/text/6L-Z5piv5LiA5Liq56We5aWH55qE5Zyw5pa5/fontsize/800/gravity/South/dy/60/fill/I2ZmZg==" /></div>
+<script type="text/javascript" src="/javascripts/zepto.min.js"></script>
+<script type="text/javascript" src="/javascripts/touch.js"></script>
+<script type="text/javascript">
+Zepto(function($){
+	   $('#finish').tap(function() {
+		   
+		   $('.chinese').text('这是一个神奇的地方');
+		   $('.korean').text('이것은하나의신기한곳');
+	   });
+	  /*  var maxWidth = window.screen.availWidth;
+	   $('.show').width(maxWidth); */
+});
+</script>
+</body>
+</html>

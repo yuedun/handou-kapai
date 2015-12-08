@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="keywords" content="韩豆,EXO,韩粉社区,最新韩剧,韩国综艺,韩国电视剧,韩流快讯">
+    <meta name="description" content="<%=news.summary_zh || news.summary_kor%>">
+    <!-- webkit内科渲染 -->
+    <meta name="renderer" content="webkit">
+    <!-- 百度站长工具验证及qq登录验证 -->
+    <meta name="baidu-site-verification" content="9QLlCckvty" />
+    <meta property="qc:admins" content="1457734614601647552636" />
+    <!-- 禁止百度手机打开时转码 -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title><%=news.title_zh || news.summary_kor%></title>
+    <!-- 生产环境使用 -->
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/home.min.css">
+</head>
+
+<body class="news-page">
+    <% include includes/header.html %>
+    <div class="news-show">
+        <div class="container">
+            <div class="row">
+                <article class="col-md-9 news-detail-background">
+                    <ol class="breadcrumb news-detail-background">
+                        <li><a href="javascript:window.history.back()">返回资讯列表</a></li>
+                        <li>资讯详情</li>
+                    </ol>
+                    <header class="text-center">
+                        <h1 class="h2"><strong><%=news.title_zh%></strong></h1>
+                        <p>
+                            <span>发布: </span><strong><%= news.release_date || news.create_date%></strong>
+                            <span>来源: </span><strong>韩豆整理</strong>
+                            <span>阅读：<strong><%=news.read_count%></strong></span>
+                            <input id="newsId" type="hidden" value="<%=news.news_id%>"/>
+                        </p>
+                    </header>
+                    <div class="content-body">
+                        <p><%-news.description_zh%></p>
+                    </div>
+                    <section>
+                        <div class="ds-share" data-thread-key="<%=news.news_id%>" data-title="<%=news.title_zh%>" data-images="<%=download_website+news.picture_mini%>" data-content="<%=news.summary_zh%>" data-url="http://www.handouer.cn/portal/news/<%=news.news_id%>">
+                            <div class="ds-share-inline">
+                                <ul  class="ds-share-icons-16">
+                                    <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+                                    <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                                    <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+                                    <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+                                    <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                                </ul>
+                                <div class="ds-share-icons-more">
+                                </div>
+                            </div>
+                        </div>
+                        <header>
+                            <h3>评论</h3>
+                        </header>
+                        <hr/>
+                        <!-- 多说评论框 start -->
+                        <div class="ds-thread" data-thread-key="<%=news.news_id%>" data-title="<%=news.title_zh%>" data-url="http://www.handouer.cn/portal/news/<%=news.news_id%>"></div>
+                        <!-- 多说评论框 end -->
+                        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+                        <script type="text/javascript">
+                            var duoshuoQuery = {short_name:"handou"};
+                            (function() {
+                                var ds = document.createElement('script');
+                                ds.type = 'text/javascript';ds.async = true;
+                                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                                ds.charset = 'UTF-8';
+                                (document.getElementsByTagName('head')[0]
+                                || document.getElementsByTagName('body')[0]).appendChild(ds);
+                            })();
+                        </script>
+                        <!-- 多说公共JS代码 end -->
+                    </section>
+                </article>
+                <aside class="col-md-3">
+                    <div class="aside-down-btn">
+                        <div class="news-detail-logo">
+                            <img src="/images/portal/biaoyu-logo.png" alt="韩豆"/>
+                        </div>
+                        <div class="news-list-down">
+                            <div id="erweidownandroid" style="display: none"><img src="/images/portal/erwei.png" alt="韩豆，扫码下载"/></div>
+                            <div id="erweidownios" style="display: none"><img src="/images/portal/erwei_ios.png" alt="韩豆，扫码下载"/></div>
+                            <p><a class="btn news-list-down-android"
+                                  onmouseover="document.getElementById('erweidownandroid').style.display='';"
+                                  onmouseout="document.getElementById('erweidownandroid').style.display='none';"></a></p>
+                            <p><a class="btn news-list-down-ios"
+                                  onmouseover="document.getElementById('erweidownios').style.display='';"
+                                  onmouseout="document.getElementById('erweidownios').style.display='none';"></a></p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+    <% include includes/footer.html %>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

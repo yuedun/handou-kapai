@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>修改组织</title>
+    <% include ./layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+</head>
+<body>
+    <!-- topbar starts -->
+    <% include ./layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>修改组织</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <form class="form-horizontal" action="/admin/org" method="post">
+                                	<input name="userId" type="hidden" value="<%=obj.userId%>"/>
+                                    <div class="form-group">
+                                        <label for="nickName" class="col-sm-2 control-label">组织名称</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="nickName" value="<%=obj.nickName%>" name="nickName" placeholder="组织昵称">
+                                        </div>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="" class="col-sm-2 control-label">组织logo</label>
+                                        <div class="col-sm-6">
+                                            <div id="uploader" class="wu-example">
+                                                <!-- 用来存放文件信息 -->
+                                                <div id="thelist" class="uploader-list"></div>
+                                                 <%if(obj.headPortrait != null && obj.headPortrait != ''){%>
+                                                	<div class="item" id="headItem">
+                                                		<h5 class="info"><%=obj.headPortrait%></h5>
+                                                		<img class="imageStarLogo" src="http://7xl3sp.com2.z0.glb.qiniucdn.com/<%=obj.headPortrait%>"/>
+                                                		<input type="hidden" name="starLogo" class="qkey" value="<%=obj.headPortrait%>"/>
+                                                		<a class="delpic" id="delImg" value="<%=obj.headPortrait%>"   href="#">删除</a>
+                                                	</div>
+                                                <%}%>
+                                                <input type="hidden" name="headPortrait" value="<%= qntoken%>" id="qntoken"/>
+                                                <br />
+                                                <div class="btns" id="div_2">
+                                                    <div id="picker">选择文件</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--
+                                        作者：nihao642250185@163.com
+                                        时间：2015-08-24
+                                        描述：验证第二个上传按钮
+                                    -->
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-2 control-label">组织背景图</label>
+                                        <div class="col-sm-6">
+                                            <div id="uploader2" class="wu-example">
+                                                <!-- 用来存放文件信息 -->
+                                                <div id="thelist2" class="uploader-list"></div>
+                                                <%if(obj.centerBackground != null && obj.centerBackground != ''){%>
+	                                            	<div class="item" id="backItem">
+	                                                		<h5 class="info"><%=obj.centerBackground%></h5>
+	                                                		<img class="imageStarLogo" src="http://7xl3sp.com2.z0.glb.qiniucdn.com/<%=obj.centerBackground%>"/>
+	                                                		<input type="hidden" name="starBG" class="qkey" value="<%=obj.centerBackground%>"/>
+	                                                		<a class="delpic" id="delImg2" beakvalue="<%=obj.centerBackground%>"   href="#">删除</a>
+	                                                	</div>
+                                                <%}%>
+                                                <input type="hidden" value="<%= qntoken%>" id="qntoken"/>
+                                                <div class="btns">
+                                                    <div id="picker2">选择文件</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                    <div class="form-group">
+                                        <label for="groupId" class="col-sm-2 control-label">归属明星</label>
+                                        <div class="col-sm-3 col-offset-3">
+                                            <select class="form-control" id="groupId" name="groupId">
+                                                <option value="">选择</option>
+                                                <% groupList.forEach(function(item, index){%>
+                                                <%if(obj.groupId == item.groupId){%>
+                                                <option value="<%= item.groupId%>" selected="selected"><%= item.starName%></option>
+                                                <%}else{%>
+                                                <option value="<%= item.groupId%>"><%= item.starName%></option>	
+                                                <%}%>	
+                                                <%})%>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userName" class="col-sm-2 control-label">组织帐号</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="userName" name="userName" value="<%=obj.userName%>" placeholder="组织名称">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" class="col-sm-2 control-label">组织密码</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="password" name="password" value="<%=obj.password%>" placeholder="组织密码">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="groupState" checked="checked">立即发布
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-default">提交</button>
+                                            <button type="button" onclick="javascript:history.back(-1)" class="btn btn-primary"> 返回 </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ./layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <!--<script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>-->
+   <script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+</body>
+</html>

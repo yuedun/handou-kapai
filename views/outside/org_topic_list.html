@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>帖子列表</title>
+    <% include ../admin/layout/headmeta.html %>
+   <link rel="stylesheet" type="text/css" href="/stylesheets/vendor/jquery-ui.min.css">
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ./topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./org_leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>帖子列表</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                        <!--  	<div class="box col-md-12">
+                          		<a class="btn btn-default btn-xs"  href="/outside-admin/org-update-pwdUI"  name="updateState">
+                                      	修改登录密码
+                                </a>
+                          	</div>	-->
+							 <div class="box col-md-12">
+									<form class="form-inline" action="/outside-admin/org-topic-list" method="get" onsubmit="return changeIDisNaN()">
+										<label for="exampleInputEmail2">选择时间: 从</label>
+										<div class="form-group">
+											<input type="text" class="form-control" name="startDate" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})" id="startDate" placeholder="">
+										</div>
+										<label for="exampleInputEmail2">到</label>
+										<div class="form-group">
+											<input type="text" class="form-control" name="endDate" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})" id="endDate" placeholder="">
+										</div>
+										<label for="exampleInputEmail2">按:</label>
+										<select class="form-control" name="postChoose">
+											<option value="1">帖子标题</option>
+											<option value="2">ID</option>
+										</select>
+										<div class="form-group">
+											<input type="text" class="form-control" name="keyWord" id="keyWord" placeholder="">
+										</div>
+										<select class="form-control" name="stateFlag">
+											<option value="">发布状态</option>
+											<option value="1">已发布</option>
+											<option value="0">未发布</option>
+											<option value="2">定时发布</option>
+											<option value="-1">已删除</option>
+										</select>
+										<select class="form-control" name="order">
+											<option value="">选择排序</option>
+											<option value="1">点赞数倒序</option>
+											<option value="2">点赞数正序</option>
+											<option value="3">推送数倒序</option>
+											<option value="4">推送数正序</option>
+											<option value="5">添加时间倒序</option>
+											<option value="6">添加时间正序</option>
+											<option value="7">发布时间倒序</option>
+											<option value="8">发布时间正序</option>
+										</select>
+										<div class="form-group">
+                                          <div class="checkbox">
+                                            <label>
+                                              <input type="checkbox" name="isRecommend" id="" value="1">置顶
+                                            </label>
+                                          </div>
+                                        </div>
+										<button type="submit" class="btn btn-default">搜索</button>
+									</form>
+								</div>
+							<div class="box col-md-12">
+                                <p>
+                                    <a class="btn btn-default btn-sm" href="/outside-admin/org-topic-addui"><i class="glyphicon glyphicon-plus"></i>新增帖子</a>
+                                </p>
+                            </div>
+                            <div class="box-content">
+                                <table class="table table-striped table-bordered responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>帖子标题</th>
+                                            <th>状态</th>
+                                            <th>推荐状态</th>
+                                            <th>推送次数</th>
+                                            <th>点赞</th>
+                                            <th>评论</th>
+                                            <th>添加时间</th>
+                                            <th>发布时间</th>
+											<th>操作</th>                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    	<%topList.forEach(function(item,index){%>
+                                        <tr>
+                                            <td class="center"><%=item.topicNumber%></td>
+                                            <td class="center" data-rel="popover" data-content="<%=item.topicState%>" title="帖子描述">
+                                            	<a href="/outside-admin/org-topic-updateUi?topicId=<%=item.topicId%>&releaseState=<%=item.topicState%>"><%=item.topicName%></a>
+                                            </td>
+                                            <td class="center">
+                                            	<%if(item.topicState == 2){%>
+                                                	<span class="label-default label label-default">定时发布</span>
+	                                            <%}else if(item.topicState == 0){%>
+	                                            	<span class="label-warning label">未发布</span>
+	                                            <%}else if(item.topicState == 1){%>
+	                                            	<span class="label-success label label-default">已发布</span>
+	                                            <%}else if(item.topicState == -1){%>
+	                                            	<span class="label-default label label-danger">已删除</span>
+	                                            <%}else{%>
+	                                            	<span class="label-warning label">未知</span>
+	                                            <%}%>	
+                                            </td>
+                                            <td class="center">
+                                            	<%if(item.isRecommend== 1){%>
+                                            		<span class="label-success label label-default">置顶</span>
+                                            	<%}else{%>
+                                            		<span class="label-default label label-default">未置顶</span>
+                                            	<%}%>	
+                                            </td>
+                                            <td class="center"><%=item.pushCount%></td>
+                                            <td class="center"><%=item.likeCount%></td>
+                                            <td class="center"><%=item.commentCount%></td>
+                                            <td class="center"><%=item.createDate%></td>
+                                            <td class="center">
+                                            <%if(null == item.timedReleaseDate || '' == item.timedReleaseDate){%>
+                                            	<%=item.updateDate%>
+                                            <%}else{%>
+                                            	<%=item.timedReleaseDate%>
+                                            <%}%>
+                                            </td>
+                                            <td class="center">
+                                            	<%if(item.topicState != -1){%>
+												<a class="btn btn-danger btn-xs" name="delete" id="<%=item.topicId%>" href="javascript:void(0)">
+                                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                                  	  删除
+                                                </a>
+												<%}%>
+												<%if(item.topicState != -1){%>
+												<%if(item.topicState == 1){%>
+												<a class="btn btn-danger btn-xs" href="javascript:void(0)" name="updateState" id="<%=item.topicId%>,0">
+                                                    <i class="glyphicon glyphicon-remove icon-white"></i>
+                                                    	取消发布
+                                                </a>
+                                                <a class="btn btn-info btn-xs" type="submit"  name="showToggle" id="<%=item.topicId%>"  >
+													<i class="glyphicon glyphicon-envelope"></i>推送
+												</a>
+                                                <%}else{%>
+                                            	<a class="btn btn-success btn-xs"  href="javascript:void(0)" id="<%=item.topicId%>,1" releaseState="<%=item.topicState%>" name="updateState">
+                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
+                                                    	立即发布
+                                                </a>
+                                                <%}%>
+                                                <%}%>
+                                                <%if(item.topicState == -1){%>
+                                                <a class="btn btn-success btn-xs"  href="javascript:void(0)" id="<%=item.topicId%>,2" name="updateState">
+                                                    <i class="glyphicon glyphicon-ok icon-white"></i>
+                                                    	恢复
+                                                </a>
+                                                <a class="btn btn-danger btn-xs" name="chedi_delete" id="<%=item.topicId%>" href="javascript:void(0)">
+                                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                                  	  彻底删除
+                                                </a>
+                                                <%}%>
+                                            </td>
+                                        </tr>
+                                        <%})%>
+                                    </tbody>
+                                </table>
+                                <nav>
+                                    <ul class="pager">
+                                    	<%if(currentPage==1){%>
+                                    		<li class="disabled"><a href="#">上一页</a></li>
+                                    	<%}else{%>
+                                    		<li class=""><a href="/outside-admin/org-topic-list?pageIndex=<%=currentPage-1%>&pageSize=10&userId=<%=userId%>&startDate=<%=params.startDate%>&endDate=<%=params.endDate%>&postChoose=<%=params.postChoose%>&keyWord=<%=params.keyWord%>&order=<%=params.order%>&stateFlag=<%=params.stateFlag%>&isRecommend=<%=params.isRecommend%>">上一页</a></li>	
+                                    	<%}%>	
+                                        <li>第<%=currentPage%>页</li>
+                                        <li ><a href="/outside-admin/org-topic-list?pageIndex=<%=(parseInt(currentPage)+1)%>&pageSize=10&userId=<%=userId%>&startDate=<%=params.startDate%>&endDate=<%=params.endDate%>&postChoose=<%=params.postChoose%>&keyWord=<%=params.keyWord%>&order=<%=params.order%>&stateFlag=<%=params.stateFlag%>&isRecommend=<%=params.isRecommend%>">下一页</a></li>
+                                        <li>共<%=(totalCount%10==0?totalCount/10:Math.ceil(totalCount/10))%>页</li>
+                                        <li>共<%= (totalCount)%>条</li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+
+<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		
+		</div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ../admin/layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/topic-main.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

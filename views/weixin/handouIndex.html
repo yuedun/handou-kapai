@@ -1,0 +1,83 @@
+<!doctype html>
+<html manifest="compositepicture.manifest">
+<head>
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+     <meta http-equiv="pragma" content="no-cache">
+     <meta http-equiv="Cache-Control " content="no-cache,must-revalidate">
+     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+     <link href="/stylesheets/handouerindex.css" rel="stylesheet" type="text/css" />
+     <title>狗血大片</title>
+</head>
+<body>
+     <div class="toolheader">
+          <ul>
+               <li><a href="javascript:void(0)" id="pt">普通版</a></li>
+               <li><a href="javascript:void(0)" id="nan">男版</a></li>
+               <li><a href="javascript:void(0)" id="nv">女版</a></li>
+               <li><a href="javascript:void(0)" id="ql">情侣版</a></li>
+          </ul>
+     </div>
+     <div class="img-content">
+
+     </div>
+</body>
+<script type="text/javascript" src="/javascripts/zepto.min.js" ></script>
+
+<script>
+     Zepto(function($){
+          $.get('/lofti/api/pictures', function(data){
+               $(data).each(function(index,item){
+                    $(".img-content").append("<a href='/weixin/cro/" + item.picture_id + "'><img src='" +item.picture_original_path + "'/></a>");
+               });
+          });
+          $("#nan").on('click',function(){
+               $.get('/lofti/api/pictures', {picture_class:1}, function(data){
+                    if(data.length == 0 ){
+                         $(".img-content").empty();
+                         return;
+                    }
+                    $(data).each(function(index,item){
+                         $(".img-content").empty();
+                         $(".img-content").append("<a href='/weixin/cro/" + item.picture_id + "'><img src='" +item.picture_original_path + "'/></a>");
+                    });
+               });
+          });
+          $("#nv").on('click',function(){
+               $.get('/lofti/api/pictures', {picture_class:0}, function(data){
+                    if(data.length == 0 ){
+                         $(".img-content").empty();
+                         return;
+                    }
+                    $(data).each(function(index,item){
+                         $(".img-content").empty();
+                         $(".img-content").append("<a href='/weixin/cro/" + item.picture_id + "'><img src='" +item.picture_original_path + "'/></a>");
+                    });
+               });
+          });
+          $("#ql").on('click',function(){
+               $.get('/lofti/api/pictures', {picture_class:10}, function(data){
+                    if(data.length == 0 ){
+                         $(".img-content").empty();
+                         return;
+                    }
+                    $(data).each(function(index,item){
+                         $(".img-content").empty();
+                         $(".img-content").append("<a href='/weixin/cro/" + item.picture_id + "'><img src='" +item.picture_original_path + "'/></a>");
+                    });
+               });
+          });
+          $("#pt").on('click',function(){
+               $.get('/lofti/api/pictures', function(data){
+                    if(data.length == 0 ){
+                         $(".img-content").empty();
+                         return;
+                    }
+                    $(".img-content").empty();
+                    $(data).each(function(index,item){
+                         $(".img-content").append("<a href='/weixin/cro/" + item.picture_id + "'><img src='" +item.picture_original_path + "'/></a>");
+                    });
+               });
+          });
+     });
+</script>
+</html>

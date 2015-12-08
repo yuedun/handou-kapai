@@ -1,0 +1,14 @@
+<%newsList.forEach(function(item,index){%>
+<div class="news-list-group-item">
+    <img src="<%=download_website+item.picture_mini%>" alt="<%=item.title_zh%>">
+    <div>
+        <h4><a href="/portal/news/<%=item.news_id%>" class="news-list-title"><strong><%=item.title_zh%></strong></a></h4>
+        <p class="news-list-summry"><%=item.summary_zh%></p>
+        <p class="news-item-basic">
+            <img src="/images/portal/time.png" />
+            <span class="news-date"><%=item.release_date || item.create_date%></span>
+            <span class="news-look">阅读量:<%=item.read_count%></span>
+        </p>
+    </div>
+</div>
+<%})%>

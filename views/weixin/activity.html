@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <title>点亮专辑券</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!--<link rel='stylesheet' href='/stylesheets/dev/weixin.activity.css' />-->
+    <link rel='stylesheet' href='/stylesheets/vendor/weixin.activity.mini.css' />
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: 'wx49289a80c79a1913', // 必填，公众号的唯一标识wx49289a80c79a1913wode:wx516bdeaef8db9cac
+            timestamp: '<%= sign.timestamp%>', // 必填，生成签名的时间戳
+            nonceStr: '<%= sign.nonceStr%>', // 必填，生成签名的随机串
+            signature: '<%= sign.signature%>',// 必填，签名，见附录1
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'hideMenuItems',
+                'closeWindow'
+            ] // 必填，需要使用的JS接口列表
+        });
+
+        /**
+         * Created by admin on 2015/3/24.
+         */
+        wx.ready(function () {
+            //隐藏部分功能菜单
+            wx.hideMenuItems({
+                menuList: ['menuItem:openWithQQBrowser','menuItem:share:qq','menuItem:favorite','menuItem:originPage','menuItem:share:email','menuItem:openWithSafari','menuItem:copyUrl'] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3  menuItem:copyUrl
+            });
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '点亮七个字就可以赢取明星专辑，只要好友够多就可以轻易拿到，快来试试吧！', // 分享标题
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4d4b8f60bf2ca960&redirect_uri=http%3a%2f%2fweixin.handouer.cn%2fweixin%2factivity%3ffirst_openid%3d<%=first_openid%>&response_type=code&scope=snsapi_base&state=handouer#wechat_redirect', // 分享链接
+                imgUrl: 'http://7xj01w.com2.z0.glb.qiniucdn.com/fensituan.png', // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+//                    alert('已分享成功');
+                }
+            });
+            //发送给朋友
+            wx.onMenuShareAppMessage({
+                title: '帮我点亮赢专辑',
+                desc: '点亮七个字就可以赢取明星专辑，只要好友够多就可以轻易拿到，快来试试吧！',
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4d4b8f60bf2ca960&redirect_uri=http%3a%2f%2fweixin.handouer.cn%2fweixin%2factivity%3ffirst_openid%3d<%=first_openid%>&response_type=code&scope=snsapi_base&state=handouer#wechat_redirect', // 分享链接
+                imgUrl: 'http://7xj01w.com2.z0.glb.qiniucdn.com/fensituan.png', // 分享图标
+                type: 'link', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+        });
+        wx.error(function(res){
+            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+            window.location.reload();//验证失效重新加载页面
+        });
+    </script>
+</head>
+<body>
+     <div class="container">
+          <div class="row">
+               <div class="image">
+                    <img src="/images/weixin/top.png" />
+               </div>
+               <div class="content">
+                    <div class="content_top">
+                         <div class="content_top1">
+                              <div class="content_text">
+                                   <span class="content_text_top">我</span>
+                                   <span class="content_text_bottom">&nbsp;</span>
+                              </div>
+                              <div class="content_text">
+                                   <span class="content_text_top">要</span>
+                                   <span class="content_text_bottom">&nbsp;</span>
+                              </div>
+                              <div class="content_text">
+                                   <span class="content_text_top">免</span>
+                                   <span class="content_text_bottom">&nbsp;</span>
+                              </div>
+                              <div class="content_text">
+                                   <span class="content_text_top">费</span>
+                                   <span class="content_text_bottom">&nbsp;</span>
+                              </div>
+                         </div>
+                         <div class="content_top2">
+                              <div class="content_text">
+                                   <span class="content_text_top">赢</span>
+                                   <span class="content_text_bottom">&nbsp;</span>
+                              </div>
+                              <div class="content_text">
+                                   <span class="content_text_top">专</span>
+                                   <span class="content_text_bottom">&nbsp;</span>
+                              </div>
+                              <div class="content_text">
+                                   <span class="content_text_top">辑</span>
+                                   <span class="content_text_bottom">&nbsp;</span>
+                              </div>
+                         </div>
+                    </div>
+                    <div class="content_form" style="display: none">
+                    	<input id="userId" type="hidden" value="<%=first_openid%>"/>
+                    	<input id="friendId" type="hidden" value="<%=friend_openid%>"/>
+                		<input id="nickName" type="text" class="input-medium search-query" placeholder="请输入昵称"/>
+                		<button type="button" class="nick_btn" onclick="onSaveName()">确认</button>
+                		<div id="showText"></div>
+                    </div>
+                    <span class="my_remark"></span>
+                    <div class="content_button">
+                         <!--朋友点开的-->
+                         <%if(friend_openid){%>
+                             <button class="cbtn1 cbtn3" id="btn_id" onclick="onLight('<%=first_openid%>', '<%=friend_openid%>')" disabled="disabled">帮TA点亮</button>
+                             <p class="cbtn2">点击右上角查看公众号，关注赢取我的专辑券</p>
+                          <%}else{%>
+	                         <button class="cbtn3" id="btn_id" onclick="onLight('<%=first_openid%>')" disabled="disabled">点亮</button>
+                         <%}%>
+                    </div>
+                    <div id="img_id" class="content_remark">
+                         <img src="/images/weixin/help.png" />
+                    </div>
+               </div>
+               <div class="footing">
+                    <p class="acty1">活动规则：</p>
+					<p class="acty2">1.点亮7个字，即可获得一张专辑券。专辑券可在韩豆APP中兑换任一专辑。 </p>
+					<p class="acty2">2.每人每日可为自己点亮一次。可以分享给朋友帮忙点亮，帮忙的朋友越多，点亮几率越高。</p>
+					<p class="acty2">3.中奖用户会收到专辑券兑换码，进入微信公众号：“hybgyt”，回复兑换码，根据提示兑换想要的专辑。</p>
+					<p class="acty2">4.专辑券无使用期限。</p>
+					<p class="acty2">5.关注微信号hybgyt，及时获取最新活动消息。</p>
+					<p class="acty2">6.活动有效期：即日起--10月31日</p>
+               </div>
+               <div class="foot_div">
+               		<div class="foot_img">
+               			<img src="/images/weixin/erweima.png" />
+               		</div>
+               </div>
+          </div>
+     </div>
+     <script src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js" ></script>
+     <script src="https://cdn1.lncld.net/static/js/av-mini-0.5.5.js"></script>
+     <script src="/javascripts/vendor/leancloud.min.js"></script>
+     <script src="/javascripts/vendor/drawpool.min.js"></script>
+     <script src="/javascripts/vendor/weixin.activity.min.js"></script>
+     <!--<script src="/javascripts/dev/weixin.activity.js"></script>-->
+</body>
+</html>

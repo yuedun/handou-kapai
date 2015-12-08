@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>兑换进度</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/zepto.alert.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/scrollbar.css">
+</head>
+<body>
+	<div id="wrapper" class="ibody">
+		<!-- 顶部加载提示效果 -->
+		<div id="scroller">
+			<!-- 顶部加载提示效果 -->
+			<div id="pullDown">
+				<span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+			</div>
+				<%process.forEach(function(item, index){%>
+				<div class="gift g-process-item" id="<%= item.id%>" data-userid="<%= item.userId%>">
+					<div class="g-date">
+						<p><%= item.createDate%></p>
+						<% if(item.state != 1 && item.state != 2){ %>
+						<a href="javascript:upGift('<%= item.id%>', -2);"><i class="icon-trash"></i></a>
+						<%}%>
+					</div>
+					<div class="g-detail">
+						<div class="gd1">
+							<p class="gd1-p1"><strong class="base-color gift-name"><%= item.gift.giftName%></strong></p>
+							<p class="gd1-p2 write">
+								<% if(item.state==0){%>待确认<%}%>
+								<% if(item.state==1){%>准备中<%}%>
+								<% if(item.state==2){%>已发货<%}%>
+								<% if(item.state==-1){%>已取消<%}%>
+							</p>
+						</div>
+						<div class="gd2">
+							<p class="gd2-p1 gift-score-p">
+								<strong class="gift-score">
+								<% if(item.state ==0 || item.state == 1){%>
+								冻结:<%= item.freezeBean%>豆币
+								<%}else if(item.state == 2){%>
+								花费:<%= item.gift.bean%>豆币
+								<%} else{%>未花费豆币<%}%>
+								</strong>
+							</p>
+							<p class="gd2-p2 warning">
+								<% if(item.state == 0 ){%>
+								<a href="javascript:upGift('<%= item.id%>', -1);" class="lack-score-color a-underline">取消兑换</a>
+								<%} %>
+								
+							</p>
+						</div>
+					</div>
+					<% if(item.state==2){%>
+					<div class="express express-color">
+						<div class="express-text">
+							<p><%= item.expressName%></p>
+							<p>快递单号：<%= item.expressNumber%></p>
+						</div>
+					</div>
+					<%}%>
+				</div>
+				<%});%>
+				<%
+					if(process.length === 0) {
+				%>
+					<p class="no-data">你没有礼物正在兑换呦~~~</p>
+				<%
+					}
+				%>
+					<!-- 底部加载提示效果 -->
+			<div id="pullUp">
+				<span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js"></script>
+	<script type="text/javascript" src="/javascripts/zepto.alert.js"></script>
+	<script type="text/javascript" src="/javascripts/iscroll.js"></script>
+	<script type="text/javascript" src="/javascripts/common.js"></script>
+	<script>
+		Zepto(function($) {
+			if($('.gift').length === 0) {
+				$('#pullUp').hide();
+				$('#pullDown').hide();
+			}
+			if($('.gift').length < 10) {
+				$('#pullUp').hide();
+			}
+			if(screen) {
+				$('#scroller').css('min-height', screen.height);
+			}
+		});
+		var refresh = function() {
+			window.document.location.reload();
+		};
+		var pageIndex = 1, pageSize = 10, isLoading = false;
+		var loadMore = function(scroll) {
+			if(!isLoading) {
+				isLoading = true;
+				pageIndex++;
+				var userId = $('.gift').eq(0).attr('data-userid');
+				$.get("/lofti/kpshop/gift/process/" + userId + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize, function(data){
+					if(data != null && data != '') {
+						$(".gift.g-process-item").last().after(data);
+					}
+					isLoading = false;
+					scroll.refresh();
+				});
+			}
+		};
+		//删除兑换记录
+		function upGift(userGiftId, action){
+			var content = "";
+			if(action == -1) content = "确定取消吗?";
+			if(action == -2) content = "确定删除吗?";
+			$.dialog({
+				content : content,
+				title : '操作',
+				ok : function() {
+					//删除兑换记录
+					$.ajax({
+						type: 'POST',
+						url: '/lofti/kpshop/gift/' + userGiftId,
+						data: {action: action},
+						success: function(data){
+							$.dialog({
+								content: data,
+								title: 'ok',
+								ok: function(){
+									document.location.reload();
+								}
+							});
+						},
+						error: function(xhr, type){
+							//失败后提示
+							$.dialog({
+								content: '操作失败！',
+								title: 'ok',
+								ok: function(){
+
+								}
+							});
+						}
+					});
+				},
+				cancel:function(){
+
+				},
+				lock : true
+			});
+		}
+	</script>
+</body>
+</html>
+
+
+
+
+

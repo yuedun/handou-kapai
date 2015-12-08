@@ -1,0 +1,236 @@
+<html>
+
+	<head>
+		<title>leancloud</title>
+		<meta charset="UTF-8">
+		<script src="https://cdn1.lncld.net/static/js/av-mini-0.5.5.js"></script>
+		<script src="/javascripts/leancloud.js"></script>
+		<script type="text/javascript" src="/javascripts/jquery/jquery-1.11.3.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/stylesheets/leancloud.css">
+	</head>
+
+	<body>
+
+		<div class="input">
+			<div class="div1">
+				<label>objectId</label>
+				<input type="text" id="objectId">
+			</div>
+
+			<div class="div2">
+				<label>userId</label>
+				<input type="text" id="userId">
+			</div>
+			
+			<div class="div2_1">
+				<label>nickname</label>
+				<input type="text" id="nickname">
+			</div>
+
+			<div class="div3">
+				<label>word1</label>
+				<input type="text" id="word1">
+			</div>
+
+			<div class="div4">
+				<label>word2</label>
+				<input type="text" id="word2">
+			</div>
+
+			<div class="div5">
+				<label>word3</label>
+				<input type="text" id="word3">
+			</div>
+
+			<div class="div6">
+				<label>word4</label>
+				<input type="text" id="word4">
+			</div>
+
+			<div class="div7">
+				<label>word5</label>
+				<input type="text" id="word5">
+			</div>
+
+			<div class="div8">
+				<label>word6</label>
+				<input type="text" id="word6">
+			</div>
+
+			<div class="div9">
+				<label>word7</label>
+				<input type="text" id="word7">
+			</div>
+		</div>
+
+		<!--<div class="bright1">
+			<label>userId</label>
+			<input type="text" id="userId">
+		</div>-->
+		<div class="bright2">
+			<label>friendId</label>
+			<input type="text" id="friendId">
+
+		</div>
+		
+		<div class="exchangeField">
+			<label>exchangeNote</label>
+			<input type="text" id="exchangeNote">
+
+		</div>
+
+		<div class="btn">
+			<button class="save" onclick="saveClick()">保存发起活动用户信息</button>
+			<button class="query" onclick="queryClick()">查询当前所有活动用户</button>
+			<button class="update" onclick="updateClick()">更新活动用户点亮文字的次数</button>
+			<button class="brightRecord" onclick="addBrightRecord()">添加好友点亮记录</button>
+			<button class="bright" onclick="brightClick()">帮他点亮</button>
+			<button class="addExchangeNote" onclick="addNewExchangeNote()">添加兑换券</button>
+			<button class="queryExchangeNote" onclick="queryExchangeNote()">获取兑换券</button>
+		</div>
+
+
+		<div class="queryField">
+			<ul id="queryList"></ul>
+		</div>
+
+		<script type="text/javascript">
+			 // var obj = {
+			 // 	userId:'321',
+			 // 	word1:1,
+			 // 	word2:2
+			 // };
+			 // save(obj);
+			 // var queryObj={
+			 // 	"objectId": "559be3a7e4b023682f1800e4",
+			 // 	userId:'321'
+			 // }
+			 // query(queryObj);
+			 // var updateObj={
+			 // 	"objectId": "559be3a7e4b023682f1800e4",
+			 // 	userId:'321',
+			 // 	word1:3,
+			 // 	word2:5
+			 // }
+			 // update(updateObj);
+			var saveClick = function() {
+				alert("save");
+				// alert($("#userId").val());
+				// alert($("#word1").val());
+				// alert($("#word2").val());
+				var date = new Date();
+				var obj = {
+					userId: $("#userId").val(),
+					nickname:$("#nickname").val(),
+					word1: parseInt($("#word1").val()),
+					word2: parseInt($("#word2").val()),
+					word3: parseInt($("#word3").val()),
+					word4: parseInt($("#word4").val()),
+					word5: parseInt($("#word5").val()),
+					word6: parseInt($("#word6").val()),
+					word7: parseInt($("#word7").val()),
+					brighttime: date
+				};
+				saveUserInfo(obj);
+			}
+			var queryClick = function() {
+				queryUserInfoAll(function(ret) {
+					$("#queryList").html("");
+					// alert(ret.length);
+					for (var i = 0; i < ret.length; i++) {
+						var li = ret[i].objectId + "--" + ret[i].userId + "--" +ret[i].nickname+"--"+ ret[i].word1 + "--" + ret[i].word2 + "--" + ret[i].word3 + "--" + ret[i].word4 + "--" + ret[i].word5 + "--" + ret[i].word6 + "--" + ret[i].word7 + "--" + ret[i].date;
+						// alert(li);
+						$("#queryList").append("<li>" + li + "</li>");
+					};
+				});
+			}
+			var queryUniqueClick = function() {
+				var obj = {
+					objectId: $("#objectId").val(),
+					userId: $("#userId").val(),
+					word1: parseInt($("#word1").val()),
+					word2: parseInt($("#word2").val())
+				};
+				queryUserInfo(obj, function(ret) {
+					var li = ret.objectId + "--" + ret.userId + "--" + ret.nickname+"--"+ret.word1 + "--" + ret.word2 + "--" + ret.word3 + "--" + ret.word4 + "--" + ret.word5 + "--" + ret.word6 + "--" + ret.word7 + "--" + ret.date;
+					// alert(li);
+					$("#queryList").html("<li>" + li + "</li>");
+				});
+			}
+			var updateClick = function() {
+				alert("update");
+				var date = new Date();
+				var obj = {
+					objectId: $("#objectId").val(),
+					userId: $("#userId").val(),
+					nickname:$("nickname").val(),
+					word1: parseInt($("#word1").val()),
+					word2: parseInt($("#word2").val()),
+					word3: parseInt($("#word3").val()),
+					word4: parseInt($("#word4").val()),
+					word5: parseInt($("#word5").val()),
+					word6: parseInt($("#word6").val()),
+					word7: parseInt($("#word7").val()),
+					brighttime: date
+				};
+				updateUserInfo(obj);
+			}
+			
+			var addBrightRecord = function(){
+				alert("addBrightRecord");
+				var date = new Date();
+				var oneday = 24 * 3600 * 1000;
+				date.setMilliseconds(date.getMilliseconds() - oneday);
+				var obj = {
+					userId: $("#userId").val(),
+					friendId: $("#friendId").val(),
+					brighttime: date
+				};
+				
+				alert(obj.userId);
+				
+				addLightupRecord(obj);
+			}
+			
+			var brightClick = function() {
+				alert("bright");
+				var date = new Date();
+				var obj = {
+					userId: $("#userId").val(),
+					friendId: $("#friendId").val()
+				};
+				queryLightupRecord(obj, function(ret) {
+					var canvote = ret.canvote;
+					if(canvote == false){
+						alert(ret.userId+"--"+ret.friendId+" cannot vote today !");
+					}else{
+						alert(ret.userId+"--"+ret.friendId+" can vote one time today !");
+						ret.canvote = false;
+						ret.brighttime = date;
+						updateLightupRecord(ret);
+					}
+				});
+			}
+			
+			var addNewExchangeNote = function(){
+				alert("addExchangeNote");
+				alert($("#exchangeNote").val());
+				var obj = {
+					notecode:$("#exchangeNote").val(),
+					isExpend:false
+				}
+				
+				addExchangeNote(obj);
+			}
+			
+			var queryExchangeNote = function(){
+				alert("queryExchangeNote");
+				queryOneExchangeNote(function(ret){
+					alert(ret.notecode);
+				});
+			}
+			
+		</script>
+	</body>
+
+</html>

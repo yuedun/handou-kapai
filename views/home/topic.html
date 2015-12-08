@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <% include includes/headmeta.html %>
+    <title>韩豆官网-韩豆咖派 韩粉社区 高清图</title>
+    <!-- 生产环境使用 -->
+     <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css"> 
+    <!--<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+      <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/animate.css/3.1.0/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/home.min.css">
+</head>
+
+<body>
+    <% include includes/header.html %>
+    <div class="news-show">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-md-offset-1" id="container">
+                    <% list.forEach(function(item, index){%>
+                    <div class="topic-item">
+                        <div class="row user-info">
+                            <div class="col-md-12 col-sm-12"> 
+                                <img class="user-head" src="<%= item.headPortrait%>"> 
+                                <a href=""><span id="user-name"><%= item.nickName%></span></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-md-offset-1 topic-pics">
+                                <%if (item.pics.length > 1) {%>
+                                <div class="sigleimgdiv">
+                                    <a class="sigleimg" href="javascript:void(0);" hidefocus="true"><img src="<%= item.pics[0]%>"></a>
+                                    <span><%= item.pics.length%></span>
+                                </div>
+                                <ul class="moreimg" style="display:none;">
+                                    <%item.pics.forEach(function(item2, index){%>
+                                    <li>
+                                        <a href="###"><img src="/images/alert-loading.gif" data-original="<%= item2%>" alt=""></a>
+                                        <a href="###">查看原图</a>
+                                    </li>
+                                    <%})%>
+                                </ul>
+                                <%} else{%>
+                                <img src="<%= item.pics[0]%>"/>
+                                <%}%>
+                            </div>
+                            <div class="col-md-4"><%= item.topicDesc%></div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-md-5 col-md-offset-1"> <a href=""><span id="">演唱会</span></a> <a href=""><span id="">exo</span></a> </div>
+                            <div class="col-md-6"> <a href=""><span id="">热度（12）</span></a> <a href=""><span id="">点赞（45）</span></a> </div>
+                        </div> -->
+                    </div>
+                    <%})%>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9 col-md-offset-1">
+                    <div class="loading text-center"><img src="data:image/gif;base64,R0lGODlhEAALAPQAAP///zMzM+Li4tra2u7u7jk5OTMzM1hYWJubm4CAgMjIyE9PT29vb6KiooODg8vLy1JSUjc3N3Jycuvr6+Dg4Pb29mBgYOPj4/X19cXFxbOzs9XV1fHx8TMzMzMzMzMzMyH5BAkLAAAAIf4aQ3JlYXRlZCB3aXRoIGFqYXhsb2FkLmluZm8AIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7" alt="">loading...</div>    
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include includes/footer.html %>
+    <script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="/javascripts/vendor/portal-main.js"></script>
+    <!--<script type="text/javascript" src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/portal-main.js"></script>-->
+</body>
+
+</html>

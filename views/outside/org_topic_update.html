@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>编辑帖子</title>
+    <% include ../admin/layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/vendor/jquery-ui.min.css">
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ./topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./org_leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>编辑帖子</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <p class="bg-warning"></p>
+                                <form class="form-horizontal" action="/outside-admin/topic/update" method="post" onsubmit="return checkForm()" id="fm" name="fm">
+                                	<input type="hidden" value="<%=topic.topicId%>" name="topicId" id="topicId"/>
+                                	<input type="hidden" value="<%=releaseState%>" name="releaseState"/>
+                                	<input type="hidden" id="flag"/>
+                                	<input type="hidden" id="audioTime" name="audioTime"/>
+                                	<input type="hidden" id="picsSize" name="picsSize"/>
+                                    <div class="form-group">
+                                        <label for="starName" class="col-sm-2 control-label">帖子标题:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="topicName" onblur="checkTopic()" name="topicName" value="<%=topic.topicName%>" placeholder="名称">
+                                        </div>
+                                        <label for="starName" class="control-label"><font color="DB4854"><span id="topicNameSpan"></span></font></label>
+                                    </div>
+                                   <div class="form-group">
+	                                    <label for="uploader2" class="col-sm-2 control-label">语音:</label>
+	                                    <div class="col-sm-6">
+	                                        <div id="uploader2" class="wu-example">
+	                                            <div id="voiceList" class="uploader-list"></div>
+	                                            <!--	<h5 class="info"><%=topic.audioAddress%></h5>-->
+	                                            <div id="audioitem">
+		                                             <%if(topic.audioAddress!=null && topic.audioAddress !=''){%>
+		                                            	<audio class="" controls="controls" id="audio" src="http://7xl3sp.com2.z0.glb.qiniucdn.com/<%=topic.audioAddress%>"></audio>
+		                                         		<input type="hidden" class="qkey" name="starBG" value="<%=topic.audioAddress%>"/>
+		                                         		<a class="btn btn-danger" id="delaudio" audioValue="<%=topic.audioAddress%>" href="#">删除</a>
+		                                         	<%}%>
+	                                        	 </div>	
+	                                         	<input type="hidden" name="topicPics" value="<%= qntoken%>" id="qntoken2" />
+	                                            <div class="btns">
+	                                                <div id="voicePicker">选择文件</div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-2 control-label">帖子内容:</label>
+                                        <div class="col-sm-3">
+                                        	<textarea class="form-control" id="topicDesc" name="topicDesc" rows="5" cols="100"  placeholder="帖子内容" style="height: 130px;width: 100%;"><%=topic.topicDesc%></textarea>
+                                        </div>
+                                      <!--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+                                        <label for="starName" class="control-label"><font color="DB4854"><span id="topicDescSpan"></span></font></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-2 control-label">图片:</label>
+                                        <div class="col-sm-5">
+                                            <div id="uploader" class="wu-example">
+                                                <!-- 用来存放文件信息 -->
+                                                <div class="btns">
+                                                    <div id="picker">选择文件</div>
+                                                </div>
+                                                <div id="thelist" class="uploader-list"></div>
+                                                <%if(topicPics.length>0 && topicPics != ''){%>
+                                                <%for(var i=0;i<topicPics.length;i++){%>
+                                                <div class="item" id="item<%=i%>">
+                                                		<h5 class="info"><%=topicPics[i]%></h5>
+                                                		<%if(topicPics[i].indexOf("http") > -1){%>
+                                                		<img class="imageStarLogo" src="<%=topicPics[i]%>" name="imgArr"/>
+                                                		<%}else{%>
+                                                		<img class="imageStarLogo" src="http://7xl3sp.com2.z0.glb.qiniucdn.com/<%=topicPics[i]%>" name="imgArr"/>
+                                                		<%}%>
+                                                		<input type="hidden" name="starLogo" class="qkey" value="<%=topicPics[i]%>"/>
+                                                		<a class="delpic" id="delImg" pic="<%=topicPics[i]%>" i="<%=i%>"  href="#">删除</a>
+                                                	</div>
+                                                <%}%><%}%>
+                                                <input type="hidden" name="topicPics"  value="<%= qntoken%>" id="qntoken"/>
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                          <div class="checkbox">
+                                            <label>
+                                              <input type="checkbox"  name="isRecommend" <%if(topic.isRecommend==1){%>checked="checked"<%}%> value="1">置顶
+                                            </label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                             <label>
+                                              <input type="checkbox" checked="checked" name="state" id="atReleaseDate" value="1">立即发布
+                                            </label>
+                                          </div>
+                                        </div>
+                                    </div>
+                                 	<div class="form-group">
+	                                     <div class="form-group">
+	                                            <label for="calendar" class="col-sm-2 control-label">是否定时:</label>
+	                                            <div class="col-sm-3">
+	                                                <input type="text" class="form-control" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})" id="timedReleaseDate" name="timedReleaseDate">
+	                                            </div>
+	                                        </div>
+	                                	</div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-info ">保存</button> 
+                                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                            <a class="btn btn-default" href="/outside-admin/org-topic-list">返回</a>
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ../admin/layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+     </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/topic-main.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

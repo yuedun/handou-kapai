@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>礼品兑换</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/zepto.alert.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/scrollbar.css">
+</head>
+<body>
+    <div class="ibody linear-bg-color">
+    	<h1 style="text-align: center;">抱歉，停止运营</h1>
+        <!--<div id="scroller"> -->
+            <!-- 顶部加载提示效果 -->
+            <!--<div class="title header">
+                <span><strong class="base-color">可兑换豆币:</strong></span>
+                <span id="integral" class="score-color"><%= (user.bean - freezeIntegral)%></span>
+                <span><strong class="base-color">冻结豆币:</strong></span>
+                <span id="freezeIntegral" class="score-color"><%= freezeIntegral%></span>
+                 <!--<span class="view-process"><a href="javascript:invoke('<%= user.userId%>');" dbclick="invoke('<%= user.userId%>');">查看兑换进度</a></span>-->
+                <!--<span class="view-process"><a href="/lofti/kpshop/gift/process/<%= user.userId%>">查看兑换进度</a></span>
+            </div> -->
+            <!--
+            <% giftList.forEach(function(item, index){%>
+            <div class="gift-msg kp-item-bg" data-giftid="<%= item.giftId%>">
+                <div class="left">
+                    <img src="<%= item.picturePath%>" onerror="this.src='http://7xl3sp.com2.z0.glb.qiniucdn.com/default_gift.jpg'">
+                </div>
+                <div class="center">
+                    <p><strong class="gift-name kp-font-color"><%= item.giftName%></strong></p>
+                    <p class="gift-score-p"><strong class="gift-score"><%= item.bean%></strong>豆币</p>
+                </div>
+                <div class="right" data-gift-exechanged="<%=item.get('hasExechanged')%>">
+                    <%if(item.bean > (user.bean - freezeIntegral)){%>
+                    <button class="kp-btn disabled" disabled="disabled" onclick="exchange('<%= user.userId%>','<%= item.integral%>', '<%= item.id%>', this);">兑换</button>
+                    <p class="kp-score-color">还差<%=(item.bean - user.bean + freezeIntegral)%>豆币
+                    </p>
+                    <%} else {%>
+                    <button class="kp-btn" onclick="exchange('<%= user.userId%>','<%= item.bean%>', '<%= item.giftId%>', this);">兑换</button>
+                    <%}%>
+                </div>
+            </div>
+            <% })%>
+            <% if(giftList.length == 0) {%>
+                <p class="no-data">现在还没有礼物可以兑换呦~~~</p>
+            <%}%>
+        </div>-->
+    </div>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js"></script>
+    <script type="text/javascript" src="/javascripts/zepto.alert.js"></script>
+    <script>
+        /**
+         * 调用移动端接口
+         * @param id 用户id
+         */
+        function invoke(userId){
+            var str = JSON.stringify({'uid':userId});
+            var u = navigator.userAgent;
+            var version = function(){
+                return{
+                    android: u.indexOf('Android') > -1|| u.indexOf('Linux') > -1,
+                    iphone:	u.indexOf('iPhone') > -1
+                }
+            }();
+            if(version.android){
+                window.handou.ExchangeData(str);
+            }else if(version.iphone){
+                if(Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))){
+                    window.webkit.messageHandlers.kidol.postMessage(str);
+                }else{
+                    window.nativeApis.logMessage(str);
+                }
+            }
+        }
+        /**
+         * 点击兑换先判断收货信息是否完成
+         * userId 用户id
+         * integrel 礼品需要花费积分
+         * giftId 礼品id
+         * el 兑换按钮对象，用户判断积分是否组织灰掉按钮
+         */
+        function exchange(userId, integral, giftId){
+            //先判断收货地址是否存在
+            $.get('/lofti/kpshop/gift/address/'+ userId, {},
+                function(data){
+                    if (data) {
+                    	$.dialog({
+			                content : '确定兑换吗？?',
+			                title : 'ok',
+			                ok : function() {
+			                //数据库添加一条兑换记录
+			                $.post('/lofti/kpshop/gift/user-gift/' + userId + '/' + giftId,
+			                        { freezeBean: integral},
+			                        function(data){
+			                            //成功后提示
+			                            $.dialog({
+			                                content: data,
+			                                title: 'ok',
+			                                ok: function(){
+			                                	//兑换成功重新加载
+			                    				document.location.reload();
+			                                }
+			                            });
+			                		}
+			                    );
+			                },
+			                cancel : function() {
+			                },
+			                lock : true
+			            });
+                    } else{
+                    	$.dialog({
+	                        content : '请先完善收货信息（个人中心—>设置）',
+	                        title : 'ok',
+	                        ok : function() {
+	
+	                        },
+	                        lock : true
+	                    });
+                    }
+        		}
+            );
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+

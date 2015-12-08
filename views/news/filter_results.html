@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-cn" ng-app="handouApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>资讯</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/news.css" />
+</head>
+<body>
+    <div id="container" class="backgroup-color-dark font-color-white" ng-controller="NewsCtrl">
+        <a href="" id="getNews" ng-nide="true" ng-click="getNews()"></a>
+        <article class="new item-back-color" ng-repeat="news in newsList">
+            <img src="/images/wuzhong.png" ng-if="{{news.translate_state == -1}}">
+            <aside class="new-pic">
+                <img ng-src="{{news.picture_mini==''?'/images/ic_launcher.png':downloadUrl + news.picture_mini }}" alt="" height="50px" width="50px"/>
+            </aside>
+            <div class="new-content">
+                <div>
+                    <input type="input" class="newsId" value="{{news.news_id}}" ng-hide="true" />
+                    <h3 class="ellipsis">{{news.title_zh || news.title_kor}}</h3>
+                    <p class="news-desc ellipsis">
+                        {{news.summary_zh }} {{news.summary_kor }}
+                    </p>
+                    <p class="news-date font-color-huise">
+                        <span>{{news.release_date || news.create_date}}</span>
+                        <span class="font-color-huise">阅读量：{{news.read_count}}</span>
+                    </p>
+                </div>
+            </div>
+        </article>
+    </div>
+    <script src="/javascripts/jquery-2.1.4.min.js"></script>
+    <script src="/javascripts/vendor/angular.min.js"></script>
+    <script src="/javascripts/vendor/angular-route.min.js"></script>
+    <script src="/javascripts/controllers/newsCtrl.js"></script>
+    <!--<script src="/javascripts/services/newsFactory.js"></script>-->
+    <script>
+    var eventCall = function(newsId) {
+        var params = {};
+        params.action = 'newsDetail';
+        params.data = {
+            news_id: newsId
+        };
+        ExchangeData(JSON.stringify(params));
+    };
+    $(function() {
+    	$('body').on('click', '.new-content', function(e) {
+            var newsId = $(this).find('.newsId').val();
+            if(newsId){
+                eventCall(newsId);
+            }
+        });
+    });
+    var offset = 2,
+        limit = 10;
+    function ExchangeData(json) {
+        var jsonObj = json;
+        if (typeof json === 'string') {
+            try {
+                jsonObj = JSON.parse(json);
+            } catch (e) {
+            }
+        }
+        if (jsonObj && jsonObj.data) {
+            window.pageParams = jsonObj.data;
+        }
+        var u = navigator.userAgent;
+        var version = function() {
+            return {
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1,
+                iphone: u.indexOf('iPhone') > -1
+            };
+        }();
+        //调用js进行页面刷新
+        if (jsonObj.action == "refreshData") {
+            jsonObj = {
+                action: 'refreshCompelete'
+            };
+            if (version.android) {
+                window.handou.ExchangeData(JSON.stringify(jsonObj));
+            } else if (version.iphone) {
+                if (Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))) {
+                    window.webkit.messageHandlers.kidol.postMessage(JSON.stringify(jsonObj));
+                } else {
+                    window.nativeApis.logMessage(JSON.stringify(jsonObj));
+                }
+            }
+            document.location.reload(); //刷新
+        } else if (jsonObj.action == "loadMoreData") {
+            if (window.pageParams) {
+                window.pageParams.offset = offset;
+                window.pageParams.limit = limit;
+                window.pageParams.isFilterMore = true;
+            }
+            var $thelist = $("#container");
+            $.get('/lofti/api/news', window.pageParams, function(data) {
+                jsonObj = {
+                    action: 'loadMoreDataCompelete'
+                };
+                if (version.android) {
+                    window.handou.ExchangeData(JSON.stringify(jsonObj));
+                } else if (version.iphone) {
+                    if (Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))) {
+                        window.webkit.messageHandlers.kidol.postMessage(JSON.stringify(jsonObj));
+                    } else {
+                        window.nativeApis.logMessage(JSON.stringify(jsonObj));
+                    }
+                }
+                $thelist.append(data);
+                if (window.pageParams) {
+                	offset++;
+                    window.pageParams.offset = offset;
+                }
+            });
+        } else if (jsonObj.action === "ConsultationFilter") {
+        	window.pageParams = jsonObj.data;
+            $('#getNews').click();
+        } else if (jsonObj.action == "newsDetail") {
+            jsonObj.action = "jumpConsultationDetail";
+            jsonObj.data.consultationUrl = document.location.protocol + '//' + document.location.host + '/lofti/api/news/' + jsonObj.data.news_id;
+            if (version.android) {
+                window.handou.ExchangeData(JSON.stringify(jsonObj));
+            } else if (version.iphone) {
+                if (Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))) {
+                    window.webkit.messageHandlers.kidol.postMessage(JSON.stringify(jsonObj));
+                } else {
+                    window.nativeApis.logMessage(JSON.stringify(jsonObj));
+                }
+            }
+        }
+    }
+    </script>
+</body>
+
+</html>

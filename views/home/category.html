@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <% include includes/headmeta.html %>
+    <title>韩豆官网-韩豆咖派|韩粉社区|高清图|韩娱资讯</title>
+    <!-- 生产环境使用 -->
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+      <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/home.min.css">
+</head>
+
+<body class="category">
+    <% include includes/header.html %>
+    <div class="category-idol">
+        <div class="container category-idol-list">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>组合/歌手粉丝团:</h3>
+                </div>
+            </div>
+            <div class="row">
+                <%categories[0].forEach(function(item,index){
+                    if(item.category_id!="75fbd1c49e384aadaa7f584b8f2ab183"){
+                %>
+                <div class="col-xs-6 col-md-3">
+                    <a href="/portal/news/category/<%=item.category_id%>?category_name=<%=item.category_name%>" class="thumbnail">
+                        <img src="<%=download_website+item.picture_fan_group%>" alt="<%=item.category_name%>" title="<%=item.category_name%>">
+                        <span class="front-cover cover-panel" ></span>
+                        <p class="front-cover cover-font" ><%=item.category_name%></p>
+                    </a>
+                </div>
+                <%}})%>
+                <div class="col-xs-6 col-md-3">
+                    <a href="#" class="thumbnail last" data-toggle="modal" data-target="#myModal">
+                        <p>下一个组合/歌手粉丝团</p>
+                        <h4>由你决定</h4>
+                        <small>点击告诉我们你想要的粉丝团</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="category-variety">
+        <div class="container category-variety-list">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>综艺粉丝团:</h3>
+                </div>
+            </div>
+            <div class="row">
+                <%categories[2].forEach(function(item,index){%>
+                <div class="col-xs-6 col-md-3 category-div">
+                    <a href="/portal/news/category/<%=item.category_id%>" class="thumbnail">
+                        <img src="<%=download_website+item.picture_fan_group%>" alt="<%=item.category_name%>" title="<%=item.category_name%>">
+                        <span class="front-cover cover-panel" ></span>
+                        <p class="front-cover cover-font" ><%=item.category_name%></p>
+                    </a>
+                </div>
+                <%})%>
+                <div class="col-xs-6 col-md-3">
+                    <a href="#" class="thumbnail last" data-toggle="modal" data-target="#myModal">
+                        <p>下一个综艺粉丝团</p>
+                        <h4>由你决定</h4>
+                        <small>点击告诉我们你想要的粉丝团</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="category-actor">
+        <div class="container category-actor-list">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>演员粉丝团:</h3>
+                </div>
+            </div>
+            <div class="row">
+                <%categories[3].forEach(function(item,index){%>
+                <div class="col-xs-6 col-md-3">
+                    <a href="/portal/news/category/<%=item.category_id%>" class="thumbnail">
+                        <img src="<%=download_website+item.picture_fan_group%>" alt="<%=item.category_name%>" title="<%=item.category_name%>">
+                        <span class="front-cover cover-panel" ></span>
+                        <p class="front-cover cover-font" ><%=item.category_name%></p>
+                    </a>
+                </div>
+                <%})%>
+                <div class="col-xs-6 col-md-3">
+                    <a href="#" class="thumbnail last" data-toggle="modal" data-target="#myModal">
+                        <p>下一个演员粉丝团</p>
+                        <h4>由你决定</h4>
+                        <small>点击告诉我们你想要的粉丝团</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include includes/footer.html %>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.js"></script>
+    <script>
+        //图片加载失败显示的图片
+//        $(function(){
+//            $(".col-xs-6.col-md-3 img").each(function(index, item){
+//                $(this).error(function(){
+//                    $(this).attr("src", "<%=download_website+defaul_gift_img%>");
+//                });
+//            });
+//        });
+        function addCategory(){
+            $("#categoryNameForm").removeClass("has-warning");
+            var cateName = $("#categoryName").val();
+            var phone = $("#phone").val();
+            var qq = $("#qq").val();
+            if(cateName==""){
+                $("#categoryNameForm").addClass("has-warning");
+                return;
+            }
+            $.post("/portal/category",{categoryNames:cateName, phone:phone, userQq:qq},function(res){
+                if(res){
+                    $('#myModal').modal('hide');
+                }
+            });
+        }
+    </script>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">你想要我们开放哪个粉丝团？</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" id="categoryNameForm">
+                        <input class="form-control" id="categoryName" type="text" maxlength="50" placeholder="（可填写多个，用逗号隔开）"/>
+                    </div>
+                    <div class="form-group">
+                        <label >留下你的联系方式吧！会有惊喜哦～</label>
+                        <input type="tel" class="form-control" id="phone" maxlength="11" placeholder="手机"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="qq" maxlength="20" placeholder="QQ"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="addCategory();">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

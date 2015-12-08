@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>修改密码</title>
+    <% include ../admin/layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ./topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./org_leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Tables</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>修改密码</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <p class="bg-warning"></p>
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="starName" class="col-sm-2 control-label">原密码:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="oldPwd" name="" placeholder="原密码">
+                                        </div>
+                                        <label for="starName" class="control-label"><font color="DB4854"><span id="oldPwdSpan"></span></font></label>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="starName" class="col-sm-2 control-label">新密码:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="newPwd" name="" placeholder="新密码">
+                                        </div>
+                                        <label for="starName" class="control-label"><font color="DB4854"><span id="newPwdSpan"></span></font></label>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="starName" class="col-sm-2 control-label">确认新密码:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="newPwd2" name="" placeholder="确认新密码">
+                                        </div>
+                                        <label for="starName" class="control-label"><font color="DB4854"><span id="newPwdSpan2"></span></font></label>
+                                    </div>
+                                     <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-3">
+                                            <a href="javascript:void(0)" class="btn btn-default btn-lg btn-block" id="updateOrgPwd" >保存</a>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                                
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ../admin/layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/user-verfiy.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="javascripts/vendor/index-main.js"></script>-->
+</body>
+</html>

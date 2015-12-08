@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" ng-app="handouApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>资讯详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/vendor/newsdetail.min.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/swiper3.07.min.css" />
+</head>
+
+<body class="backgroup-color-dark font-color-white" ng-controller="NewsDetailsCtrl">
+    <input type="hidden" value="<%= user_id%>" id="userId" />
+    <article id="content-notop">
+        <hgroup>
+            <h2 id="news_title"><%= (news.translate_state==0 ? news.title_zh : news.title_kor) %></h2>
+            <input id="newsId" value="<%= news.news_id%>" type="hidden" />
+            <h4>发布：<%= news.release_date || news.create_date%>&nbsp;&nbsp;来源：<%= (news.translate_state==0 ? news.quote_zh:news.quote_kor)%></h4>
+        </hgroup>
+        <div class="content-desc">
+            <%- (news.translate_state==0 ? news.description_zh : news.description_kor)%>
+        </div>
+        <section id="comment-content">
+            <h3>用户评论</h3>
+            <comments></comments>
+        </section>
+    </article>
+    <footer id="user-comment" class="<%=(urlType === 'share' ? 'share' : '')%> user-com">
+    <% if(urlType==="share"){%>
+        <a href="http://www.handouer.cn/apps/" target="_blank">下载韩豆</a>
+        <%}else{%>
+            <div id="inputer">
+                <div id="input-content">
+                    <comments-input></comments-input>
+                    <div id="emo">
+                        <img src="/images/xiaolian_n.png" onclick="showEmot();" />
+                    </div>
+                </div>
+                <div id="btn-content">
+                    <button id="btn-submit" ng-click="addComment('<%= user_id%>', '<%= news.news_id%>');">发送</button>
+                </div>
+            </div>
+        <%}%>
+    </footer>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!--<script src="/javascripts/jquery-2.1.4.min.js"></script>-->
+    <script src="/javascripts/vendor/swiper3.07.jquery.min.js"></script>
+    <script src="/javascripts/vendor/angular.min.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/angular-route/1.3.13/angular-route.js"></script>-->
+    <script src="/javascripts/vendor/angular-route.min.js"></script>
+    <script src="/javascripts/controllers/newsDetailsCtrl.js"></script>
+    <script src="/javascripts/directives/comments.js"></script>
+    <script src="/javascripts/vendor/emotion.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        //				$("embed").remove();//音乐
+        //通知app是否已翻译和点赞
+        (function() {
+            var jsonObj = {
+                action: "giveNewsDetailPrams",
+                data: {
+                    isTranslate: parseInt("<%= news.translate_state==1?2:news.translate_state%>"),
+                    isLiked: parseInt("<%= isLiked%>")
+                }
+            };
+            ExchangeData(JSON.stringify(jsonObj));
+        })();
+        //绑定事件
+        $('body').on('click', '.comment-info > .user-head', function(e) {
+            var identify = $(this).find(".user_identify").val();
+            var user_id = $(this).find(".user_id").val();
+            if (user_id == "") {
+                user_id = $(this).find('.user_id').get(0).defaultValue;
+            }
+            userCenter(user_id, identify);
+        });
+        $(".comment-desc").click(function() {
+//                        alert("df");
+        });
+    });
+
+    function ExchangeData(json) {
+        var jsonObj = JSON.parse(json);
+        var u = navigator.userAgent;
+        var version = function() {
+            return {
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1,
+                iphone: u.indexOf('iPhone') > -1
+            }
+        }();
+        //初始化时传递翻译和点赞情况到app
+        if (jsonObj.action == "giveNewsDetailPrams") {
+            if (version.android) {
+                window.handou.ExchangeData(JSON.stringify(jsonObj));
+            } else if (version.iphone) {
+                if (Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))) {
+                    window.webkit.messageHandlers.kidol.postMessage(JSON.stringify(jsonObj));
+                } else {
+                    window.nativeApis.logMessage(JSON.stringify(jsonObj));
+                }
+            }
+        } else if (jsonObj.action == "tranlateCurrentData") {
+            //翻译切换---------资讯点赞219002接口
+            fanyi(JSON.stringify(jsonObj));
+        } else if (jsonObj.action == "jumpUserCenter") {
+            //用户中心
+            if (version.android) {
+                window.handou.ExchangeData(JSON.stringify(jsonObj));
+            } else if (version.iphone) {
+                if (Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))) {
+                    window.webkit.messageHandlers.kidol.postMessage(JSON.stringify(jsonObj));
+                } else {
+                    window.nativeApis.logMessage(JSON.stringify(jsonObj));
+                }
+            }
+        } else if (jsonObj.action == "readyShareConsultation") {
+            //分享
+            var jsonObj1 = new Object();
+            jsonObj1.action = "shareConsultation";
+            jsonObj1.data = {
+                pictureOriginalPath: "<%= download_website+news.picture_mini%>",
+                consultationDescription: '<%= news.summary_zh%>',
+                consultationUrl: location.href + "&urlType=share",
+                consultationTitle: "<%= news.title_zh || news.title_kor%>"
+            };
+            if (version.android) {
+                window.handou.ExchangeData(JSON.stringify(jsonObj1));
+            } else if (version.iphone) {
+                if (Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))) {
+                    window.webkit.messageHandlers.kidol.postMessage(JSON.stringify(jsonObj1));
+                } else {
+                    window.nativeApis.logMessage(JSON.stringify(jsonObj1));
+                }
+            }
+        }
+    }
+    //切换语言
+    function fanyi(json) {
+        var jsonObj = JSON.parse(json),
+            title_kor = '<%= news.title_kor%>',
+            title_zh = '<%= news.title_zh%>',
+            description_kor = '<%-news.description_kor%>',
+            description_zh = '<%-news.description_zh%>',
+            queto_kor = '<%= news.quote_kor%>',
+            queto_zh = '<%= news.quote_zh%>';
+        //zh
+        if (jsonObj.data.isTranslate == 0) {
+            $("#about-user").show();
+            $("#content").css("top", "45px");
+            $("#news_title").html(title_zh);
+            $(".content-desc").html(description_zh);
+        } else if (jsonObj.data.isTranslate == 1) {
+            $("#about-user").hide();
+            $("#content").css("top", "0px");
+            $("#news_title").html(title_kor);
+            $(".content-desc").html(description_kor);
+        }
+    }
+    //跳转到用户中心
+    function userCenter(userId, identyfy) {
+        var jsonObj = {
+            action: "jumpUserCenter",
+            data: {
+                userId: userId,
+                userIdentity: identyfy
+            }
+        };
+        ExchangeData(JSON.stringify(jsonObj));
+    }
+    function ie(obj) {
+        console.error("err" + obj);
+    }
+    </script>
+</body>
+
+</html>

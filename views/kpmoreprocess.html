@@ -1,0 +1,46 @@
+<%list.forEach(function(item){%>
+<div class="gift g-process-item" id="<%= item.id%>" data-userid="<%= item.user_id%>">
+	<div class="g-date">
+		<p><%= item.create_date%></p>
+		<a href="javascript:delGift('<%= item.id%>');"><i class="icon-trash"></i></a>
+	</div>
+	<div class="g-detail">
+		<div class="gd1">
+			<p class="gd1-p1"><strong class="base-color gift-name"><%= item.gift.gift_name%></strong></p>
+			<p class="gd1-p2 write">
+				<% if(item.delivery_status==0){%>待确认<%}%>
+				<% if(item.delivery_status==1){%>准备中<%}%>
+				<% if(item.delivery_status==2){%>已发货<%}%>
+				<% if(item.delivery_status==-1){%>已取消<%}%>
+			</p>
+		</div>
+		<div class="gd2">
+			<p class="gd2-p1 gift-score-p">
+				<strong class="gift-score">
+				<% if(item.delivery_status ==0 || item.delivery_status == 1){%>
+				冻结:<%= item.freeze_integral%>豆币
+				<%}else if(item.delivery_status == 2){%>
+				花费:<%= item.gift.integral%>豆币
+				<%} else{%>未花费豆币<%}%>
+				</strong>
+			</p>
+			<p class="gd2-p2 warning">
+				<% if(item.delivery_status!=-1 && item.delivery_status != 2){%>
+				<a href="javascript:cancelExchange('<%= item.id%>');" class="lack-score-color a-underline">取消兑换</a>
+				<%} else if(item.delivery_status == 2){%>
+				<a href="javascript:showGift('<%= item.user_id%>');" class="green-score a-underline">去晒礼品</a>
+				<%}%>
+			</p>
+		</div>
+	</div>
+	<% if(item.delivery_status==2){%>
+	<div class="express express-color">
+		<div class="express-text">
+			<p><%= item.express_name%></p>
+			<p>快递单号：<%= item.express_number%></p>
+		</div>
+	</div>
+	<%}%>
+</div>
+<%});%>
+

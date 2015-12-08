@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="/images/favicon.png" mce_href="/images/favicon.png" rel="bookmark" type="image/x-icon"/>
+    <link href="/images/favicon.png" mce_href="images/favicon.png" rel="icon" type="image/x-icon"/>
+    <link href="/images/favicon.png" mce_href="images/favicon.png" rel="shortcut icon" type="image/x-icon"/>
+    <title>那些被腾讯禁掉的视频</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/video.css" media="screen" type="text/css"/>
+    <script type="text/javascript" src="/javascripts/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+<div style="text-align:center;clear:both;"></div>
+<div class="tabs">
+    <!-- <div class="navi">
+      <input checked id="one" name="tabs" type="radio">
+      <label checked for="one">热门</label>
+      <input id="two" name="tabs" type="radio">
+      <label for="two">最新</label>
+    </div> -->
+    <nav class="navi" id="navi">
+        <!-- <h2>那些被腾讯禁掉的视频</h2> -->
+        <a href="javascript:void(0)" status="active" rel-panel="panel_hot" onclick="chooseItem(this,'panel_hot')">热门</a>
+        <a href="javascript:void(0)" rel-panel="panel_recent" onclick="chooseItem(this,'panel_recent')">最新</a>
+    </nav>
+    <div class="panels">
+        <div class="panel" id="panel_hot" status="active"> </div>
+        <div class="panel" id="panel_recent"> </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var clearBottomLine = function () {
+        document.querySelector('.navi a[status=active]').removeAttribute('status');
+    };
+
+    var clearPanelStatus = function () {
+        document.querySelector('.panel[status=active]').removeAttribute('status');
+    };
+
+    var chooseItem = function (obj, relid) {
+        var activePanelId = $('.panel[status=active]').attr('id');
+
+        clearBottomLine();
+        clearPanelStatus();
+        obj.setAttribute('status', 'active');
+        var panel_id = obj.getAttribute('rel-panel');
+        document.getElementById(panel_id).setAttribute('status', 'active');
+
+        if (activePanelId != relid) {
+            clearPanel();
+            var req_order = getReqOrder($('.panel[status=active]').attr('id'));
+            loaditem(req_order);
+        }
+    };
+
+    $(window).scroll(function () {
+        var scrollTop = $(this).scrollTop();
+        var scrollHeight = $(document).height();
+        var windowHeight = $(this).height();
+        if (scrollTop + windowHeight == scrollHeight) {
+            var beginrow = $('.panel[status=active] .item').length;
+            var req_order = getReqOrder($('.panel[status=active]').attr('id'));
+            loadmore(beginrow,req_order);
+        }
+    });
+
+    var clearPanel = function () {
+        $('.panel[status=active]').empty();
+    };
+
+    var getReqOrder = function (panel_name) {
+        if (panel_name == 'panel_hot') {
+            return 'readCount';
+        } else if (panel_name == 'panel_recent') {
+            return 'createDate';
+        }
+        return 'none';
+    };
+
+    var loaditem = function (req_order) {
+        var params = {
+            direction: "",
+            beginrow: 0,
+            order: req_order
+        };
+        $.post('/videos/list', params, function (data) {
+            for (key in data) {
+                var item = data[key];
+                $('.panel[status=active]').append(item);
+            }
+        });
+    };
+
+    var loadmore = function (beginrow, req_order) {
+        var params = {
+            direction: "loadmore",
+            beginrow: beginrow,
+            order: req_order
+        };
+        $.post('/videos/list', params, function (data) {
+            for (key in data) {
+                var item = data[key];
+                $('.panel[status=active]').append(item);
+            }
+        });
+    };
+
+    //跳转到视频播放页
+    function jump(obj) {
+        var url = obj.dataset.url;
+        var text = $(obj).find('.headline').text();
+        text = text.length > 10 ? text.substring(0,10)+"...":text;
+        var params = {
+            action: 'jump',
+            data: {
+                url: url,
+                title: text
+            }
+        };
+        ExchangeData(JSON.stringify(params));
+    }
+    //原生客户端接口
+    function ExchangeData(jsonStr) {
+        var u = navigator.userAgent;
+        var version = function () {
+            return {
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1,
+                iphone: u.indexOf('iPhone') > -1
+            };
+        }();
+        //调用js进行页面刷新
+        if (version.android) {
+            try{
+                window.handou.ExchangeData(jsonStr);
+            } catch(err){
+                if(confirm("此版本不支持视频播放，请更新到最新版本")){
+                    location.href = "http://www.handouer.cn/apps/luodi_hd.html";
+                }
+            }
+        } else if (version.iphone) {
+            if (Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))) {
+                window.webkit.messageHandlers.kidol.postMessage(jsonStr);
+            } else {
+                window.nativeApis.logMessage(JSON.stringify(jsonStr));
+            }
+        }
+    }
+    loaditem("panel_hot");
+
+</script>
+
+</body>
+</html>

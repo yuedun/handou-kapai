@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>韩豆韩粉社区 | 掌上韩流 聚逗韩趣 | 资讯</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap-theme.css">
+    <!-- 生产环境使用
+        <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+    -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+      <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/swiper3.07.min.css">
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/animate.css/3.1.0/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/home.css">
+</head>
+
+<body class="news-page">
+    <% include includes/header.html %>
+    <div class="news-show">
+        <div class="container">
+            <%if(recommendNewsList){%>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <%recommendNewsList.forEach(function(item,index){%>
+                            <div class="swiper-slide">
+                                <img src="<%=download_website+item.picture_preview%>" alt="<%=item.title_zh%>" onerror="this.src='/images/dapian.png'">
+                                <p class="swiper-slides-caption"></p>
+                                <p class="swiper-slides-caption swiper-slides-caption-front">
+                                    <strong class="slides-order">
+                                        <img class="page-num" src="/images/portal/p<%=index+1%>.png">
+                                        <img class="page-sept" src="/images/portal/xiexian.png">
+                                        <img class="total-page" src="/images/portal/p<%=recommendNewsList.length%>.png">
+                                    </strong>
+                                    <a class="slides-title" href="/portal/news/<%=item.news_id%>"><%=item.title_zh%></a>
+                                    <strong class="slides-content"><%=item.summary_zh%></strong>
+                                </p>
+                            </div>
+                            <%})%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="news-list-group" id="container">
+                        <input type="hidden" id="categoryId" value="<%=category_id==null?'':category_id%>">
+                        <%newsList.forEach(function(item,index){%>
+                        <div class="news-list-group-item">
+                            <img src="<%=download_website+item.picture_mini%>" alt="<%=item.title_zh%>">
+                            <div>
+                                <a href="/portal/news/<%=item.news_id%>" ><strong><%=item.title_zh%></strong></a>
+                                <p><%=item.summary_zh%></p>
+                                <p class="news-item-basic">
+                                    <img src="/images/portal/time.png" />
+                                    <span class="news-date"><%=item.release_date || item.create_date%></span>
+                                    <span class="news-look">阅读量:<%=item.read_count%></span>
+                                </p>
+                            </div>
+                        </div>
+                        <%})%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include includes/footer.html %>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/headroom/0.5.0/headroom.min.js"></script>
+    <script type="text/javascript" src="/javascripts/home/swiper3.07.jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/home/swiper.animate1.0.2.min.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/waterfall.min.js"></script>
+    <script type="text/javascript" src="/javascripts/home/news.js"></script>
+</body>
+
+</html>

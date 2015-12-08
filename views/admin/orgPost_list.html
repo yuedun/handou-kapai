@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>组织帖子</title>
+    <% include ./layout/headmeta.html %>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/vendor/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/vendor/jquery-ui-1.8.21.custom.css">
+    <script src="/javascripts/jquery-2.1.4.min.js"></script>
+    <script src="/javascripts/jquery-ui.min.js"></script>
+    <script>
+	    $(document).ready(function(){
+	        $("#StartDate,#EndDate").datepicker({
+	            numberOfMonths:1, 		//显示几个月  
+	            showButtonPanel:false,	//是否显示按钮面板  
+	            closeText: '关闭',
+	            clearText: '清除',  		//清除日期的按钮名称  
+	            prevText: '<上月',
+	            nextText: '下月>',
+	            currentText: '今天',
+	            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+	            monthNamesShort: ['一','二','三','四','五','六','七','八','九','十','十一','十二'],
+	            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+	            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+	            dayNamesMin: ['日','一','二','三','四','五','六'],
+	            weekHeader: '周',
+	            dateFormat: 'yy-mm-dd',    //日期格式  
+	            firstDay: 1,
+	            isRTL: false,
+	            showMonthAfterYear: true,  //是否把月放在年的后面  
+	            yearSuffix: '年'        //年的后缀  
+	        }); 
+      	});
+    </script>
+</head>
+
+<body>
+    <!-- topbar starts -->
+    <% include ./layout/topbar.html %>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            <!-- left menu starts -->
+            <% include ./layout/leftmenu.html %>
+            <!-- left menu ends -->
+            <!--/span-->
+            <!-- left menu ends -->
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Tables</a></li>
+                    </ul>
+                </div>
+                <!--/row-->
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-user"></i>组织帖子列表</h2>
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="box col-md-12">
+                                <form class="form-inline" action="/admin/orgPost" method="get" onsubmit="return changeIDisNaN()">
+                                  
+                                  <div class="form-group">
+                                    <label for="exampleInputName2">选择时间</label>
+                                    <input type="text" class="form-control" name="startdate" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})" id=""  placeholder="开始时间">-
+                                    <input type="text" class="form-control" name="enddate" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true})" id="" placeholder="结束时间">	
+                                  </div>
+                                  
+                                  <select name="conditionid" class="form-control">
+                                      <option>选择条件</option>
+                                      <option value="0">ID</option>
+                                      <option value="1">帖子标题</option>
+                                      <option value="2">组织名称</option>
+                                  </select>
+                                  
+                                  <div class="form-group">
+                                    <label for="exampleInputEmail2" class="sr-only"></label>
+                                    <input type="text" class="form-control" id="keyWord" name="conditionText" placeholder="请输入条件内容">
+                                  </div>
+                                  
+                                  <select name="sortid" class="form-control">
+                                      <option>选择排序</option>
+                                      <option value="0">点赞正顺</option>
+                                      <option value="1">点赞倒顺</option>
+                                      <option value="2">发布时间正顺</option>
+                                      <option value="3">发布时间倒顺</option>
+                                  </select>
+                                  
+                                  <button type="submit" class="btn btn-default">搜索</button>
+                                </form>
+                            </div>
+                            
+                            <div class="box col-md-12">
+                                <p>
+                                    <a class="btn btn-default btn-sm" href="">
+                                    	<i class="glyphicon glyphicon-check"></i>全选
+                                    </a>
+                                    <a class="btn btn-default btn-sm" href="">
+                                    	<i class="glyphicon glyphicon-trash"></i>批量删除
+                                    </a>
+                                </p>
+                            </div>
+                            
+                            <div class="box-content">
+                                <table class="table table-striped table-bordered responsive" id="groupList">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>帖子标题</th>
+                                            <th>组织名称</th>
+                                            <th>状态</th>
+                                            <th>推荐状态</th>
+                                            <th>点赞</th>
+                                            <th>评论</th>
+                                            <th>发布时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+										<%orgPostList.forEach(function(item, index){ %>
+											<tr>
+												<td class="center"><%=item.topicNumber%></td>
+												<td class="center">
+													<a name="orgtopicName" id="<%=item.topicId%>" href="javascript:void(0)">
+	                                                	<%=item.topicName%>
+	                                                </a>
+												</td>
+												<td class="center"><%=item.nickName%></td>
+												<td class="center">
+													<%if(item.topicState==0){%>
+                                                		<span class="label-default label label-danger">已冻结</span>
+                                                	<%} else if(item.topicState==1){%>
+                                                		<span class="label-success label label-default">正常</span>
+                                                	<%} else {%>
+                                                		<span class="label-default label label-danger">已删除</span>
+                                                	<%}%>	
+												</td>
+												<td class="center">
+													<%if(item.isRecommend==0){%>
+                                                		<span class="label-default label label-default">未推荐</span>
+                                                	<%} else if(item.isRecommend==1){%>
+                                                		<span class="label-success label label-default">推荐</span>
+                                                	<%}%>
+												</td>
+												<td class="center"><%=item.likeCount%></td>
+												<td class="center"><%=item.commentCount%></td>
+												<td class="center"><%=item.createDate%></td>
+												<td class="center">
+													<%if(item.topicState == 1){%>
+														<!--<a class="btn btn-primary" name="pushMessage" data-id="<%=item.topicId%>" data-userid="<%=item.userId%>" href="javascript:void(0)">
+		                                                    <i class="glyphicon glyphicon-envelope icon-white"></i> 推送
+		                                                </a>-->
+														<a class="btn btn-danger " name="orgDel" id="<%=item.topicId%>" href="javascript:void(0)">
+		                                                    <i class="glyphicon glyphicon-trash icon-white"></i> 删除
+		                                                </a>
+	                                                <%} else {%>
+	                                                	<a class="btn btn-primary btn-round" name="orgRecover" id="<%=item.topicId%>" href="javascript:void(0)">
+		                                                    <i class="glyphicon glyphicon-share-alt icon-white"></i> 恢复
+		                                                </a>
+	                                                <%}%>	
+												</td>
+											</tr>
+										<%})%>	
+                                    </tbody>
+                                </table>
+                                <nav>
+                                    <ul class="pager">
+                                        <li class="<%=(currentPage==1)?'disabled':''%>"><a href="/admin/orgPost?pageIndex=<%=currentPage-1%>&pageSize=10&startdate=<%=params.startdate%>&enddate=<%=params.enddate%>&conditionid=<%=params.conditionid%>&conditionText=<%=params.conditionText%>&sortid=<%=params.sortid%>">上一页</a></li>
+                                        <li>第<%=currentPage%>页</li>
+                                        <li><a href="/admin/orgPost?pageIndex=<%=(parseInt(currentPage)+1)%>&pageSize=10&startdate=<%=params.startdate%>&enddate=<%=params.enddate%>&conditionid=<%=params.conditionid%>&conditionText=<%=params.conditionText%>&sortid=<%=params.sortid%>">下一页</a></li>
+                                        <li>共<%= (Math.round(totalCount/10))%>页</li>
+                                        <li>共<%= (totalCount)%>条</li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!-- 中间空白区 starts  -->
+        <div class="row">
+
+        </div>
+        <!-- 中间空白区 ends  -->
+        <hr />
+        <!-- 底部版权信息 starts  -->
+        <% include ./layout/footer.html %>
+        <!-- 底部版权信息 ends-->
+    </div>
+    
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  	<div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      	<div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel">推送内容</h4>
+		      	</div>
+		      	<div class="modal-body">
+			        <form class="form" name="messageForm" action="/admin/orgPostMessage" method="get">
+			        	<input type="hidden" id="messageId" title="帖子ID"/>
+			        	<input type="hidden" id="orgId" title="组织ID" />
+			        	<div class="form-group">
+							<label for="messageText" class="sr-only">Name</label>
+						    <textarea class="form-control" rows="4" id="messageText" placeholder="请输入推送内容"></textarea>
+						</div>
+			        </form>
+		      	</div>
+		      	<div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			        <button type="button" name="sendMessage" class="btn btn-primary">发送</button>
+		      	</div>
+		    </div>
+	  	</div>
+	</div>
+    
+    <!-- requirejs导入需要的js插件以及自定义模块 -->
+    <script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/post-main.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+body{
+	margin: 0;
+	padding: 0;
+}
+
+/* 最大的盒子*/
+.conte{
+	width: 100%;
+	height: 100%;
+	background-color: #FFFF00;
+}
+
+/* 主图片 */
+.con_img{
+	width: 100%;
+	height: 100%;
+}
+	
+/* 下载按钮 */	
+.download{
+	display: block;
+	position: relative;
+	width: 140px;
+	height: 50px;
+	line-height: 50px;
+	margin-left: 30%;
+	margin-top: -23px;
+	text-align: center;
+	animation: vertical-shake 0.2s infinite;
+    -moz-animation: vertical-shake 0.2s infinite;
+    -webkit-animation: vertical-shake 0.2s infinite;
+    -o-animation: vertical-shake 0.2s infinite;
+}
+
+/* 下载按钮图片 */
+.down_img{
+	width: 100%;
+	height: 100%;
+}
+
+@keyframes vertical-shake{
+	from {margin-top: -23%;}
+	to {margin-top: -22%;}
+}
+
+@-moz-keyframes vertical-shake {  /* Firefox */
+	from {margin-top: -23%;}
+	to {margin-top: -22%;}
+}
+
+@-webkit-keyframes vertical-shake {  /* Safari and Chrome */
+	from {margin-top: -23%;}
+	to {margin-top: -22%;}
+}
+
+@-o-keyframes vertical-shake {  /* Opera */
+	from {margin-top: -23%;}
+	to {margin-top: -22%;}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

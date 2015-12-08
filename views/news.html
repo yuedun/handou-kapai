@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-cn" ng-app="handouApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>资讯</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/vendor/news.min.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/swiper3.07.min.css">
+    <style type="text/css">
+		#slides {
+			height: 165px;
+		}
+    </style>
+</head>
+<body ng-controller="NewsCtrl">
+    <div id="container" class="backgroup-color-dark font-color-white">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <%recommendNewsList.forEach(function(item,index){%>
+                <div class="swiper-slide" onclick="eventCall('<%=item.news_id%>')" ondblclick="dbCall('<%=item.news_id%>')">
+                    <img src="<%=download_website+item.picture_preview%>" alt="<%=item.title_zh%>" >
+                    <p class="swiper-slides-caption"></p>
+                    <p class="swiper-slides-caption swiper-slides-caption-front">
+                        <strong class="slides-order">
+                            <img class="page-num" src="/images/portal/p<%=index+1%>.png">
+                            <img class="page-sept" src="/images/portal/xiexian.png">
+                            <img class="total-page" src="/images/portal/p<%=recommendNewsList.length%>.png">
+                        </strong>
+                        <strong class="slides-title"><%=item.title_zh%></strong>
+                        <strong class="slides-content"><%=item.summary_zh%></strong>
+                    </p>
+                </div>
+                <%})%>
+            </div>
+        </div>
+        <% newsList.forEach(function(item, index){%>
+        <article class="new item-back-color">
+            <% if(item.translate_state == -1) { %>
+            <img src="/images/wuzhong.png">
+            <% } %>
+            <aside class="new-pic">
+                <img src="<%= item.picture_mini==''?'/images/ic_launcher.png':(download_website + item.picture_mini + '?imageView2/0/h/166')%>" alt="" height="50px" width="50px" />
+            </aside>
+            <div class="new-content">
+                <a href="javascript:void(0)" onclick="eventCall('<%=item.news_id%>')" ondblclick="dbCall('<%=item.news_id%>')">
+                    <div>
+                        <h3 class="ellipsis"><%= item.title_zh || item.title_kor%></h3>
+                        <p class="news-desc ellipsis">
+                            <%= item.summary_zh || item.summary_kor%>
+                        </p>
+                        <p class="news-date font-color-huise">
+                            <span><%= item.release_date || item.create_date %></span>
+                            <span class="font-color-huise">阅读量：<%= item.read_count%></span>
+                        </p>
+                    </div>
+                </a>
+            </div>
+        </article>
+        <%})%>
+    </div>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/home/swiper3.07.jquery.min.js"></script>
+    <script>
+        $(function() {
+            var mySwiper = new Swiper('.swiper-container', {
+                direction: 'horizontal',
+                loop: true,
+                autoplay: 3000,
+                autoplayDisableOnInteraction: false,
+                height: 300,
+                speed: 1000,
+                grabCursor: true,
+                keyboardControl: true,
+                mousewheelControl: true
+            });
+        });
+    var eventCall = function(newsId) {
+        var params = {};
+        params.action = 'newsDetail';
+        params.data = {
+            news_id: newsId
+        };
+        ExchangeData(JSON.stringify(params));
+    };
+    //测试需要start
+    function getMoreNews() {
+            var params = {};
+            params.action = 'loadMoreData';
+            ExchangeData(JSON.stringify(params));
+        }
+    var dbCall = function(newsId) {
+        location.href = "/lofti/api/news/" + newsId + "?user_id=9eff0ce523f64ff2a13c44958d0434d8";
+    };
+    //测试需要end
+    var offset = 2,
+        limit = 20;
+
+    function ExchangeData(json) {
+        var jsonObj = JSON.parse(json);
+        var u = navigator.userAgent;
+        var version = function() {
+            return {
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1,
+                iphone: u.indexOf('iPhone') > -1
+            };
+        }();
+        //调用js进行页面刷新
+        if (jsonObj.action == "refreshData") {
+            document.location.reload(); //刷新
+            jsonObj.action= 'refreshCompelete';
+            if (version.android) {
+                window.handou.ExchangeData(JSON.stringify(jsonObj));
+            } else if (version.iphone) {
+                if (Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))) {
+                    window.webkit.messageHandlers.kidol.postMessage(JSON.stringify(jsonObj));
+                } else {
+                    window.nativeApis.logMessage(JSON.stringify(jsonObj));
+                }
+            }
+        } else if (jsonObj.action == "loadMoreData") {
+            var thelist = $("#container");
+            $.get('/lofti/api/news', {
+                offset: offset,
+                limit: limit
+            }, function(data) {
+                thelist.append(data);
+                offset++;
+                jsonObj.action = 'loadMoreDataCompelete';
+                if (version.android) {
+                    window.handou.ExchangeData(JSON.stringify(jsonObj));
+                } else if (version.iphone) {
+                    if (Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))) {
+                        window.webkit.messageHandlers.kidol.postMessage(JSON.stringify(jsonObj));
+                    } else {
+                        window.nativeApis.logMessage(JSON.stringify(jsonObj));
+                    }
+                }
+            });
+        } else if (jsonObj.action === "ConsultationFilter") {
+            //alert("资讯过滤data:" + jsonObj.data.user_id);
+            //window.handou.ExchangeData(JSON.stringify(jsonObj));//跳转到查询完成
+
+        } else if (jsonObj.action == "newsDetail") {
+            jsonObj.action = "jumpConsultationDetail";
+            if (version.android) {
+                jsonObj.data.consultationUrl = document.location.href + jsonObj.data.news_id;
+                window.handou.ExchangeData(JSON.stringify(jsonObj));
+            } else if (version.iphone) {
+                jsonObj.data.consultationUrl = document.location.href + '/' + jsonObj.data.news_id;
+                if (Boolean(u.match(/OS [8-9]_\d[_\d]* like Mac OS X/i))) {
+                    window.webkit.messageHandlers.kidol.postMessage(JSON.stringify(jsonObj));
+                } else {
+                    window.nativeApis.logMessage(JSON.stringify(jsonObj));
+                }
+            }
+        }
+    }
+    </script>
+</body>
+
+</html>

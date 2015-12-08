@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8">
+		<title>添加组织帖子</title>
+		<% include ./layout/headmeta.html %>
+		<link rel="stylesheet" type="text/css" href="/javascripts/vendor/webuploader-0.1.5/webuploader.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/vendor/jquery-ui.min.css">
+        <!--<link rel="stylesheet" type="text/css" href="/stylesheets/vendor/jquery-ui-1.8.21.custom.css">-->
+	</head>
+	<body>
+		<!-- topbar starts -->
+        <% include ./layout/topbar.html %>
+		<!-- topbar ends -->
+		<div class="ch-container">
+			<div class="row">
+				<!-- left menu starts -->
+				<% include ./layout/leftmenu.html %>
+                <!-- left menu ends -->
+                <!--/span-->
+                <!-- left menu ends -->
+                <div id="content" class="col-lg-10 col-sm-10">
+                    <!-- content starts -->
+                    <div>
+                        <ul class="breadcrumb">
+                            <li>
+                                <a href="#">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">Tables</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/row-->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box-inner">
+                                <div class="box-header well" data-original-title="">
+                                    <h2><i class="glyphicon glyphicon-user"></i>添加组织帖子</h2>
+                                    <div class="box-icon">
+                                        <a href="#" class="btn btn-minimize btn-round btn-default">
+                                            <i class="glyphicon glyphicon-chevron-up"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-close btn-round btn-default">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="box-content">
+                                    <p class="bg-warning"></p>
+                                    <form class="form-horizontal" action="/admin/org/<%= orgId%>/topic" method="post" id="fm" onsubmit="return checkForm()">
+                                        <input type="hidden" value="<%= orgId%>" name="orgId"/>
+                                        <input type="hidden" name="audioTime" id="audioTime"/>
+                                        <div class="form-group" id="div_1">
+                                            <label for="topicName" class="col-sm-2 control-label">帖子标题</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" id="topicName" name="topicName" placeholder="名称" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="uploader2" class="col-sm-2 control-label">语音</label>
+                                            <div class="col-sm-6">
+                                                <div id="uploader2" class="wu-example">
+                                                    <div id="voiceList" class="uploader-list"></div>
+                                                    <input type="hidden" name="topicPics" value="<%= qntoken%>" id="qntoken2" />
+                                                    <div class="btns">
+                                                        <div id="voicePicker">选择文件</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="div_2">
+                                            <label for="topicDesc" class="col-sm-2 control-label">帖子内容</label>
+                                            <div class="col-sm-3">
+                                                <textarea class="form-control" id="topicDesc" name="topicDesc" placeholder="帖子内容" ></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="uploader" class="col-sm-2 control-label">图片：</label>
+                                            <div class="col-sm-6">
+                                                <div id="uploader" class="wu-example">
+                                                    <!-- 用来存放文件信息 -->
+                                                    <div id="thelist" class="uploader-list"></div>
+                                                    <input type="hidden" name="topicPics" value="<%= qntoken%>" id="qntoken" />
+                                                    <div class="btns">
+                                                        <div id="picker">选择文件</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-6">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" name="isRecommend">置顶
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" checked="checked" id="atRelease" name="state">立即发布
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="releaseDate" class="col-sm-2 control-label">是否定时</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" onclick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true,min:laydate.now()})" id="releaseDate" name="releaseDate">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" class="btn btn-primary">保存</button>
+                                                <button type="button" onclick="javascript:history.back(-1)" class="btn btn-default"> 返回 </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <!-- content ends -->
+                    </div>
+                    <!--/#content.col-md-0-->
+                </div>
+                <!-- 中间空白区 starts  -->
+                <div class="row">
+
+                </div>
+                <!-- 中间空白区 ends  -->
+                <hr/>
+                <!-- 底部版权信息 starts  -->
+                <% include ./layout/footer.html %>
+                <!-- 底部版权信息 ends-->
+			</div>
+		</div>
+		<!-- requirejs导入需要的js插件以及自定义模块 -->
+		<!--<script src="/javascripts/vendor/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>-->
+        <script src="http://apps.bdimg.com/libs/require.js/2.1.11/require.min.js" data-main="/javascripts/vendor/index-main.js"></script>
+	</body>
+
+</html>
